@@ -30,7 +30,7 @@ if cmd_folder not in sys.path:
     sys.path.insert(0, cmd_folder)
 
 
-class FuzzyClassifierPlugin():
+class SoftQueriesPlugin():
 
     def __init__(self, iface):
 
