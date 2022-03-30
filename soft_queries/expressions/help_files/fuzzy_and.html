@@ -1,0 +1,41 @@
+<div class="description">
+    <p>Creates Fuzzy Membership as a result of intersection (operator AND) of two fuzzy membership values. The outcome
+        is Fuzzy Membership.<br /><br />The output cannot be properly represented as Expression outcome. It is only used
+        in other expressions.</p>
+</div>
+<h4>Syntax</h4>
+<div class="syntax">
+    <code><span class="functionname">fuzzy_and</span>(<span class="argument">fuzzy_membership1</span>, <span class="argument">fuzzy_membership2</span>, <span class="argument">type</span>)</code>
+    <h4>Arguments</h4>
+    <div class="arguments">
+        <table>
+            <tr>
+                <td class="argument">fuzzy_membership1</td>
+                <td>Fuzzy membership.</td>
+            </tr>
+            <tr>
+                <td class="argument">fuzzy_membership2</td>
+                <td>Fuzzy membership.</td>
+            </tr>
+            <tr>
+                <td class="argument">type</td>
+                <td>String value indicating type of operation. One of "min", "product", "drastic", "Lukasiewicz",
+                    "Nilpotent", "Hamacher".</td>
+            </tr>
+        </table>
+    </div>
+    <h4>Examples</h4>
+    <div class="examples">
+        <ul>
+            <li><code>fuzzy_and(fuzzy_membership(0.5), fuzzy_membership(0.1), 'min')</code>
+                &rarr;
+                <code></code>
+            </li>
+            <li><code>fuzzy_membership_as_text(fuzzy_and(fuzzy_membership(0.5), fuzzy_membership(0.1), 'min'))</code>
+                &rarr;
+                <code>'FuzzyMembership(0.1)'</code>
+            </li>
+
+        </ul>
+    </div>
+</div>

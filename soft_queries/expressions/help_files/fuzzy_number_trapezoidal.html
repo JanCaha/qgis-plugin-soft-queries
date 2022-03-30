@@ -1,0 +1,41 @@
+<div class="description">
+    <p>Creates triangular fuzzy number.<br /><br />The output cannot be properly represented as Expression outcome. It
+        is only
+        used
+        in other expressions.</p>
+</div>
+<h4>Syntax</h4>
+<div class="syntax">
+    <code><span class="functionname">fuzzy_number_triangular</span>(<span class="argument">min</span>, <span class="argument">kernel_min</span>, <span class="argument">kernel_max</span>, <span class="argument">max</span>)</code>
+    <h4>Arguments</h4>
+    <div class="arguments">
+        <table>
+            <tr>
+                <td class="argument">min</td>
+                <td>Minimal value of fuzzy number.</td>
+            </tr>
+            <tr>
+                <td class="argument">kernel_min</td>
+                <td>Minimal kernel value of fuzzy number.</td>
+            </tr>
+            <tr>
+                <td class="argument">kernel_max</td>
+                <td>Maximal kernel value of fuzzy number.</td>
+            </tr>
+            <tr>
+                <td class="argument">max</td>
+                <td>Maximal value of fuzzy number.</td>
+            </tr>
+        </table>
+    </div>
+    <h4>Examples</h4>
+    <div class="examples">
+        <ul>
+            <li><code>fuzzy_number_triangular(1, 2, 3, 4)</code> &rarr; <code></code></li>
+            <li><code>fuzzy_number_triangular(-1, -0.5, 0.5)</code> &rarr; <code></code></li>
+            <li><code>fuzzy_number_as_text(fuzzy_number_triangular(-1, -0.5, 0.5))</code> &rarr;
+                <code>'Fuzzy number with support (-1.0,0.5), kernel (-0.5, -0.5) and 0 more alpha-cuts.'</code>
+            </li>
+        </ul>
+    </div>
+</div>

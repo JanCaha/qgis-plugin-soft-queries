@@ -1,0 +1,41 @@
+<div class="description">
+    <p>Creates Possibilistic Membership as a result of union (operator OR) of two possibilistic membership
+        values. The outcome is Possibilistic Membership.<br /><br />The output cannot be properly represented as
+        Expression outcome. It is only used in other expressions.</p>
+</div>
+<h4>Syntax</h4>
+<div class="syntax">
+    <code><span class="functionname">possibilistic_or</span>(<span class="argument">fuzzy_membership1</span>, <span class="argument">fuzzy_membership2</span>, <span class="argument">type</span>)</code>
+    <h4>Arguments</h4>
+    <div class="arguments">
+        <table>
+            <tr>
+                <td class="argument">possibilistic_membership1</td>
+                <td>Possibilistic membership.</td>
+            </tr>
+            <tr>
+                <td class="argument">possibilistic_membership2</td>
+                <td>Possibilistic membership.</td>
+            </tr>
+            <tr>
+                <td class="argument">type</td>
+                <td>String value indicating type of operation. One of "max", "product", "drastic", "Lukasiewicz",
+                    "Nilpotent", "Hamacher".</td>
+            </tr>
+        </table>
+    </div>
+    <h4>Examples</h4>
+    <div class="examples">
+        <ul>
+            <li><code>possibilistic_or(possibilistic_membership(0.5, 0.3), possibilistic_membership(0.2, 0.0), 'max')</code>
+                &rarr;
+                <code></code>
+            </li>
+            <li><code>possibilistic_membership_as_text(possibilistic_or(possibilistic_membership(0.5, 0.3), possibilistic_membership(0.2,
+            0.0), 'max'))</code>
+                &rarr;
+                <code>'PossibilisticMembership(possibility: 0.5, necessity: 0.3)'</code>
+            </li>
+        </ul>
+    </div>
+</div>

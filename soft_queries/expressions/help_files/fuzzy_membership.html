@@ -1,0 +1,30 @@
+<div class="description">
+    <p>Creates Fuzzy Membership directly from membership value.<br /><br />The output cannot be properly
+        represented as Expression outcome. It is only used in other expressions.</p>
+</div>
+<h4>Syntax</h4>
+<div class="syntax">
+    <code><span class="functionname">fuzzy_membership</span>(<span class="argument">value</span>)</code>
+    <h4>Arguments</h4>
+    <div class="arguments">
+        <table>
+            <tr>
+                <td class="argument">value</td>
+                <td>Numeric value of membership, should be from range [0, 1].</td>
+            </tr>
+        </table>
+    </div>
+    <h4>Examples</h4>
+    <div class="examples">
+        <ul>
+            <li><code>fuzzy_membership(0.5)</code>
+                &rarr;
+                <code></code>
+            </li>
+            <li><code>fuzzy_membership_as_text(fuzzy_membership(0.5))</code>
+                &rarr;
+                <code>'FuzzyMembership(0.5)'</code>
+            </li>
+        </ul>
+    </div>
+</div>

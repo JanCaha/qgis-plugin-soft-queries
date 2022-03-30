@@ -1,0 +1,46 @@
+# This file contains metadata for your plugin.
+
+# This file should be included when you package your plugin.# Mandatory items:
+
+[general]
+name=Soft Queries
+qgisMinimumVersion=3.22
+description=This plugin brings tools that allow processing of data using fuzzy set theory and possibility theory.
+version=0.1.0
+author=Jan Caha
+email=jan.caha@outlook.com
+
+about=This plugin brings tools that allow processing of data using fuzzy set theory and possibility theory. Functions are provided as processing tools (mostly for raster data) and as Expressions (mostly for vector data).
+
+tracker=https://github.com/JanCaha/qgis-plugin-soft-queries/issues
+repository=https://github.com/JanCaha/qgis-plugin-soft-queries
+# End of mandatory metadata
+
+# Recommended items:
+
+hasProcessingProvider=yes
+# Uncomment the following line and add your changelog:
+# changelog=
+
+# Tags are comma separated with spaces allowed
+tags=vector, raster, fuzzy, soft
+
+homepage=https://github.com/JanCaha/qgis-plugin-soft-queries
+#icon=
+
+# experimental flag
+experimental=True
+
+# deprecated flag (applies to the whole plugin, not just a single version)
+deprecated=False
+
+# Since QGIS 3.8, a comma separated list of plugins to be installed
+# (or upgraded) can be specified.
+# Check the documentation for more information.
+# plugin_dependencies=
+
+# Category of the plugin: Raster, Vector, Database or Web
+category=Vector, Raster
+
+# If the plugin can run on QGIS Server.
+server=False

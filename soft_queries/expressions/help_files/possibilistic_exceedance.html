@@ -1,0 +1,36 @@
+<div class="description">
+    <p>Creates Possibilistic Membership directly by comparing two fuzzy numbers. The operation is
+        <code><span class="argument">fn_a</span> >= <span class="argument">fn_b</span></code>. <br /><br />The output
+        cannot be properly represented as Expression outcome. It is only used in other expressions.
+    </p>
+</div>
+<h4>Syntax</h4>
+<div class="syntax">
+    <code><span class="functionname">possibilistic_exceedance</span>(<span class="argument">fn_a</span>, <span class="argument">fn_b</span>)</code>
+    <h4>Arguments</h4>
+    <div class="arguments">
+        <table>
+            <tr>
+                <td class="argument">fn_a</td>
+                <td>Fuzzy number.</td>
+            </tr>
+            <tr>
+                <td class="argument">fn_b</td>
+                <td>Fuzzy number.</td>
+            </tr>
+        </table>
+    </div>
+    <h4>Examples</h4>
+    <div class="examples">
+        <ul>
+            <li><code>possibilistic_exceedance(fuzzy_number_triangular(1,2,3),fuzzy_number_triangular(1.5,2.4,3.5))</code>
+                &rarr;
+                <code></code>
+            </li>
+            <li><code>possibilistic_membership_as_text(possibilistic_exceedance(fuzzy_number_triangular(1,2,3),fuzzy_number_triangular(1.5,2.4,3.5)))</code>
+                &rarr;
+                <code>'PossibilisticMembership(possibility: 0.789473684210526, necessity: 0.263157894736842)'</code>
+            </li>
+        </ul>
+    </div>
+</div>

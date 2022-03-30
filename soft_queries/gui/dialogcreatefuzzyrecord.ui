@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>405</width>
+    <height>549</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label_name">
+     <property name="text">
+      <string>Fuzzy variable name</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="label_alpha_cuts">
+     <property name="text">
+      <string>Number of alpha cuts</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QComboBox" name="fuzzy_type"/>
+   </item>
+   <item row="6" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QToolButton" name="toolButton_add">
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="toolButton_remove">
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="7" column="0" colspan="2">
+    <widget class="QTreeWidget" name="treeWidget">
+     <attribute name="headerCascadingSectionResizes">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="headerMinimumSectionSize">
+      <number>135</number>
+     </attribute>
+     <attribute name="headerDefaultSectionSize">
+      <number>135</number>
+     </attribute>
+     <column>
+      <property name="text">
+       <string>Fuzzy variable name</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Fuzzy variable</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="fuzzy_name"/>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_type">
+     <property name="text">
+      <string>Type of fuzzy number</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="QStackedWidget" name="stackedWidget">
+     <property name="maximumSize">
+      <size>
+       <width>382</width>
+       <height>140</height>
+      </size>
+     </property>
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="triangular">
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>381</width>
+         <height>92</height>
+        </rect>
+       </property>
+       <layout class="QFormLayout" name="formLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Minimum</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QDoubleSpinBox" name="triangular_min">
+          <property name="decimals">
+           <number>6</number>
+          </property>
+          <property name="minimum">
+           <double>-999999999.999999046325684</double>
+          </property>
+          <property name="maximum">
+           <double>999999999.999999046325684</double>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Midpoint</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QDoubleSpinBox" name="triangular_midpoint">
+          <property name="decimals">
+           <number>6</number>
+          </property>
+          <property name="minimum">
+           <double>-999999999.999999046325684</double>
+          </property>
+          <property name="maximum">
+           <double>999999999.999999046325684</double>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Maximum</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QDoubleSpinBox" name="triangular_max">
+          <property name="decimals">
+           <number>6</number>
+          </property>
+          <property name="minimum">
+           <double>-999999999.999999046325684</double>
+          </property>
+          <property name="maximum">
+           <double>999999999.999999046325684</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="trapezoidal">
+      <widget class="QWidget" name="layoutWidget_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>381</width>
+         <height>124</height>
+        </rect>
+       </property>
+       <layout class="QFormLayout" name="formLayout_3">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_12">
+          <property name="text">
+           <string>Minimum</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QDoubleSpinBox" name="trapezoidal_min">
+          <property name="decimals">
+           <number>6</number>
+          </property>
+          <property name="minimum">
+           <double>-999999999.999999046325684</double>
+          </property>
+          <property name="maximum">
+           <double>999999999.999999046325684</double>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_13">
+          <property name="text">
+           <string>Kernel minimum</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QDoubleSpinBox" name="trapezoidal_kernel_min">
+          <property name="decimals">
+           <number>6</number>
+          </property>
+          <property name="minimum">
+           <double>-999999999.999999046325684</double>
+          </property>
+          <property name="maximum">
+           <double>999999999.999999046325684</double>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_14">
+          <property name="text">
+           <string>Kernel maximum</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QDoubleSpinBox" name="trapezoidal_kernel_max">
+          <property name="decimals">
+           <number>6</number>
+          </property>
+          <property name="minimum">
+           <double>-999999999.999999046325684</double>
+          </property>
+          <property name="maximum">
+           <double>999999999.999999046325684</double>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QDoubleSpinBox" name="trapezoidal_max">
+          <property name="decimals">
+           <number>6</number>
+          </property>
+          <property name="minimum">
+           <double>-999999999.999999046325684</double>
+          </property>
+          <property name="maximum">
+           <double>999999999.999999046325684</double>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_15">
+          <property name="text">
+           <string>Maximum</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QSpinBox" name="alpha_cuts">
+     <property name="maximum">
+      <number>50</number>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="2">
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>fuzzy_name</tabstop>
+  <tabstop>fuzzy_type</tabstop>
+  <tabstop>triangular_min</tabstop>
+  <tabstop>triangular_midpoint</tabstop>
+  <tabstop>triangular_max</tabstop>
+  <tabstop>trapezoidal_min</tabstop>
+  <tabstop>trapezoidal_kernel_min</tabstop>
+  <tabstop>trapezoidal_kernel_max</tabstop>
+  <tabstop>trapezoidal_max</tabstop>
+  <tabstop>alpha_cuts</tabstop>
+  <tabstop>toolButton_add</tabstop>
+  <tabstop>toolButton_remove</tabstop>
+  <tabstop>treeWidget</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
