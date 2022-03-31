@@ -8,6 +8,7 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
 
 from .provider_soft_queries import SoftQueriesProvider
+from .gui.FuzzyVariablesWidget import FuzzyVariablesWidget
 from .text_constants import TextConstants
 from .expressions.expressions_fuzzy_number import (fuzzy_number_triangular,
                                                    fuzzy_number_trapezoidal,
@@ -44,6 +45,37 @@ class SoftQueriesPlugin():
         self.actions = []
         self.menu = TextConstants.plugin_name
 
+        self.exp_functions = [
+            # fuzzy numbers
+            fuzzy_number_triangular,
+            fuzzy_number_trapezoidal,
+            fuzzy_number_from_string_repr,
+            fuzzy_number_to_string_repr,
+            fuzzy_number_as_text,
+            get_fuzzy_number_from_db,
+            # fuzzy membership
+            fuzzy_membership,
+            fuzzy_membership_as_text,
+            fuzzy_membership_to_string_repr,
+            fuzzy_membership_from_string_repr,
+            fuzzy_and,
+            fuzzy_or,
+            membership,
+            # possibilistic membership
+            possibilistic_membership_as_text,
+            possibilistic_membership_to_string_repr,
+            possibilistic_membership_from_string_repr,
+            possibilistic_membership,
+            possibility,
+            necessity,
+            possibilistic_and,
+            possibilistic_or,
+            possibilistic_exceedance,
+            possibilistic_strict_exceedance,
+            possibilistic_undervaluation,
+            possibilistic_strict_undervaluation,
+        ]
+
         self.register_exp_functions()
 
     def initProcessing(self):
@@ -58,7 +90,6 @@ class SoftQueriesPlugin():
                         add_to_toolbar=True)
 
     def run_tool_fuzzy_variables(self):
-        from .gui.FuzzyVariablesWidget import FuzzyVariablesWidget
 
         widget = FuzzyVariablesWidget(self.iface.mainWindow())
 
@@ -112,66 +143,10 @@ class SoftQueriesPlugin():
 
     def register_exp_functions(self):
 
-        # fuzzy numbers
-        QgsExpression.registerFunction(fuzzy_number_triangular)
-        QgsExpression.registerFunction(fuzzy_number_trapezoidal)
-        QgsExpression.registerFunction(fuzzy_number_from_string_repr)
-        QgsExpression.registerFunction(fuzzy_number_to_string_repr)
-        QgsExpression.registerFunction(fuzzy_number_as_text)
-        QgsExpression.registerFunction(get_fuzzy_number_from_db)
-
-        # fuzzy membership
-        QgsExpression.registerFunction(fuzzy_membership)
-        QgsExpression.registerFunction(fuzzy_membership_as_text)
-        QgsExpression.registerFunction(fuzzy_membership_to_string_repr)
-        QgsExpression.registerFunction(fuzzy_membership_from_string_repr)
-        QgsExpression.registerFunction(fuzzy_and)
-        QgsExpression.registerFunction(fuzzy_or)
-        QgsExpression.registerFunction(membership)
-
-        # possibilistic membership
-        QgsExpression.registerFunction(possibilistic_membership_as_text)
-        QgsExpression.registerFunction(possibilistic_membership_to_string_repr)
-        QgsExpression.registerFunction(possibilistic_membership_from_string_repr)
-        QgsExpression.registerFunction(possibilistic_membership)
-        QgsExpression.registerFunction(possibility)
-        QgsExpression.registerFunction(necessity)
-        QgsExpression.registerFunction(possibilistic_and)
-        QgsExpression.registerFunction(possibilistic_or)
-        QgsExpression.registerFunction(possibilistic_exceedance)
-        QgsExpression.registerFunction(possibilistic_strict_exceedance)
-        QgsExpression.registerFunction(possibilistic_undervaluation)
-        QgsExpression.registerFunction(possibilistic_strict_undervaluation)
+        for f in self.exp_functions:
+            QgsExpression.registerFunction(f)
 
     def unregister_exp_functions(self):
 
-        # fuzzy numbers
-        QgsExpression.unregisterFunction('fuzzy_number_triangular')
-        QgsExpression.unregisterFunction('fuzzy_number_trapezoidal')
-        QgsExpression.unregisterFunction('fuzzy_number_from_string_repr')
-        QgsExpression.unregisterFunction('fuzzy_number_to_string_repr')
-        QgsExpression.unregisterFunction('fuzzy_number_as_text')
-        QgsExpression.unregisterFunction('get_fuzzy_number_from_db')
-
-        # fuzzy membership
-        QgsExpression.unregisterFunction('fuzzy_membership')
-        QgsExpression.unregisterFunction('fuzzy_membership_as_text')
-        QgsExpression.unregisterFunction('fuzzy_membership_to_string_repr')
-        QgsExpression.unregisterFunction('fuzzy_membership_from_string_repr')
-        QgsExpression.unregisterFunction('fuzzy_and')
-        QgsExpression.unregisterFunction('fuzzy_or')
-        QgsExpression.unregisterFunction('membership')
-
-        # possibilistic membership
-        QgsExpression.unregisterFunction('possibilistic_membership_as_text')
-        QgsExpression.unregisterFunction('possibilistic_membership_to_string_repr')
-        QgsExpression.unregisterFunction('possibilistic_membership_from_string_repr')
-        QgsExpression.unregisterFunction('possibilistic_membership')
-        QgsExpression.unregisterFunction('possibility')
-        QgsExpression.unregisterFunction('necessity')
-        QgsExpression.unregisterFunction('possibilistic_and')
-        QgsExpression.unregisterFunction('possibilistic_or')
-        QgsExpression.unregisterFunction('possibilistic_exceedance')
-        QgsExpression.unregisterFunction('possibilistic_strict_exceedance')
-        QgsExpression.unregisterFunction('possibilistic_undervaluation')
-        QgsExpression.unregisterFunction('possibilistic_strict_undervaluation')
+        for f in self.exp_functions:
+            QgsExpression.unregisterFunction(f.function.__name__)
