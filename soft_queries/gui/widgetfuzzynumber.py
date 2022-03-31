@@ -98,7 +98,7 @@ class FuzzyNumberWidget(BASE, WIDGET):
 
             return {
                 "fuzzy_number_type": "triangular",
-                "alpha_cuts": self.alpha_cuts.value(),
+                "alpha_cuts": int(self.alpha_cuts.value()),
                 "min": self.triangular_min.value(),
                 "midpoint": self.triangular_midpoint.value(),
                 "max": self.triangular_max.value()
@@ -108,7 +108,7 @@ class FuzzyNumberWidget(BASE, WIDGET):
 
             return {
                 "fuzzy_number_type": "trapezoidal",
-                "alpha_cuts": self.alpha_cuts.value(),
+                "alpha_cuts": int(self.alpha_cuts.value()),
                 "min": self.trapezoidal_min.value(),
                 "kernel_min": self.trapezoidal_kernel_min.value(),
                 "kernel_max": self.trapezoidal_kernel_max.value(),
