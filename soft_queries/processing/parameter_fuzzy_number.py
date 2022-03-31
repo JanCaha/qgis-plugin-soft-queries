@@ -9,7 +9,7 @@ class ParameterFuzzyNumber(QgsProcessingParameterDefinition):
         super().__init__(name, description, None, optional)
         self.parent = parent
         self.setMetadata(
-            {'widget_wrapper': 'softqueries.gui.widgetfuzzynumber.FuzzNumberWidgetWrapper'})
+            {'widget_wrapper': 'soft_queries.gui.widgetfuzzynumber.FuzzNumberWidgetWrapper'})
 
     def type(self):
         return 'fuzzy_number'
