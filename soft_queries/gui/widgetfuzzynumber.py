@@ -92,6 +92,29 @@ class FuzzNumberWidget(BASE, WIDGET):
                                                     self.trapezoidal_kernel_max.value(),
                                                     self.trapezoidal_max.value())
 
+    def value_as_dict(self):
+
+        if self.fuzzy_type.currentText().lower() == "triangular":
+
+            return {
+                "fuzzy_number_type": "triangular",
+                "alpha_cuts": self.alpha_cuts.value(),
+                "min": self.triangular_min.value(),
+                "midpoint": self.triangular_midpoint.value(),
+                "max": self.triangular_max.value()
+            }
+
+        elif self.fuzzy_type.currentText().lower() == "trapezoidal":
+
+            return {
+                "fuzzy_number_type": "trapezoidal",
+                "alpha_cuts": self.alpha_cuts.value(),
+                "min": self.trapezoidal_min.value(),
+                "kernel_min": self.trapezoidal_kernel_min.value(),
+                "kernel_max": self.trapezoidal_kernel_max.value(),
+                "max": self.trapezoidal_max.value()
+            }
+
 
 # https://github.com/qgis/QGIS/blob/master/python/plugins/processing/algs/qgis/ui/ReliefColorsWidget.py
 
