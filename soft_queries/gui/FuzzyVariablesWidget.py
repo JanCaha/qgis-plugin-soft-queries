@@ -2,15 +2,17 @@ from pathlib import Path
 from typing import List
 
 from qgis.PyQt import uic
-from qgis.PyQt.QtWidgets import (QMessageBox, QToolButton, QComboBox, QStackedWidget, QTreeWidget,
-                                 QTreeWidgetItem, QLineEdit, QSpinBox, QLabel)
+from qgis.PyQt.QtWidgets import (QMessageBox, QToolButton, QTreeWidget, QTreeWidgetItem, QLineEdit,
+                                 QSpinBox, QLabel)
 from qgis.PyQt.QtCore import pyqtSignal
 from qgis.core import QgsApplication
 
 from ..database.class_db import FuzzyDatabase
 from ..text_constants import TextConstants
 
-from ..FuzzyMath.class_factories import FuzzyNumberFactory
+from ..FuzzyMath.class_factories import FuzzyNumberFactory, FuzzyNumber
+
+from .widgetfuzzynumber import FuzzyNumberWidget
 
 path_ui = Path(__file__).parent / "dialogcreatefuzzyrecord.ui"
 WIDGET, BASE = uic.loadUiType(path_ui.as_posix())
@@ -21,12 +23,11 @@ class FuzzyVariablesWidget(BASE, WIDGET):
     toolButton_add: QToolButton
     toolButton_remove: QToolButton
 
-    fuzzy_type: QComboBox
-    stackedWidget: QStackedWidget
-
     fuzzy_name: QLineEdit
 
     treeWidget: QTreeWidget
+
+    widget_fuzzy_number: FuzzyNumberWidget
 
     alpha_cuts: QSpinBox
     label_alpha_cuts: QLabel
@@ -48,13 +49,6 @@ class FuzzyVariablesWidget(BASE, WIDGET):
 
         self.toolButton_add.clicked.connect(self.add_fuzzy_variable)
         self.toolButton_remove.clicked.connect(self.remove_fuzzy_variable)
-
-        self.fuzzy_type.addItems(["Triangular", "Trapezoidal"])
-        self.change_fuzzy_def(0)
-        self.fuzzy_type.currentIndexChanged.connect(self.change_fuzzy_def)
-
-        self.alpha_cuts.setVisible(False)
-        self.label_alpha_cuts.setVisible(False)
 
         self.data_has_changed.connect(self.regenerate_fuzzy_variables_ids)
 
@@ -93,17 +87,11 @@ class FuzzyVariablesWidget(BASE, WIDGET):
         item = QTreeWidgetItem()
         item.setText(0, fuzzy_variable_name)
 
-        if self.fuzzy_type.currentIndex() == 0:
-            fn = FuzzyNumberFactory.triangular(self.triangular_min.value(),
-                                               self.triangular_midpoint.value(),
-                                               self.triangular_max.value(),
-                                               number_of_cuts=self.alpha_cuts.value())
-            item.setText(1, str(fn))
+        fn = self.get_fuzzy_number()
 
-            self.database.add_fuzzy_variable(fuzzy_variable_name, fn)
+        item.setText(1, str(fn))
 
-        else:
-            item.setText(1, "aaa")
+        self.database.add_fuzzy_variable(fuzzy_variable_name, fn)
 
         self.treeWidget.addTopLevelItem(item)
 
@@ -138,3 +126,18 @@ class FuzzyVariablesWidget(BASE, WIDGET):
             item = root.child(i)
 
             self.fuzzy_variables_ids[i] = item.text(0)
+
+    def get_fuzzy_number(self) -> FuzzyNumber:
+
+        fn_def = self.widget_fuzzy_number.value_as_dict()
+
+        if fn_def["fuzzy_number_type"] == "triangular":
+
+            return FuzzyNumberFactory.triangular(fn_def["min"], fn_def["midpoint"], fn_def["max"],
+                                                 fn_def["alpha_cuts"])
+
+        elif fn_def["fuzzy_number_type"] == "trapezoidal":
+
+            return FuzzyNumberFactory.trapezoidal(fn_def["min"], fn_def["kernel_min"],
+                                                  fn_def["kernel_max"], fn_def["max"],
+                                                  fn_def["alpha_cuts"])
