@@ -44,6 +44,11 @@ class FuzzNumberWidget(BASE, WIDGET):
         self.alpha_cuts.setVisible(False)
         self.label_alpha_cuts.setVisible(False)
 
+    def set_alpha_cuts_visibility(self, visibility: bool) -> None:
+
+        self.alpha_cuts.setVisible(visibility)
+        self.label_alpha_cuts.setVisible(visibility)
+
     def change_fuzzy_def(self, i: int) -> None:
         self.stackedWidget.setCurrentIndex(i)
 
