@@ -32,7 +32,7 @@ class FuzzNumberWidget(BASE, WIDGET):
     trapezoidal_kernel_max: QSpinBox
     trapezoidal_max: QSpinBox
 
-    def __init__(self) -> None:
+    def __init__(self, parent) -> None:
 
         super(FuzzNumberWidget, self).__init__(None)
         self.setupUi(self)
