@@ -11,7 +11,7 @@ path_widget_ui = path_file.parent / "widgetfuzzynumber.ui"
 WIDGET, BASE = uic.loadUiType(path_widget_ui.absolute())
 
 
-class FuzzNumberWidget(BASE, WIDGET):
+class FuzzyNumberWidget(BASE, WIDGET):
 
     fuzzy_type: QComboBox
     stackedWidget: QStackedWidget
@@ -34,7 +34,7 @@ class FuzzNumberWidget(BASE, WIDGET):
 
     def __init__(self, parent) -> None:
 
-        super(FuzzNumberWidget, self).__init__(None)
+        super(FuzzyNumberWidget, self).__init__(None)
         self.setupUi(self)
 
         self.fuzzy_type.addItems(["Triangular", "Trapezoidal"])
@@ -119,10 +119,10 @@ class FuzzNumberWidget(BASE, WIDGET):
 # https://github.com/qgis/QGIS/blob/master/python/plugins/processing/algs/qgis/ui/ReliefColorsWidget.py
 
 
-class FuzzNumberWidgetWrapper(WidgetWrapper):
+class FuzzyNumberWidgetWrapper(WidgetWrapper):
 
     def createWidget(self):
-        return FuzzNumberWidget()
+        return FuzzyNumberWidget()
 
     def setValue(self, value):
         self.widget.setValue(value)
