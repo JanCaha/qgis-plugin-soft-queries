@@ -2,7 +2,11 @@
 
 prepare: clean
 
-zip: clean zipfiles
+zip: clean replace_db zipfiles
+
+replace_db:
+	rm database/plugin.db
+	cp database/empty_backup.db database/plugin.db
 
 clean:
 	py3clean .
