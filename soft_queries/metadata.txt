@@ -26,7 +26,7 @@ hasProcessingProvider=yes
 tags=vector, raster, fuzzy, soft
 
 homepage=https://github.com/JanCaha/qgis-plugin-soft-queries
-#icon=
+icon=soft_queries.png
 
 # experimental flag
 experimental=True

@@ -23,6 +23,7 @@ from .expressions.expressions_possibilistic_membership import (
     possibilistic_membership_from_string_repr, possibilistic_membership, possibility, necessity,
     possibilistic_and, possibilistic_or, possibilistic_exceedance, possibilistic_strict_exceedance,
     possibilistic_undervaluation, possibilistic_strict_undervaluation)
+from .utils import get_icon_path
 
 cmd_folder = os.path.split(inspect.getfile(inspect.currentframe()))[0]
 
@@ -51,12 +52,10 @@ class SoftQueriesPlugin():
     def initGui(self):
         self.initProcessing()
 
-        self.add_action(
-            icon_path=None,
-            # icon_path=get_icon_path("qmapshaper.png"),
-            text=TextConstants.fuzzy_variables,
-            callback=self.run_tool_fuzzy_variables,
-            add_to_toolbar=True)
+        self.add_action(icon_path=get_icon_path("soft_queries.svg"),
+                        text=TextConstants.fuzzy_variables,
+                        callback=self.run_tool_fuzzy_variables,
+                        add_to_toolbar=True)
 
     def run_tool_fuzzy_variables(self):
         from .gui.FuzzyVariablesWidget import FuzzyVariablesWidget

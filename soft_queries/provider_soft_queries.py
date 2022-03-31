@@ -8,6 +8,7 @@ from .text_constants import TextConstants
 from .processing.tool_possibilistic_membership import PossibilisticMembershipAlgorithm
 from .processing.tool_fuzzy_membership import FuzzyMembershipAlgorithm
 from .processing.tool_fuzzy_operation import FuzzyOperationAlgorithm
+from .utils import get_icon_path
 
 
 class SoftQueriesProvider(QgsProcessingProvider):
@@ -42,9 +43,8 @@ class SoftQueriesProvider(QgsProcessingProvider):
     def name(self):
         return TextConstants.plugin_name
 
-    # def icon(self):
-    #     path = Path(__file__).parent / "icons" / ""
-    #     return QIcon(str(path))
+    def icon(self):
+        return QIcon(get_icon_path("soft_queries.svg"))
 
     def longName(self):
         return self.name()
