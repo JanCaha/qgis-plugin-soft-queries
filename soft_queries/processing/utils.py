@@ -91,8 +91,8 @@ def verify_one_band(rasters: List[QgsRasterLayer]) -> bool:
 
 def feedback_total(data_block: QgsRasterBlock):
 
-    return 100.0 / (data_block.height() *
-                    data_block.width()) if data_block.height() and data_block.width() else 0
+    return 100.0 / (data_block.height() * data_block.width())\
+        if data_block.height() and data_block.width() else 0
 
 
 def create_raster_iterator(input_raster: QgsRasterLayer,
