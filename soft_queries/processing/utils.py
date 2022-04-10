@@ -2,7 +2,7 @@ from typing import List
 from pathlib import Path
 
 from qgis.core import (QgsRasterFileWriter, QgsRasterLayer, QgsRasterDataProvider, Qgis,
-                       QgsRasterBlock)
+                       QgsRasterBlock, QgsRasterIterator)
 
 
 def create_raster_writer(path_raster: str) -> QgsRasterFileWriter:
@@ -93,3 +93,28 @@ def feedback_total(data_block: QgsRasterBlock):
 
     return 100.0 / (data_block.height() *
                     data_block.width()) if data_block.height() and data_block.width() else 0
+
+
+def create_raster_iterator(input_raster: QgsRasterLayer,
+                           raster_band: int = 1) -> QgsRasterIterator:
+
+    input_raster_dp = input_raster.dataProvider()
+
+    raster_iter = QgsRasterIterator(input_raster_dp)
+
+    raster_iter.startRasterRead(raster_band, input_raster_dp.xSize(), input_raster_dp.ySize(),
+                                input_raster_dp.extent())
+
+    raster_iter.setMaximumTileHeight(1)
+    raster_iter.setMaximumTileHeight(1)
+
+    return raster_iter
+
+
+def create_empty_block(input_block: QgsRasterBlock) -> QgsRasterBlock:
+
+    new_block = QgsRasterBlock(input_block.dataType(), input_block.width(), input_block.height())
+
+    new_block.setNoDataValue(input_block.noDataValue())
+
+    return new_block
