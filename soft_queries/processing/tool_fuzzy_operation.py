@@ -5,7 +5,7 @@ from qgis.core import (QgsProcessingAlgorithm, QgsProcessingParameterRasterDesti
 from ..FuzzyMath.class_membership_operations import FuzzyAnd, FuzzyOr, FuzzyMembership
 
 from .utils import (create_raster_writer, create_raster, verify_crs_equal, verify_extent_equal,
-                    verify_size_equal, verify_one_band, feedback_total)
+                    verify_size_equal, verify_one_band, create_raster_iterator, create_empty_block)
 
 
 class FuzzyOperationAlgorithm(QgsProcessingAlgorithm):
@@ -96,6 +96,8 @@ class FuzzyOperationAlgorithm(QgsProcessingAlgorithm):
 
     def processAlgorithm(self, parameters, context, feedback: QgsProcessingFeedback):
 
+        raster_band = 1
+
         operation_index = self.parameterAsEnum(parameters, self.OPERATION, context)
         operation = self.operations[operation_index]
 
@@ -118,7 +120,8 @@ class FuzzyOperationAlgorithm(QgsProcessingAlgorithm):
                                                            context)
 
         fuzzy_input_raster_1_dp = fuzzy_input_raster_1.dataProvider()
-        fuzzy_input_raster_2_dp = fuzzy_input_raster_2.dataProvider()
+
+        fuzzy_input_nodata = fuzzy_input_raster_1_dp.sourceNoDataValue(raster_band)
 
         path_fuzzy_raster = self.parameterAsOutputLayer(parameters, self.OUTPUT_FUZZY_MEMBERSHIP,
                                                         context)
@@ -133,37 +136,56 @@ class FuzzyOperationAlgorithm(QgsProcessingAlgorithm):
         if not output_fuzzy_raster_dp.isValid():
             raise QgsProcessingException("Data provider for fuzzy raster not valid.")
 
-        output_fuzzy_raster_dp.setNoDataValue(1, fuzzy_input_raster_1_dp.sourceNoDataValue(1))
+        output_fuzzy_raster_dp.setNoDataValue(raster_band, fuzzy_input_nodata)
 
-        fuzzy_src_data_1 = fuzzy_input_raster_1_dp.block(1, fuzzy_input_raster_1.extent(),
-                                                         fuzzy_input_raster_1.width(),
-                                                         fuzzy_input_raster_1.height())
+        fuzzy_1_raster_iter = create_raster_iterator(fuzzy_input_raster_1, raster_band)
+        fuzzy_2_raster_iter = create_raster_iterator(fuzzy_input_raster_2, raster_band)
 
-        fuzzy_src_data_2 = fuzzy_input_raster_2_dp.block(1, fuzzy_input_raster_2.extent(),
-                                                         fuzzy_input_raster_2.width(),
-                                                         fuzzy_input_raster_2.height())
+        total = 100.0 / (fuzzy_input_raster_1.height()) if fuzzy_input_raster_1.height() else 0
 
-        output_fuzzy_data = output_fuzzy_raster_dp.block(1, fuzzy_input_raster_1.extent(),
-                                                         fuzzy_input_raster_1.width(),
-                                                         fuzzy_input_raster_1.height())
+        success_f_1, nCols, nRows, fuzzy_1_input_data_block, topLeftCol, topLeftRow = fuzzy_1_raster_iter.readNextRasterPart(
+            raster_band)
 
-        total = feedback_total(fuzzy_src_data_1)
+        success_f_2, nCols, nRows, fuzzy_2_input_data_block, topLeftCol, topLeftRow = fuzzy_2_raster_iter.readNextRasterPart(
+            raster_band)
 
-        for i in range(fuzzy_src_data_1.height() * fuzzy_src_data_1.width()):
+        new_block = create_empty_block(fuzzy_1_input_data_block)
 
-            if fuzzy_src_data_1.isNoData(i) or fuzzy_src_data_2.isNoData(i):
+        count = 0
 
-                output_fuzzy_data.setIsNoData(i)
+        while (success_f_1, success_f_2):
 
-            else:
+            if feedback.isCanceled():
+                break
 
-                fm = operation(FuzzyMembership(fuzzy_src_data_1.value(i)),
-                               FuzzyMembership(fuzzy_src_data_2.value(i)), operation_type)
+            for i in range(fuzzy_1_input_data_block.height() * fuzzy_1_input_data_block.width()):
 
-                output_fuzzy_data.setValue(i, fm.membership)
+                if fuzzy_1_input_data_block.isNoData(i) or fuzzy_2_input_data_block.setIsNoData(i):
 
-            feedback.setProgress(int(i * total))
+                    new_block.setIsNoData(i)
 
-        output_fuzzy_raster_dp.writeBlock(output_fuzzy_data, 1, 0, 0)
+                else:
+
+                    fm = operation(FuzzyMembership(fuzzy_1_input_data_block.value(i)),
+                                   FuzzyMembership(fuzzy_2_input_data_block.value(i)),
+                                   operation_type)
+
+                    new_block.setValue(i, fm.membership)
+
+            output_fuzzy_raster_dp.writeBlock(new_block, raster_band, topLeftCol, topLeftRow)
+
+            success_f_1, nCols, nRows, fuzzy_1_input_data_block, topLeftCol, topLeftRow = fuzzy_1_raster_iter.readNextRasterPart(
+                raster_band)
+
+            success_f_2, nCols, nRows, fuzzy_2_input_data_block, topLeftCol, topLeftRow = fuzzy_2_raster_iter.readNextRasterPart(
+                raster_band)
+
+            if (success_f_1 and success_f_2):
+
+                new_block = create_empty_block(fuzzy_1_input_data_block)
+
+            feedback.setProgress(int(count * total))
+
+            count += 1
 
         return {self.OUTPUT_FUZZY_MEMBERSHIP: path_fuzzy_raster}
