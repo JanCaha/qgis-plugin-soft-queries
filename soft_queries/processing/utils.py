@@ -23,7 +23,7 @@ def create_raster_writer(path_raster: str) -> QgsRasterFileWriter:
 def create_raster(raster_writer: QgsRasterFileWriter,
                   template_raster: QgsRasterLayer) -> QgsRasterDataProvider:
 
-    return raster_writer.createOneBandRaster(Qgis.Float32, template_raster.width(),
+    return raster_writer.createOneBandRaster(Qgis.Float64, template_raster.width(),
                                              template_raster.height(), template_raster.extent(),
                                              template_raster.crs())
 
@@ -113,7 +113,7 @@ def create_raster_iterator(input_raster: QgsRasterLayer,
 
 def create_empty_block(input_block: QgsRasterBlock) -> QgsRasterBlock:
 
-    new_block = QgsRasterBlock(input_block.dataType(), input_block.width(), input_block.height())
+    new_block = QgsRasterBlock(Qgis.Float64, input_block.width(), input_block.height())
 
     new_block.setNoDataValue(input_block.noDataValue())
 
