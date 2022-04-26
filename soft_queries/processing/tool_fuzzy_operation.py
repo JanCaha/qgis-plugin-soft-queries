@@ -153,14 +153,14 @@ class FuzzyOperationAlgorithm(QgsProcessingAlgorithm):
 
         count = 0
 
-        while (success_f_1, success_f_2):
+        while (success_f_1 and success_f_2):
 
             if feedback.isCanceled():
                 break
 
             for i in range(fuzzy_1_input_data_block.height() * fuzzy_1_input_data_block.width()):
 
-                if fuzzy_1_input_data_block.isNoData(i) or fuzzy_2_input_data_block.setIsNoData(i):
+                if fuzzy_1_input_data_block.isNoData(i) or fuzzy_2_input_data_block.isNoData(i):
 
                     new_block.setIsNoData(i)
 
