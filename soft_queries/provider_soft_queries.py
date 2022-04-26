@@ -8,6 +8,7 @@ from .text_constants import TextConstants
 from .processing.tool_possibilistic_membership import PossibilisticMembershipAlgorithm
 from .processing.tool_fuzzy_membership import FuzzyMembershipAlgorithm
 from .processing.tool_fuzzy_operation import FuzzyOperationAlgorithm
+from .processing.tool_possibilistic_operation import PossibilisticOperationAlgorithm
 from .utils import get_icon_path
 
 
@@ -36,6 +37,7 @@ class SoftQueriesProvider(QgsProcessingProvider):
         self.addAlgorithm(PossibilisticMembershipAlgorithm())
         self.addAlgorithm(FuzzyMembershipAlgorithm())
         self.addAlgorithm(FuzzyOperationAlgorithm())
+        self.addAlgorithm(PossibilisticOperationAlgorithm())
 
     def id(self):
         return TextConstants.plugin_id
