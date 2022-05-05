@@ -6,7 +6,6 @@ from ..FuzzyMath.class_membership_operations import FuzzyAnd, FuzzyOr, FuzzyMemb
 
 from .utils import (create_raster_writer, create_raster, verify_crs_equal, verify_extent_equal,
                     verify_size_equal, verify_one_band, RasterPart, writeBlock)
-from ..utils import log
 
 
 class FuzzyOperationAlgorithm(QgsProcessingAlgorithm):

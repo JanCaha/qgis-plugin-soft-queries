@@ -3,8 +3,7 @@ from qgis.core import (QgsProcessingAlgorithm, QgsProcessingParameterRasterDesti
                        QgsProcessingFeedback)
 
 from .parameter_fuzzy_number import ParameterFuzzyNumber
-from .utils import (create_raster_writer, create_raster, verify_one_band, create_raster_iterator,
-                    create_empty_block)
+from .utils import (create_raster_writer, create_raster, verify_one_band, RasterPart, writeBlock)
 
 
 class FuzzyMembershipAlgorithm(QgsProcessingAlgorithm):
@@ -73,42 +72,37 @@ class FuzzyMembershipAlgorithm(QgsProcessingAlgorithm):
 
         fuzzy_raster_dp.setNoDataValue(raster_band, input_raster_nodata)
 
-        raster_iter = create_raster_iterator(input_raster, raster_band)
-
         total = 100.0 / (input_raster.height()) if input_raster.height() else 0
 
-        success, nCols, nRows, input_data_block, topLeftCol, topLeftRow = raster_iter.readNextRasterPart(
-            raster_band)
+        r_input_data = RasterPart(input_raster, raster_band)
 
-        new_block = create_empty_block(input_data_block)
+        new_block = r_input_data.create_empty_block()
 
         count = 0
 
-        while (success):
+        while (r_input_data.correct):
 
             if feedback.isCanceled():
                 break
 
-            for i in range(input_data_block.height() * input_data_block.width()):
+            for i in range(r_input_data.data_range):
 
-                if input_data_block.isNoData(i):
+                if r_input_data.isNoData(i):
 
                     new_block.setIsNoData(i)
 
                 else:
 
-                    new_block.setValue(
-                        i,
-                        fuzzy_number.membership(input_data_block.value(i)).membership)
+                    new_block.setValue(i,
+                                       fuzzy_number.membership(r_input_data.value(i)).membership)
 
-            fuzzy_raster_dp.writeBlock(new_block, raster_band, topLeftCol, topLeftRow)
+            writeBlock(fuzzy_raster_dp, new_block, r_input_data)
 
-            success, nCols, nRows, input_data_block, topLeftCol, topLeftRow = raster_iter.readNextRasterPart(
-                raster_band)
+            r_input_data.nextData()
 
-            if success:
+            if r_input_data.correct:
 
-                new_block = create_empty_block(input_data_block)
+                new_block = r_input_data.create_empty_block()
 
             feedback.setProgress(int(count * total))
 

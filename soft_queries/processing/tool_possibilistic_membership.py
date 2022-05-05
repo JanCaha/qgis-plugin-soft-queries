@@ -5,8 +5,7 @@ from qgis.core import (QgsProcessingAlgorithm, QgsProcessingParameterRasterDesti
 from ..FuzzyMath import (FuzzyNumberFactory, exceedance, undervaluation)
 
 from .parameter_fuzzy_number import ParameterFuzzyNumber
-from .utils import (create_raster_writer, create_raster, verify_one_band, create_raster_iterator,
-                    create_empty_block)
+from .utils import (create_raster_writer, create_raster, verify_one_band, RasterPart, writeBlock)
 
 
 class PossibilisticMembershipAlgorithm(QgsProcessingAlgorithm):
@@ -115,50 +114,44 @@ class PossibilisticMembershipAlgorithm(QgsProcessingAlgorithm):
         possibility_raster_dp.setNoDataValue(raster_band, input_raster_nodata)
         necessity_raster_dp.setNoDataValue(raster_band, input_raster_nodata)
 
-        raster_iter = create_raster_iterator(input_raster, raster_band)
-
         total = 100.0 / (input_raster.height()) if input_raster.height() else 0
 
-        success, nCols, nRows, input_data_block, topLeftCol, topLeftRow = raster_iter.readNextRasterPart(
-            raster_band)
+        r_input_data = RasterPart(input_raster, raster_band)
 
-        new_block_possibility = create_empty_block(input_data_block)
-        new_block_necessity = create_empty_block(input_data_block)
+        new_block_possibility = r_input_data.create_empty_block()
+        new_block_necessity = r_input_data.create_empty_block()
 
         count = 0
 
-        while (success):
+        while (r_input_data.correct):
 
             if feedback.isCanceled():
                 break
 
-            for i in range(input_data_block.height() * input_data_block.width()):
+            for i in range(r_input_data.data_range):
 
-                if input_data_block.isNoData(i):
+                if r_input_data.isNoData(i):
 
                     new_block_possibility.setIsNoData(i)
                     new_block_necessity.setIsNoData(i)
 
                 else:
 
-                    pm = operation_function(
-                        fuzzy_number, FuzzyNumberFactory.crisp_number(input_data_block.value(i)))
+                    pm = operation_function(fuzzy_number,
+                                            FuzzyNumberFactory.crisp_number(r_input_data.value(i)))
 
                     new_block_possibility.setValue(i, pm.possibility)
                     new_block_necessity.setValue(i, pm.necessity)
 
-            possibility_raster_dp.writeBlock(new_block_possibility, raster_band, topLeftCol,
-                                             topLeftRow)
-            necessity_raster_dp.writeBlock(new_block_necessity, raster_band, topLeftCol,
-                                           topLeftRow)
+            writeBlock(possibility_raster_dp, new_block_possibility, r_input_data)
+            writeBlock(necessity_raster_dp, new_block_necessity, r_input_data)
 
-            success, nCols, nRows, input_data_block, topLeftCol, topLeftRow = raster_iter.readNextRasterPart(
-                raster_band)
+            r_input_data.nextData()
 
-            if success:
+            if r_input_data.correct:
 
-                new_block_possibility = create_empty_block(input_data_block)
-                new_block_necessity = create_empty_block(input_data_block)
+                new_block_possibility = r_input_data.create_empty_block()
+                new_block_necessity = r_input_data.create_empty_block()
 
             feedback.setProgress(int(count * total))
 
