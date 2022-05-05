@@ -4,7 +4,7 @@ from qgis.core import (QgsProcessingAlgorithm, QgsProcessingParameterRasterDesti
 from ..FuzzyMath.class_membership_operations import PossibilisticAnd, PossibilisticOr, PossibilisticMembership
 
 from .utils import (create_raster_writer, create_raster, verify_crs_equal, verify_extent_equal,
-                    verify_size_equal, verify_one_band, create_raster_iterator, create_empty_block)
+                    verify_size_equal, verify_one_band, RasterPart, writeBlock)
 
 from .parameter_possibilistic_element import ParameterPossibilisticElement
 
@@ -163,42 +163,29 @@ class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):
 
         total = 100.0 / (raster_1_possibility.height()) if raster_1_possibility.height() else 0
 
-        raster_1_possibility_raster_iter = create_raster_iterator(raster_1_possibility,
-                                                                  raster_band)
-        raster_1_necessity_raster_iter = create_raster_iterator(raster_1_necessity, raster_band)
-        raster_2_possibility_raster_iter = create_raster_iterator(raster_2_possibility,
-                                                                  raster_band)
-        raster_2_necessity_raster_iter = create_raster_iterator(raster_2_necessity, raster_band)
+        r_1_poss_data = RasterPart(raster_1_possibility, raster_band)
+        r_1_nec_data = RasterPart(raster_1_necessity, raster_band)
 
-        success_1_poss, nCols, nRows, raster_1_possibility_data_block, topLeftCol, topLeftRow = raster_1_possibility_raster_iter.readNextRasterPart(
-            raster_band)
+        r_2_poss_data = RasterPart(raster_2_possibility, raster_band)
+        r_2_nec_data = RasterPart(raster_2_necessity, raster_band)
 
-        success_1_nec, nCols, nRows, raster_1_necessity_data_block, topLeftCol, topLeftRow = raster_1_necessity_raster_iter.readNextRasterPart(
-            raster_band)
-
-        success_2_poss, nCols, nRows, raster_2_possibility_data_block, topLeftCol, topLeftRow = raster_2_possibility_raster_iter.readNextRasterPart(
-            raster_band)
-
-        success_2_nec, nCols, nRows, raster_2_necessity_data_block, topLeftCol, topLeftRow = raster_2_necessity_raster_iter.readNextRasterPart(
-            raster_band)
-
-        possibility_new_block = create_empty_block(raster_1_possibility_data_block)
-        necessity_new_block = create_empty_block(raster_1_possibility_data_block)
+        possibility_new_block = r_1_poss_data.create_empty_block()
+        necessity_new_block = r_1_poss_data.create_empty_block()
 
         count = 0
 
-        while (success_1_poss and success_1_nec and success_2_poss and success_2_nec):
+        while (r_1_poss_data.correct and r_1_nec_data.correct and r_2_poss_data.correct and
+               r_2_nec_data.correct):
 
             if feedback.isCanceled():
                 break
 
-            for i in range(raster_1_possibility_data_block.height() *
-                           raster_1_possibility_data_block.width()):
+            for i in range(r_1_poss_data.data_range):
 
-                if raster_1_possibility_data_block.isNoData(i) or\
-                    raster_1_necessity_data_block.isNoData(i) or\
-                    raster_2_possibility_data_block.isNoData(i) or\
-                    raster_2_necessity_data_block.isNoData(i):
+                if r_1_poss_data.isNoData(i) or\
+                    r_1_nec_data.isNoData(i) or\
+                    r_2_poss_data.isNoData(i) or\
+                    r_2_poss_data.isNoData(i):
 
                     possibility_new_block.setIsNoData(i)
                     necessity_new_block.setIsNoData(i)
@@ -206,36 +193,26 @@ class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):
                 else:
 
                     pm = operation(
-                        PossibilisticMembership(raster_1_possibility_data_block.value(i),
-                                                raster_1_necessity_data_block.value(i)),
-                        PossibilisticMembership(raster_2_possibility_data_block.value(i),
-                                                raster_2_necessity_data_block.value(i)),
+                        PossibilisticMembership(r_1_poss_data.value(i), r_1_nec_data.value(i)),
+                        PossibilisticMembership(r_2_poss_data.value(i), r_2_nec_data.value(i)),
                         operation_type)
 
                     possibility_new_block.setValue(i, pm.possibility)
                     necessity_new_block.setValue(i, pm.necessity)
 
-            possibility_raster_dp.writeBlock(possibility_new_block, raster_band, topLeftCol,
-                                             topLeftRow)
-            necessity_raster_dp.writeBlock(necessity_new_block, raster_band, topLeftCol,
-                                           topLeftRow)
+            writeBlock(possibility_raster_dp, possibility_new_block, r_1_poss_data)
+            writeBlock(necessity_raster_dp, necessity_new_block, r_1_poss_data)
 
-            success_1_poss, nCols, nRows, raster_1_possibility_data_block, topLeftCol, topLeftRow = raster_1_possibility_raster_iter.readNextRasterPart(
-                raster_band)
+            r_1_poss_data.nextData()
+            r_1_nec_data.nextData()
+            r_2_poss_data.nextData()
+            r_2_nec_data.nextData()
 
-            success_1_nec, nCols, nRows, raster_1_necessity_data_block, topLeftCol, topLeftRow = raster_1_necessity_raster_iter.readNextRasterPart(
-                raster_band)
+            if (r_1_poss_data.correct and r_1_nec_data.correct and r_2_poss_data.correct and
+                    r_2_nec_data.correct):
 
-            success_2_poss, nCols, nRows, raster_2_possibility_data_block, topLeftCol, topLeftRow = raster_2_possibility_raster_iter.readNextRasterPart(
-                raster_band)
-
-            success_2_nec, nCols, nRows, raster_2_necessity_data_block, topLeftCol, topLeftRow = raster_2_necessity_raster_iter.readNextRasterPart(
-                raster_band)
-
-            if (success_1_poss and success_1_nec and success_2_poss and success_2_nec):
-
-                possibility_new_block = create_empty_block(raster_1_possibility_data_block)
-                necessity_new_block = create_empty_block(raster_1_possibility_data_block)
+                possibility_new_block = r_1_poss_data.create_empty_block()
+                necessity_new_block = r_1_poss_data.create_empty_block()
 
             feedback.setProgress(int(count * total))
 

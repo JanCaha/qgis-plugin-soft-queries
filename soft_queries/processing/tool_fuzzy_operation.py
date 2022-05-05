@@ -5,7 +5,8 @@ from qgis.core import (QgsProcessingAlgorithm, QgsProcessingParameterRasterDesti
 from ..FuzzyMath.class_membership_operations import FuzzyAnd, FuzzyOr, FuzzyMembership
 
 from .utils import (create_raster_writer, create_raster, verify_crs_equal, verify_extent_equal,
-                    verify_size_equal, verify_one_band, create_raster_iterator, create_empty_block)
+                    verify_size_equal, verify_one_band, RasterPart, writeBlock)
+from ..utils import log
 
 
 class FuzzyOperationAlgorithm(QgsProcessingAlgorithm):
@@ -99,7 +100,7 @@ class FuzzyOperationAlgorithm(QgsProcessingAlgorithm):
         raster_band = 1
 
         operation_index = self.parameterAsEnum(parameters, self.OPERATION, context)
-        operation = self.operations[operation_index]
+        fuzzy_operation = self.operations[operation_index]
 
         operation_type_index = self.parameterAsEnum(parameters, self.OPERATION_TYPE, context)
         operation_type = self.operations_types_enum[operation_type_index]
@@ -112,7 +113,7 @@ class FuzzyOperationAlgorithm(QgsProcessingAlgorithm):
                 operation_type = operation_type.split("/")[1]
 
         feedback.pushInfo("Processing operation `{}` with type of operation `{}`.".format(
-            operation.__name__, operation_type))
+            fuzzy_operation.__name__, operation_type))
 
         fuzzy_input_raster_1 = self.parameterAsRasterLayer(parameters, self.FUZZY_RASTER_1,
                                                            context)
@@ -138,51 +139,41 @@ class FuzzyOperationAlgorithm(QgsProcessingAlgorithm):
 
         output_fuzzy_raster_dp.setNoDataValue(raster_band, fuzzy_input_nodata)
 
-        fuzzy_1_raster_iter = create_raster_iterator(fuzzy_input_raster_1, raster_band)
-        fuzzy_2_raster_iter = create_raster_iterator(fuzzy_input_raster_2, raster_band)
-
         total = 100.0 / (fuzzy_input_raster_1.height()) if fuzzy_input_raster_1.height() else 0
 
-        success_f_1, nCols, nRows, fuzzy_1_input_data_block, topLeftCol, topLeftRow = fuzzy_1_raster_iter.readNextRasterPart(
-            raster_band)
+        r_fuzzy_1 = RasterPart(fuzzy_input_raster_1, raster_band)
+        r_fuzzy_2 = RasterPart(fuzzy_input_raster_2, raster_band)
 
-        success_f_2, nCols, nRows, fuzzy_2_input_data_block, topLeftCol, topLeftRow = fuzzy_2_raster_iter.readNextRasterPart(
-            raster_band)
-
-        new_block = create_empty_block(fuzzy_1_input_data_block)
+        new_block = r_fuzzy_1.create_empty_block()
 
         count = 0
 
-        while (success_f_1 and success_f_2):
+        while (r_fuzzy_1.correct and r_fuzzy_2.correct):
 
             if feedback.isCanceled():
                 break
 
-            for i in range(fuzzy_1_input_data_block.height() * fuzzy_1_input_data_block.width()):
+            for i in range(r_fuzzy_1.data_range):
 
-                if fuzzy_1_input_data_block.isNoData(i) or fuzzy_2_input_data_block.isNoData(i):
+                if r_fuzzy_1.isNoData(i) or r_fuzzy_2.isNoData(i):
 
                     new_block.setIsNoData(i)
 
                 else:
 
-                    fm = operation(FuzzyMembership(fuzzy_1_input_data_block.value(i)),
-                                   FuzzyMembership(fuzzy_2_input_data_block.value(i)),
-                                   operation_type)
+                    fm = fuzzy_operation(FuzzyMembership(r_fuzzy_1.value(i)),
+                                         FuzzyMembership(r_fuzzy_2.value(i)), operation_type)
 
                     new_block.setValue(i, fm.membership)
 
-            output_fuzzy_raster_dp.writeBlock(new_block, raster_band, topLeftCol, topLeftRow)
+            writeBlock(output_fuzzy_raster_dp, new_block, r_fuzzy_1)
 
-            success_f_1, nCols, nRows, fuzzy_1_input_data_block, topLeftCol, topLeftRow = fuzzy_1_raster_iter.readNextRasterPart(
-                raster_band)
+            r_fuzzy_1.nextData()
+            r_fuzzy_2.nextData()
 
-            success_f_2, nCols, nRows, fuzzy_2_input_data_block, topLeftCol, topLeftRow = fuzzy_2_raster_iter.readNextRasterPart(
-                raster_band)
+            if (r_fuzzy_1.correct and r_fuzzy_2.correct):
 
-            if (success_f_1 and success_f_2):
-
-                new_block = create_empty_block(fuzzy_1_input_data_block)
+                new_block = r_fuzzy_1.create_empty_block()
 
             feedback.setProgress(int(count * total))
 
