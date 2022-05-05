@@ -1,5 +1,7 @@
+from __future__ import annotations
 from typing import List
 from pathlib import Path
+from dataclasses import dataclass
 
 from qgis.core import (QgsRasterFileWriter, QgsRasterLayer, QgsRasterDataProvider, Qgis,
                        QgsRasterBlock, QgsRasterIterator)
@@ -118,3 +120,52 @@ def create_empty_block(input_block: QgsRasterBlock) -> QgsRasterBlock:
     new_block.setNoDataValue(input_block.noDataValue())
 
     return new_block
+
+
+def writeBlock(raster_dp: QgsRasterDataProvider, raster_block: QgsRasterDataProvider,
+               raster_part: RasterPart) -> None:
+
+    raster_dp.writeBlock(raster_block, raster_part.raster_band, raster_part.top_left_col,
+                         raster_part.top_left_row)
+
+
+@dataclass
+class RasterPart:
+
+    input_raster: QgsRasterLayer
+    raster_band: int
+
+    raster_it: QgsRasterIterator
+
+    correct: bool
+    n_cols: int
+    n_rows: int
+    data_block: QgsRasterBlock
+    top_left_col: int
+    top_left_row: int
+
+    def __init__(self, input_raster: QgsRasterLayer, raster_band: int = 1) -> None:
+
+        self.input_raster = input_raster
+        self.raster_band = int(raster_band)
+        self.raster_it = create_raster_iterator(input_raster, self.raster_band)
+
+        self.nextData()
+
+    def nextData(self):
+
+        self.correct, self.n_cols, self.n_rows, self.data_block, self.top_left_col, self.top_left_row =\
+            self.raster_it.readNextRasterPart(self.raster_band)
+
+    @property
+    def data_range(self):
+        return self.data_block.height() * self.data_block.width()
+
+    def isNoData(self, index: int) -> bool:
+        return self.data_block.isNoData(index)
+
+    def value(self, index: int) -> float:
+        return self.data_block.value(index)
+
+    def create_empty_block(self) -> QgsRasterBlock:
+        return create_empty_block(self.data_block)
