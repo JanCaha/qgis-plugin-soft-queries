@@ -132,6 +132,9 @@ def writeBlock(raster_dp: QgsRasterDataProvider, raster_block: QgsRasterDataProv
 @dataclass
 class RasterPart:
 
+    __slots__ = ("input_raster", "raster_band", "raster_it", "correct", "n_cols", "n_rows",
+                 "data_block", "top_left_col", "top_left_row")
+
     input_raster: QgsRasterLayer
     raster_band: int
 
