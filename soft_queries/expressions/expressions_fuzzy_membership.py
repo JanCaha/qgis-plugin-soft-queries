@@ -1,6 +1,8 @@
 from typing import Any, Union, List
 from qgis.core import (qgsfunction, QgsExpression, QgsFeature)
 
+from soft_queries.FuzzyMath.class_fuzzy_number import FuzzyNumber
+
 from ..FuzzyMath import FuzzyMembership, FuzzyAnd, FuzzyOr
 from ..FuzzyMath.class_membership_operations import fuzzyAnds, fuzzyOrs, FUZZY_OR_NAMES, FUZZY_AND_NAMES
 
@@ -54,8 +56,8 @@ def fuzzy_and(fuzzy_membership1: FuzzyMembership, fuzzy_membership2: FuzzyMember
              group=TextConstants.exp_funcs_group,
              helpText=load_help("fuzzy_or"),
              register=False)
-def fuzzy_or(fuzzy_membership1: FuzzyMembership, fuzzy_membership2: FuzzyMembership, type: str,
-             feature: QgsFeature, parent: QgsExpression):
+def fuzzy_or(fuzzy_membership1: FuzzyMembership, fuzzy_membership2: FuzzyMembership,
+             type: fuzzyOrs, feature: QgsFeature, parent: QgsExpression):
 
     if not isinstance(fuzzy_membership1, FuzzyMembership):
         raise Exception(prepare_error_message(fuzzy_membership, "fuzzy_membership1"))
