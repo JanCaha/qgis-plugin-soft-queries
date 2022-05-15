@@ -1,6 +1,6 @@
 from qgis.core import (qgsfunction, QgsExpression, QgsFeature)
 
-from ..FuzzyMath import FuzzyNumberFactory, FuzzyNumber
+from ..FuzzyMath import FuzzyNumberFactory
 
 from ..text_constants import TextConstants
 from .qgsexpressions_utils import load_help
