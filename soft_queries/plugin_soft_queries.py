@@ -10,20 +10,18 @@ from qgis.PyQt.QtWidgets import QAction
 from .provider_soft_queries import SoftQueriesProvider
 from .gui.FuzzyVariablesWidget import FuzzyVariablesWidget
 from .text_constants import TextConstants
+from .expressions.expressions_general import (sq_as_string, sq_from_string_repr, sq_to_string_repr)
 from .expressions.expressions_fuzzy_number import (fuzzy_number_triangular,
                                                    fuzzy_number_trapezoidal,
-                                                   fuzzy_number_to_string_repr,
-                                                   fuzzy_number_from_string_repr,
-                                                   fuzzy_number_as_text, get_fuzzy_number_from_db)
-from .expressions.expressions_fuzzy_membership import (fuzzy_membership, fuzzy_membership_as_text,
-                                                       fuzzy_membership_to_string_repr,
-                                                       fuzzy_membership_from_string_repr,
-                                                       fuzzy_and, fuzzy_or, membership)
-from .expressions.expressions_possibilistic_membership import (
-    possibilistic_membership_as_text, possibilistic_membership_to_string_repr,
-    possibilistic_membership_from_string_repr, possibilistic_membership, possibility, necessity,
-    possibilistic_and, possibilistic_or, possibilistic_exceedance, possibilistic_strict_exceedance,
-    possibilistic_undervaluation, possibilistic_strict_undervaluation)
+                                                   get_fuzzy_number_from_db)
+from .expressions.expressions_fuzzy_membership import (fuzzy_membership, fuzzy_and, fuzzy_or,
+                                                       membership)
+from .expressions.expressions_possibilistic_membership import (possibilistic_membership,
+                                                               possibility, necessity,
+                                                               possibilistic_and, possibilistic_or)
+
+# possibilistic_exceedance, possibilistic_strict_exceedance, possibilistic_undervaluation,
+# possibilistic_strict_undervaluation)
 from .utils import get_icon_path
 
 cmd_folder = os.path.split(inspect.getfile(inspect.currentframe()))[0]
@@ -46,34 +44,29 @@ class SoftQueriesPlugin():
         self.menu = TextConstants.plugin_name
 
         self.exp_functions = [
+            # sq general
+            sq_as_string,
+            sq_from_string_repr,
+            sq_to_string_repr,
             # fuzzy numbers
             fuzzy_number_triangular,
             fuzzy_number_trapezoidal,
-            fuzzy_number_from_string_repr,
-            fuzzy_number_to_string_repr,
-            fuzzy_number_as_text,
             get_fuzzy_number_from_db,
             # fuzzy membership
             fuzzy_membership,
-            fuzzy_membership_as_text,
-            fuzzy_membership_to_string_repr,
-            fuzzy_membership_from_string_repr,
             fuzzy_and,
             fuzzy_or,
             membership,
             # possibilistic membership
-            possibilistic_membership_as_text,
-            possibilistic_membership_to_string_repr,
-            possibilistic_membership_from_string_repr,
             possibilistic_membership,
             possibility,
             necessity,
             possibilistic_and,
             possibilistic_or,
-            possibilistic_exceedance,
-            possibilistic_strict_exceedance,
-            possibilistic_undervaluation,
-            possibilistic_strict_undervaluation,
+            # possibilistic_exceedance,
+            # possibilistic_strict_exceedance,
+            # possibilistic_undervaluation,
+            # possibilistic_strict_undervaluation,
         ]
 
         self.register_exp_functions()
