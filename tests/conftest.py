@@ -1,6 +1,10 @@
 import pytest
 from pathlib import Path
 
+from qgis.core import QgsVectorLayer, QgsExpression
+
+from soft_queries.plugin_soft_queries import SoftQueriesPlugin
+
 from qgis.core import QgsRasterLayer, QgsProcessingFeedback, QgsProcessingContext
 
 
@@ -37,3 +41,21 @@ def raster_fuzzy_1_path() -> str:
 def raster_fuzzy_2_path() -> str:
 
     return data_path("fuzzy_2.tif")
+
+
+@pytest.fixture(autouse=True, scope="session")
+def init_plugin(qgis_iface) -> SoftQueriesPlugin:
+
+    plugin = SoftQueriesPlugin(qgis_iface)
+
+    plugin.register_exp_functions()
+
+    return plugin
+
+
+@pytest.fixture
+def points_data() -> QgsVectorLayer:
+
+    layer = QgsVectorLayer(data_path("points.gpkg"), "points", "ogr")
+
+    return layer
