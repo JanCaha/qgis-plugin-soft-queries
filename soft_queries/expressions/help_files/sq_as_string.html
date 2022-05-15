@@ -1,0 +1,33 @@
+<div class="description">
+    <p>Creates readable string from Fuzzy Number, Fuzzy Membership and Possibilistic Membership.</p>
+</div>
+<h4>Syntax</h4>
+<div class="syntax">
+    <code><span class="functionname">sq_as_string</span>(<span class="argument">sq_object</span>)</code>
+    <h4>Arguments</h4>
+    <div class="arguments">
+        <table>
+            <tr>
+                <td class="argument">sq_object</td>
+                <td>Fuzzy Number, Fuzzy Membership, Possibilistic Membership.</td>
+            </tr>
+        </table>
+    </div>
+    <h4>Examples</h4>
+    <div class="examples">
+        <ul>
+            <li><code>sq_as_string(fuzzy_number_triangular(1,2,3))</code>
+                &rarr;
+                <code>'Fuzzy number with support (1.0,3.0), kernel (2.0, 2.0) and 0 more alpha-cuts.'</code>
+            </li>
+            <li><code>sq_as_string(fuzzy_membership(0.5))</code>
+                &rarr;
+                <code>'FuzzyMembership(0.5)'</code>
+            </li>
+            <li><code>sq_as_string(possibilistic_membership(0.8,0.6))</code>
+                &rarr;
+                <code>'PossibilisticMembership(possibility: 0.8, necessity: 0.6)'</code>
+            </li>
+        </ul>
+    </div>
+</div>

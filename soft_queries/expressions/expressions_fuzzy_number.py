@@ -1,15 +1,10 @@
 from qgis.core import (qgsfunction, QgsExpression, QgsFeature)
 
-from qgis.PyQt.QtCore import QVariant
-
 from ..FuzzyMath import FuzzyNumberFactory, FuzzyNumber
 
 from ..text_constants import TextConstants
 from .qgsexpressions_utils import load_help
 from ..database.class_db import FuzzyDatabase
-from ..utils import string_to_python_object, python_object_to_string
-
-FUZZY_NUMBER_STRING = "fuzzy_number_"
 
 
 @qgsfunction(args="auto",
@@ -71,40 +66,3 @@ def get_fuzzy_number_from_db(name: str, feature: QgsFeature, parent: QgsExpressi
     fn = fdb.get_fuzzy_variable(name)
 
     return fn
-
-
-@qgsfunction(args="auto",
-             group=TextConstants.exp_funcs_group,
-             helpText=load_help("fuzzy_number_to_string_repr"),
-             register=False)
-def fuzzy_number_to_string_repr(fuzzy: FuzzyNumber, feature: QgsFeature, parent: QgsExpression):
-
-    if isinstance(fuzzy, FuzzyNumber):
-        fn_string = python_object_to_string(fuzzy, FUZZY_NUMBER_STRING)
-
-    return fn_string
-
-
-@qgsfunction(args='auto',
-             group=TextConstants.exp_funcs_group,
-             helpText=load_help("fuzzy_number_from_string_repr"),
-             register=False)
-def fuzzy_number_from_string_repr(value: str, feature: QgsFeature, parent: QgsExpression):
-
-    if isinstance(value, str) and value.startswith(FUZZY_NUMBER_STRING):
-        fn = string_to_python_object(value, FUZZY_NUMBER_STRING)
-
-    return fn
-
-
-@qgsfunction(args='auto',
-             group=TextConstants.exp_funcs_group,
-             helpText=load_help("fuzzy_number_as_text"),
-             register=False)
-def fuzzy_number_as_text(fn: FuzzyNumber, feature: QgsFeature, parent: QgsExpression):
-
-    if isinstance(fn, FuzzyNumber):
-        return str(fn)
-
-    else:
-        return None
