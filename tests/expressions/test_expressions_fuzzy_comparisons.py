@@ -44,4 +44,3 @@ def test_comparisons(params, exp):
     exp = QgsExpression(f"{exp}({params})")
 
     assert_is_correct(exp, PossibilisticMembership)
-    
