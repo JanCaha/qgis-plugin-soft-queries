@@ -20,10 +20,8 @@ class ParameterFuzzyNumber(QgsProcessingParameterDefinition):
 
     @staticmethod
     def valueToFuzzyNumber(value):
-        if value is None:
-            return None
 
-        if value == '':
+        if value is None or value == '':
             return None
 
         if isinstance(value, str):
