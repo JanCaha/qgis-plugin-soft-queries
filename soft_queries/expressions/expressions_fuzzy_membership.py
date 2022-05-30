@@ -86,10 +86,10 @@ def membership(fuzzy_membership: FuzzyMembership, feature: QgsFeature, parent: Q
 
 @qgsfunction(args='auto',
              group=TextConstants.exp_funcs_group,
-             helpText=load_help("get_fuzzy_membership"),
+             helpText=load_help("calculate_fuzzy_membership"),
              register=False)
-def get_fuzzy_membership(value: Union[float, int], fn: FuzzyNumber, feature: QgsFeature,
-                         parent: QgsExpression):
+def calculate_fuzzy_membership(value: Union[float, int], fn: FuzzyNumber, feature: QgsFeature,
+                               parent: QgsExpression):
 
     if not isinstance(fn, FuzzyNumber):
         raise Exception(prepare_error_message(fn, "fn", "FuzzyNumber"))

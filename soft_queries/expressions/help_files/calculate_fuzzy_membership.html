@@ -1,0 +1,34 @@
+<div class="description">
+    <p>Calculates Fuzzy Membership of value into Fuzzy Number.<br /><br />The output cannot be properly
+        represented as Expression outcome. It is only used in other expressions.</p>
+</div>
+<h4>Syntax</h4>
+<div class="syntax">
+    <code><span class="functionname">calculate_fuzzy_membership</span>(<span class="argument">value</span>, <span class="argument">fn</span>)</code>
+    <h4>Arguments</h4>
+    <div class="arguments">
+        <table>
+            <tr>
+                <td class="argument">value</td>
+                <td>Numeric value (integer, float) to classify using fuzzy number.</td>
+            </tr>
+            <tr>
+                <td class="argument">fn</td>
+                <td>Fuzzy number.</td>
+            </tr>
+        </table>
+    </div>
+    <h4>Examples</h4>
+    <div class="examples">
+        <ul>
+            <li><code>calculate_fuzzy_membership(1.25, fuzzy_number_triangular(1,2,3))</code>
+                &rarr;
+                <code></code>
+            </li>
+            <li><code>sq_as_string(calculate_fuzzy_membership(1.25, fuzzy_number_triangular(1,2,3)))</code>
+                &rarr;
+                <code>'FuzzyMembership(0.25)'</code>
+            </li>
+        </ul>
+    </div>
+</div>
