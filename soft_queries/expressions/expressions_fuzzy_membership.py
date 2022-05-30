@@ -24,7 +24,7 @@ def prepare_type_error_message(type_value: str, allowed_values: List[str]) -> st
              group=TextConstants.exp_funcs_group,
              helpText=load_help("fuzzy_membership"),
              register=False)
-def fuzzy_membership(value, feature: QgsFeature, parent: QgsExpression):
+def fuzzy_membership(value: Union[float, int], feature: QgsFeature, parent: QgsExpression):
 
     if isinstance(value, (int, float)):
         return FuzzyMembership(value)
