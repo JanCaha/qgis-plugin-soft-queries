@@ -132,3 +132,22 @@ def test_expr_fuzzy_or_errors(exp_params, type, msg):
     exp = QgsExpression(f"fuzzy_or({exp_params}, '{type}')")
 
     assert_has_error(exp, msg)
+
+
+def test_calculate_fuzzy_membership():
+
+    exp = QgsExpression("calculate_fuzzy_membership(1.5, fuzzy_number_triangular(1,2,3))")
+
+    assert_is_correct(exp, FuzzyMembership, FuzzyMembership(0.5))
+
+
+@pytest.mark.parametrize("exp_params, msg", [
+    ("'a', fuzzy_number_triangular(1,2,3)",
+     "`value` parameter is not of Python class `float, int`"),
+    ("1, 0.75", "`fn` parameter is not of Python class `FuzzyNumber`"),
+])
+def test_calculate_fuzzy_membership_errors(exp_params, msg):
+
+    exp = QgsExpression(f"calculate_fuzzy_membership({exp_params})")
+
+    assert_has_error(exp, msg)
