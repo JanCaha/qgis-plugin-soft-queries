@@ -21,7 +21,7 @@ class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):
 
     operations_enum = ["And", "Or"]
 
-    operations = [PossibilisticAnd.possibilisticAnd, PossibilisticOr.possibilisticOr]
+    operations = {"And": PossibilisticAnd.possibilisticAnd, "Or": PossibilisticOr.possibilisticOr}
 
     operations_types_enum = [
         "min/max", "product", "drastic", "Lukasiewicz", "Nilpotent", "Hamacher"
@@ -48,13 +48,13 @@ class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):
             QgsProcessingParameterEnum(self.OPERATION,
                                        "Operation to use",
                                        self.operations_enum,
-                                       defaultValue=0))
+                                       defaultValue=self.operations_enum[0]))
 
         self.addParameter(
             QgsProcessingParameterEnum(self.OPERATION_TYPE,
                                        "Operation type",
                                        self.operations_types_enum,
-                                       defaultValue=0))
+                                       defaultValue=self.operations_types_enum[0]))
 
         self.addParameter(
             QgsProcessingParameterRasterDestination(self.OUTPUT_POSSIBILITY,
@@ -112,15 +112,14 @@ class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):
         raster_2_possibility, raster_2_necessity = ParameterPossibilisticElement.valueToRasters(
             parameters[self.POSSIBILISTIC_RASTER_2])
 
-        operation_index = self.parameterAsEnum(parameters, self.OPERATION, context)
-        operation = self.operations[operation_index]
+        operation = self.parameterAsEnumString(parameters, self.OPERATION, context)
+        operation = self.operations[operation]
 
-        operation_type_index = self.parameterAsEnum(parameters, self.OPERATION_TYPE, context)
-        operation_type = self.operations_types_enum[operation_type_index]
+        operation_type = self.parameterAsEnumString(parameters, self.OPERATION_TYPE, context)
 
         if "/" in operation_type:
 
-            if operation_index == 0:
+            if operation == self.operations["And"]:
                 operation_type = operation_type.split("/")[0]
             else:
                 operation_type = operation_type.split("/")[1]
