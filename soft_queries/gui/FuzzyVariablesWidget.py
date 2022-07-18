@@ -1,9 +1,8 @@
-from pathlib import Path
 from typing import List
 
-from qgis.PyQt import uic
 from qgis.PyQt.QtWidgets import (QMessageBox, QToolButton, QTreeWidget, QTreeWidgetItem, QLineEdit,
-                                 QSpinBox, QLabel)
+                                 QSpinBox, QLabel, QGridLayout, QHBoxLayout, QSpacerItem, QDialog,
+                                 QSizePolicy)
 from qgis.PyQt.QtCore import pyqtSignal
 from qgis.core import QgsApplication
 
@@ -14,43 +13,15 @@ from ..FuzzyMath.class_factories import FuzzyNumberFactory, FuzzyNumber
 
 from .widgetfuzzynumber import FuzzyNumberWidget
 
-path_ui = Path(__file__).parent / "dialogcreatefuzzyrecord.ui"
-WIDGET, BASE = uic.loadUiType(path_ui.as_posix())
 
-
-class FuzzyVariablesWidget(BASE, WIDGET):
-
-    toolButton_add: QToolButton
-    toolButton_remove: QToolButton
-
-    fuzzy_name: QLineEdit
-
-    treeWidget: QTreeWidget
-
-    widget_fuzzy_number: FuzzyNumberWidget
-
-    alpha_cuts: QSpinBox
-    label_alpha_cuts: QLabel
-
-    data_has_changed = pyqtSignal()
-
-    fuzzy_variables_ids: List[str] = []
+class FuzzyVariablesWidget(QDialog):
 
     def __init__(self, parent):
-
         super().__init__(parent)
 
-        self.setupUi(self)
+        self.init_gui()
 
-        self.setWindowTitle(TextConstants.fuzzy_variables)
-
-        self.toolButton_add.setIcon(QgsApplication.getThemeIcon('/symbologyAdd.svg'))
-        self.toolButton_remove.setIcon(QgsApplication.getThemeIcon('/symbologyRemove.svg'))
-
-        self.toolButton_add.clicked.connect(self.add_fuzzy_variable)
-        self.toolButton_remove.clicked.connect(self.remove_fuzzy_variable)
-
-        self.data_has_changed.connect(self.regenerate_fuzzy_variables_ids)
+        self.fuzzy_variables_ids: List[str] = []
 
         self.database = FuzzyDatabase()
 
@@ -63,6 +34,44 @@ class FuzzyVariablesWidget(BASE, WIDGET):
             item.setText(1, str(data[name]))
 
             self.treeWidget.addTopLevelItem(item)
+
+    def init_gui(self) -> None:
+        self.setWindowTitle(TextConstants.fuzzy_variables)
+
+        layout = QGridLayout(self)
+        self.setLayout(layout)
+
+        self.label_name = QLabel("Fuzzy variable name")
+        self.fuzzy_name = QLineEdit()
+
+        layout.addWidget(self.label_name, 0, 0)
+        layout.addWidget(self.fuzzy_name, 0, 1)
+
+        self.widget_fuzzy_number = FuzzyNumberWidget()
+
+        layout.addWidget(self.widget_fuzzy_number, 1, 0, 1, 2)
+
+        lineLayout = QHBoxLayout()
+
+        spacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding)
+        self.toolButton_add = QToolButton()
+        self.toolButton_remove = QToolButton()
+
+        lineLayout.addSpacerItem(spacer)
+        lineLayout.addWidget(self.toolButton_add)
+        lineLayout.addWidget(self.toolButton_remove)
+        layout.addLayout(lineLayout, 2, 1, 1, 1)
+
+        self.treeWidget = QTreeWidget()
+        self.treeWidget.setHeaderLabels(["Fuzzy variable name", "Fuzzy variable"])
+
+        layout.addWidget(self.treeWidget, 3, 0, 1, 2)
+
+        self.toolButton_add.setIcon(QgsApplication.getThemeIcon('/symbologyAdd.svg'))
+        self.toolButton_remove.setIcon(QgsApplication.getThemeIcon('/symbologyRemove.svg'))
+
+        self.toolButton_add.clicked.connect(self.add_fuzzy_variable)
+        self.toolButton_remove.clicked.connect(self.remove_fuzzy_variable)
 
     def change_fuzzy_def(self, i: int) -> None:
         self.stackedWidget.setCurrentIndex(i)
@@ -95,7 +104,7 @@ class FuzzyVariablesWidget(BASE, WIDGET):
 
         self.treeWidget.addTopLevelItem(item)
 
-        self.data_has_changed.emit()
+        self.regenerate_fuzzy_variables_ids()
 
     def remove_fuzzy_variable(self):
 
@@ -107,7 +116,7 @@ class FuzzyVariablesWidget(BASE, WIDGET):
 
         self.treeWidget.invisibleRootItem().removeChild(item)
 
-        self.data_has_changed.emit()
+        self.regenerate_fuzzy_variables_ids()
 
     def check_fuzzy_variable_exit(self, fuzzy_variable_name: str) -> bool:
 
@@ -133,11 +142,13 @@ class FuzzyVariablesWidget(BASE, WIDGET):
 
         if fn_def["fuzzy_number_type"] == "triangular":
 
-            return FuzzyNumberFactory.triangular(fn_def["min"], fn_def["midpoint"], fn_def["max"],
-                                                 fn_def["alpha_cuts"])
+            fn = FuzzyNumberFactory.triangular(fn_def["min"], fn_def["midpoint"], fn_def["max"],
+                                               fn_def["alpha_cuts"])
 
         elif fn_def["fuzzy_number_type"] == "trapezoidal":
 
-            return FuzzyNumberFactory.trapezoidal(fn_def["min"], fn_def["kernel_min"],
-                                                  fn_def["kernel_max"], fn_def["max"],
-                                                  fn_def["alpha_cuts"])
+            fn = FuzzyNumberFactory.trapezoidal(fn_def["min"], fn_def["kernel_min"],
+                                                fn_def["kernel_max"], fn_def["max"],
+                                                fn_def["alpha_cuts"])
+
+        return fn
