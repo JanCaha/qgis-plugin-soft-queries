@@ -1,6 +1,6 @@
 from qgis.core import QgsGeometry
 
-from soft_queries.FuzzyObjects.fuzzy_polygon import FuzzyPolygon
+from soft_queries.FuzzyObjects import FuzzyPolygon
 
 
 def test_init():
@@ -8,7 +8,7 @@ def test_init():
     assert isinstance(fp, FuzzyPolygon)
 
 
-def test_create_from_list():
+def test_create_from_list_ok():
     geom = QgsGeometry.fromWkt("Polygon ((0 0, 1 0, 1 1, 0 1, 0 0))")
     geoms = [geom, geom.buffer(1, 8), geom.buffer(0.5, 8)]
     alphas = [1, 0, 0.5]
@@ -16,3 +16,6 @@ def test_create_from_list():
     fp = FuzzyPolygon.from_data(alphas, geoms)
 
     assert isinstance(fp, FuzzyPolygon)
+
+def test_lower_alpha(fp: FuzzyPolygon):
+    
