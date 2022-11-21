@@ -1,26 +1,14 @@
-from pathlib import Path
-
-from qgis.PyQt import uic
-from qgis.PyQt.QtWidgets import (QLabel, QGroupBox)
+from qgis.PyQt.QtWidgets import (QGroupBox, QWidget, QFormLayout, QVBoxLayout)
 from qgis.gui import QgsMapLayerComboBox
 
 from qgis.core import QgsRasterLayer, QgsMapLayerProxyModel
 
 from processing.gui.wrappers import WidgetWrapper
 
-path_file = Path(__file__)
 
-path_widget_ui = path_file.parent / "widgetpossibilisticelement.ui"
-
-WIDGET, BASE = uic.loadUiType(path_widget_ui.absolute())
-
-
-class PossibilisticElementWidget(BASE, WIDGET):
+class PossibilisticElementWidget(QWidget):
 
     groupbox: QGroupBox
-
-    label_possibility: QLabel
-    label_necessity: QLabel
 
     maplayer_possibility: QgsMapLayerComboBox
     maplayer_necessity: QgsMapLayerComboBox
@@ -32,9 +20,22 @@ class PossibilisticElementWidget(BASE, WIDGET):
 
     def __init__(self, parent=None) -> None:
 
-        super(PossibilisticElementWidget, self).__init__(None)
+        super(PossibilisticElementWidget, self).__init__(parent)
 
-        self.setupUi(self)
+        main_layout = QVBoxLayout(self)
+        self.setLayout(main_layout)
+
+        self.groupbox = QGroupBox("Raster Definitions", self)
+        main_layout.addWidget(self.groupbox)
+
+        layout = QFormLayout(self)
+        self.groupbox.setLayout(layout)
+
+        self.maplayer_possibility = QgsMapLayerComboBox(self)
+        self.maplayer_necessity = QgsMapLayerComboBox(self)
+
+        layout.addRow("Possibility raster", self.maplayer_possibility)
+        layout.addRow("Necessity raster", self.maplayer_necessity)
 
         self.maplayer_possibility.setFilters(QgsMapLayerProxyModel.RasterLayer)
         self.maplayer_necessity.setFilters(QgsMapLayerProxyModel.RasterLayer)

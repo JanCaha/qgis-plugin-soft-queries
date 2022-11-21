@@ -1,48 +1,116 @@
-from pathlib import Path
+from typing import Optional
 
-from qgis.PyQt import uic
-from qgis.PyQt.QtWidgets import (QComboBox, QStackedWidget, QTreeWidget, QLineEdit, QSpinBox,
-                                 QLabel)
+from qgis.PyQt.QtWidgets import (QComboBox, QStackedWidget, QDoubleSpinBox, QLabel, QGroupBox,
+                                 QFormLayout, QSpinBox, QWidget)
 
 from processing.gui.wrappers import WidgetWrapper
 
-path_file = Path(__file__)
-path_widget_ui = path_file.parent / "widgetfuzzynumber.ui"
-WIDGET, BASE = uic.loadUiType(path_widget_ui.absolute())
 
-
-class FuzzyNumberWidget(BASE, WIDGET):
-
-    fuzzy_type: QComboBox
-    stackedWidget: QStackedWidget
-
-    fuzzy_name: QLineEdit
-
-    treeWidget: QTreeWidget
-
-    alpha_cuts: QSpinBox
-    label_alpha_cuts: QLabel
-
-    triangular_min: QSpinBox
-    triangular_midpoint: QSpinBox
-    triangular_max: QSpinBox
-
-    trapezoidal_min: QSpinBox
-    trapezoidal_kernel_min: QSpinBox
-    trapezoidal_kernel_max: QSpinBox
-    trapezoidal_max: QSpinBox
+class FuzzyNumberWidget(QGroupBox):
 
     def __init__(self, parent=None) -> None:
 
-        super(FuzzyNumberWidget, self).__init__(None)
-        self.setupUi(self)
+        super(FuzzyNumberWidget, self).__init__("Fuzzy Number Definition", parent)
+
+        group_layout = QFormLayout(self)
+        self.setLayout(group_layout)
+
+        self.label_fuzzy_type = QLabel("Type of fuzzy number")
+        self.fuzzy_type = QComboBox()
+
+        self.label_alpha_cuts = QLabel("Number of alpha cuts")
+        self.alpha_cuts = QSpinBox()
+        self.alpha_cuts.setMinimum(1)
+        self.alpha_cuts.setMaximum(50)
+        self.alpha_cuts.setValue(1)
+
+        self.label_number_decimals = QLabel("Number of decimals")
+        self.number_decimals = QSpinBox()
+        self.number_decimals.setMinimum(0)
+        self.number_decimals.setMaximum(15)
+
+        self.stacked_widget = QStackedWidget(self)
+
+        group_layout.addRow(self.label_fuzzy_type, self.fuzzy_type)
+        group_layout.addRow(self.label_number_decimals, self.number_decimals)
+        group_layout.addRow(self.stacked_widget)
+        group_layout.addRow(self.label_alpha_cuts, self.alpha_cuts)
+
+        # page Triangular
+        page_triangular = QWidget(self)
+        self.stacked_widget.addWidget(page_triangular)
+        layout = QFormLayout()
+        page_triangular.setLayout(layout)
+
+        label_triangular = QLabel("Triangular")
+        self.triangular_min = DoubleSpinBox()
+        self.triangular_midpoint = DoubleSpinBox()
+        self.triangular_max = DoubleSpinBox()
+
+        layout.addRow(label_triangular)
+        layout.addRow("Minimum", self.triangular_min)
+        layout.addRow("Midpoint", self.triangular_midpoint)
+        layout.addRow("Maximum", self.triangular_max)
+
+        # page Trapezoidal
+        page_trapezoidal = QWidget(self)
+        self.stacked_widget.addWidget(page_trapezoidal)
+        layout = QFormLayout()
+        page_trapezoidal.setLayout(layout)
+
+        label_trapezoidal = QLabel("Trapezoidal")
+        self.trapezoidal_min = DoubleSpinBox()
+        self.trapezoidal_kernel_min = DoubleSpinBox()
+        self.trapezoidal_kernel_max = DoubleSpinBox()
+        self.trapezoidal_max = DoubleSpinBox()
+
+        layout.addRow(label_trapezoidal)
+        layout.addRow("Minimum", self.trapezoidal_min)
+        layout.addRow("Kernel minimum", self.trapezoidal_kernel_min)
+        layout.addRow("Kernel maximum", self.trapezoidal_kernel_max)
+        layout.addRow("Maximum", self.trapezoidal_max)
 
         self.fuzzy_type.addItems(["Triangular", "Trapezoidal"])
         self.change_fuzzy_def(0)
         self.fuzzy_type.currentIndexChanged.connect(self.change_fuzzy_def)
 
+        self.number_decimals.valueChanged.connect(self.set_decimals)
+        self.number_decimals.setValue(3)
+
+        self.triangular_min.valueChanged.connect(self.verify_triangular_values)
+        self.triangular_midpoint.valueChanged.connect(self.verify_triangular_values)
+        self.triangular_max.valueChanged.connect(self.verify_triangular_values)
+
+        self.trapezoidal_min.valueChanged.connect(self.verify_trapezoidal_values)
+        self.trapezoidal_kernel_min.valueChanged.connect(self.verify_trapezoidal_values)
+        self.trapezoidal_kernel_max.valueChanged.connect(self.verify_trapezoidal_values)
+        self.trapezoidal_max.valueChanged.connect(self.verify_trapezoidal_values)
+
         self.alpha_cuts.setVisible(False)
         self.label_alpha_cuts.setVisible(False)
+
+    def set_decimals(self, decimals: int) -> None:
+        self.triangular_min.setDecimals(decimals)
+        self.triangular_midpoint.setDecimals(decimals)
+        self.triangular_max.setDecimals(decimals)
+        self.trapezoidal_min.setDecimals(decimals)
+        self.trapezoidal_kernel_min.setDecimals(decimals)
+        self.trapezoidal_kernel_max.setDecimals(decimals)
+        self.trapezoidal_max.setDecimals(decimals)
+
+    def verify_triangular_values(self):
+        if self.triangular_min.value() > self.triangular_midpoint.value():
+            self.triangular_midpoint.setValue(self.triangular_min.value())
+        if self.triangular_midpoint.value() > self.triangular_max.value():
+            self.triangular_max.setValue(self.triangular_midpoint.value())
+
+    def verify_trapezoidal_values(self):
+        if self.trapezoidal_min.value() > self.trapezoidal_kernel_min.value():
+            self.trapezoidal_kernel_min.setValue(self.trapezoidal_min.value())
+        if self.trapezoidal_kernel_min.value() > self.trapezoidal_kernel_max.value():
+            self.trapezoidal_kernel_max.setValue(self.trapezoidal_kernel_min.value())
+        if self.trapezoidal_kernel_max.value() > self.trapezoidal_max.value():
+            self.trapezoidal_max.setValue(self.trapezoidal_kernel_max.value())
 
     def set_alpha_cuts_visibility(self, visibility: bool) -> None:
 
@@ -50,7 +118,7 @@ class FuzzyNumberWidget(BASE, WIDGET):
         self.label_alpha_cuts.setVisible(visibility)
 
     def change_fuzzy_def(self, i: int) -> None:
-        self.stackedWidget.setCurrentIndex(i)
+        self.stacked_widget.setCurrentIndex(i)
 
     def setValue(self, value: str):
 
@@ -116,9 +184,6 @@ class FuzzyNumberWidget(BASE, WIDGET):
             }
 
 
-# https://github.com/qgis/QGIS/blob/master/python/plugins/processing/algs/qgis/ui/ReliefColorsWidget.py
-
-
 class FuzzyNumberWidgetWrapper(WidgetWrapper):
 
     def createWidget(self):
@@ -129,3 +194,13 @@ class FuzzyNumberWidgetWrapper(WidgetWrapper):
 
     def value(self):
         return self.widget.value()
+
+
+class DoubleSpinBox(QDoubleSpinBox):
+
+    def __init__(self, parent: Optional[QWidget] = None) -> None:
+        super().__init__(parent)
+        self.setMinimum(-999999999.999999)
+        self.setMaximum(999999999.999999)
+        self.setValue(0)
+        self.setDecimals(6)
