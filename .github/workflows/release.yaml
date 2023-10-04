@@ -1,0 +1,46 @@
+name: Release version
+
+on:
+  push:
+    paths:
+    - "soft_queries/metadata.txt"
+
+jobs:
+
+  Release-plugin-Soft-Queries:
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+
+      - name: Install pb_tool
+        run: |
+          pip install pb_tool
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Get Version
+        id: version
+        run: |
+          echo "VERSION=$(cat soft_queries/metadata.txt | grep '^version' | grep -o '[0-9\.]*')" >> $GITHUB_OUTPUT
+
+      - name: Zip plugin
+        run: |
+          cd soft_queries
+          pb_tool zip
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.version.outputs.VERSION }}
+          files: |
+            soft_queries/zip_build/soft_queries.zip
+          name: v${{ steps.version.outputs.VERSION }}
+
