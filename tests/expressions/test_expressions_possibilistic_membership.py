@@ -41,7 +41,7 @@ def test_expr_possibilistic_membership_as_text_errors():
 def test_expr_possibilistic_membership_to_string_repr():
     exp = QgsExpression("sq_to_string_repr(possibilistic_membership(0.5, 0.3))")
 
-    str_repr = "possibilistic_membership_gASVgQAAAAAAAACMKHNvZnRfcXVlcmllcy5GdXp6eU1hdGguY2xhc3NfbWVtYmVyc2hpcHOUjBdQ\nb3NzaWJpbGlzdGljTWVtYmVyc2hpcJSTlCmBlE59lCiMDF9wb3NzaWJpbGl0eZRHP+AAAAAAAACM\nCl9uZWNlc3NpdHmURz/TMzMzMzMzdYaUYi4=\n"
+    str_repr = "possibilistic_membership_gASVdAAAAAAAAACMG0Z1enp5TWF0aC5jbGFzc19tZW1iZXJzaGlwc5SMF1Bvc3NpYmlsaXN0aWNN\nZW1iZXJzaGlwlJOUKYGUTn2UKIwMX3Bvc3NpYmlsaXR5lEc/4AAAAAAAAIwKX25lY2Vzc2l0eZRH\nP9MzMzMzMzN1hpRiLg==\n"
 
     assert_is_correct(exp, str, str_repr)
 
@@ -53,7 +53,7 @@ def test_expr_possibilistic_membership_to_string_repr_errors():
 
 
 def test_expr_possibilistic_membership_from_string_repr():
-    str_repr = "possibilistic_membership_gASVgQAAAAAAAACMKHNvZnRfcXVlcmllcy5GdXp6eU1hdGguY2xhc3NfbWVtYmVyc2hpcHOUjBdQb3NzaWJpbGlzdGljTWVtYmVyc2hpcJSTlCmBlE59lCiMDF9wb3NzaWJpbGl0eZRHP+AAAAAAAACMCl9uZWNlc3NpdHmURz/TMzMzMzMzdYaUYi4="
+    str_repr = "possibilistic_membership_gASVdAAAAAAAAACMG0Z1enp5TWF0aC5jbGFzc19tZW1iZXJzaGlwc5SMF1Bvc3NpYmlsaXN0aWNN\nZW1iZXJzaGlwlJOUKYGUTn2UKIwMX3Bvc3NpYmlsaXR5lEc/4AAAAAAAAIwKX25lY2Vzc2l0eZRH\nP9MzMzMzMzN1hpRiLg==\n"
 
     exp = QgsExpression(f"sq_from_string_repr('{str_repr}')")
 

@@ -38,7 +38,7 @@ def test_expr_fuzzy_membership_as_text_errors():
 def test_expr_fuzzy_membership_to_string_repr():
     exp = QgsExpression("sq_to_string_repr(fuzzy_membership(0.5))")
 
-    text_rep = "fuzzy_membership_gASVYQAAAAAAAACMKHNvZnRfcXVlcmllcy5GdXp6eU1hdGguY2xhc3NfbWVtYmVyc2hpcHOUjA9G\ndXp6eU1lbWJlcnNoaXCUk5QpgZROfZSMC19tZW1iZXJzaGlwlEc/4AAAAAAAAHOGlGIu\n"
+    text_rep = "fuzzy_membership_gASVVAAAAAAAAACMG0Z1enp5TWF0aC5jbGFzc19tZW1iZXJzaGlwc5SMD0Z1enp5TWVtYmVyc2hp\ncJSTlCmBlE59lIwLX21lbWJlcnNoaXCURz/gAAAAAAAAc4aUYi4=\n"
 
     assert_is_correct(exp, str, text_rep)
 
@@ -57,7 +57,7 @@ def test_expr_fuzzy_membership_to_string_repr_errors(exp):
 
 
 def test_expr_fuzzy_membership_from_string_repr():
-    text_rep = "fuzzy_membership_gASVYQAAAAAAAACMKHNvZnRfcXVlcmllcy5GdXp6eU1hdGguY2xhc3NfbWVtYmVyc2hpcHOUjA9GdXp6eU1lbWJlcnNoaXCUk5QpgZROfZSMC19tZW1iZXJzaGlwlEc/4AAAAAAAAHOGlGIu"
+    text_rep = "fuzzy_membership_gASVVAAAAAAAAACMG0Z1enp5TWF0aC5jbGFzc19tZW1iZXJzaGlwc5SMD0Z1enp5TWVtYmVyc2hp\ncJSTlCmBlE59lIwLX21lbWJlcnNoaXCURz/gAAAAAAAAc4aUYi4=\n"
 
     exp = QgsExpression(f"sq_from_string_repr('{text_rep}')")
 

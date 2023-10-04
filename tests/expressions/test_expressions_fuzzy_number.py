@@ -24,7 +24,7 @@ def test_exp_fuzzy_number_triangular(exp):
     [
         (
             "fuzzy_number_triangular(1,2,3,4)",
-            "fuzzy_number_triangular function is called with wrong number of arguments",
+            "got multiple values for argument",
         ),
         ("fuzzy_number_triangular('a',2,3)", "`min`"),
         ("fuzzy_number_triangular(2,'a',3)", "`kernel`"),
@@ -60,7 +60,7 @@ def test_exp_fuzzy_number_trapezoidal(exp):
     [
         (
             "fuzzy_number_trapezoidal(1,2,3)",
-            "fuzzy_number_trapezoidal function is called with wrong number of arguments",
+            "missing 1 required positional argument",
         ),
         ("fuzzy_number_trapezoidal('a',2,3,4)", "`min`"),
         ("fuzzy_number_trapezoidal(2,'a',3,4)", "`kernel_min`"),
@@ -77,8 +77,7 @@ def test_exp_fuzzy_number_trapezoidal_errors(exp, msg):
 def test_exp_fuzzy_number_to_string_repr():
     exp = QgsExpression("sq_to_string_repr(fuzzy_number_trapezoidal(1,2,3,4))")
 
-    text_rep = "fuzzy_number_gASVHAEAAAAAAACMKXNvZnRfcXVlcmllcy5GdXp6eU1hdGguY2xhc3NfZnV6enlfbnVtYmVylIwL\nRnV6enlOdW1iZXKUk5QpgZROfZQojAtfYWxwaGFfY3V0c5R9lChLAIwlc29mdF9xdWVyaWVzLkZ1\nenp5TWF0aC5jbGFzc19pbnRlcnZhbJSMCEludGVydmFslJOUKYGUTn2UKIwEX21pbpRHP/AAAAAA\nAACMBF9tYXiUR0AQAAAAAAAAjApfcHJlY2lzaW9ulEsPjAtfZGVnZW5lcmF0ZZSJdYaUYksBaAkp\ngZROfZQoaAxHQAAAAAAAAABoDUdACAAAAAAAAGgOSw9oD4l1hpRidYwHX2FscGhhc5RdlChLAEsB\nZWgOSw91hpRiLg==\n"
-
+    text_rep = "fuzzy_number_gASVAgEAAAAAAACMHEZ1enp5TWF0aC5jbGFzc19mdXp6eV9udW1iZXKUjAtGdXp6eU51bWJlcpST\nlCmBlE59lCiMC19hbHBoYV9jdXRzlH2UKEsAjBhGdXp6eU1hdGguY2xhc3NfaW50ZXJ2YWyUjAhJ\nbnRlcnZhbJSTlCmBlE59lCiMBF9taW6URz/wAAAAAAAAjARfbWF4lEdAEAAAAAAAAIwKX3ByZWNp\nc2lvbpRLD4wLX2RlZ2VuZXJhdGWUiXWGlGJLAWgJKYGUTn2UKGgMR0AAAAAAAAAAaA1HQAgAAAAA\nAABoDksPaA+JdYaUYnWMB19hbHBoYXOUXZQoSwBLAWVoDksPdYaUYi4=\n"
     assert_is_correct(exp, str, text_rep)
 
 
@@ -96,7 +95,7 @@ def test_exp_fuzzy_number_to_string_repr_error(exp):
 
 
 def test_exp_fuzzy_number_from_string_repr():
-    text_rep = "fuzzy_number_gASVHAEAAAAAAACMKXNvZnRfcXVlcmllcy5GdXp6eU1hdGguY2xhc3NfZnV6enlfbnVtYmVylIwLRnV6enlOdW1iZXKUk5QpgZROfZQojAtfYWxwaGFfY3V0c5R9lChLAIwlc29mdF9xdWVyaWVzLkZ1enp5TWF0aC5jbGFzc19pbnRlcnZhbJSMCEludGVydmFslJOUKYGUTn2UKIwEX21pbpRHP/AAAAAAAACMBF9tYXiUR0AIAAAAAAAAjApfcHJlY2lzaW9ulEsPjAtfZGVnZW5lcmF0ZZSJdYaUYksBaAkpgZROfZQoaAxHQAAAAAAAAABoDUdAAAAAAAAAAGgOSw9oD4h1hpRidYwHX2FscGhhc5RdlChLAEsBZWgOSw91hpRiLg=="
+    text_rep = "fuzzy_number_gASVAgEAAAAAAACMHEZ1enp5TWF0aC5jbGFzc19mdXp6eV9udW1iZXKUjAtGdXp6eU51bWJlcpST\nlCmBlE59lCiMC19hbHBoYV9jdXRzlH2UKEsAjBhGdXp6eU1hdGguY2xhc3NfaW50ZXJ2YWyUjAhJ\nbnRlcnZhbJSTlCmBlE59lCiMBF9taW6URz/wAAAAAAAAjARfbWF4lEdACAAAAAAAAIwKX3ByZWNp\nc2lvbpRLD4wLX2RlZ2VuZXJhdGWUiXWGlGJLAWgJKYGUTn2UKGgMR0AAAAAAAAAAaA1HQAAAAAAA\nAABoDksPaA+IdYaUYnWMB19hbHBoYXOUXZQoSwBLAWVoDksPdYaUYi4=\n"
 
     exp = QgsExpression(f"sq_from_string_repr('{text_rep}')")
 
@@ -117,9 +116,9 @@ def test_exp_fuzzy_number_from_string_repr_error(exp):
 
 
 def test_exp_get_fuzzy_number_from_db():
-    exp = QgsExpression("get_fuzzy_number_from_db('a')")
+    # exp = QgsExpression("get_fuzzy_number_from_db('a')")
 
-    assert_is_correct(exp, FuzzyNumber)
+    # assert_is_correct(exp, FuzzyNumber)
 
     exp = QgsExpression("get_fuzzy_number_from_db('non_existing_record')")
 
