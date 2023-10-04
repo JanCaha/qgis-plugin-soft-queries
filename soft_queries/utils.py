@@ -1,10 +1,10 @@
-import os
-from typing import Any, Optional
-from pathlib import Path
 import codecs
+import os
 import pickle
+from pathlib import Path
+from typing import Any, Optional
 
-from qgis.core import (QgsMessageLog, Qgis)
+from qgis.core import Qgis, QgsMessageLog
 
 from .text_constants import TextConstants
 

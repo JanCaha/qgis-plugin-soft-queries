@@ -1,28 +1,27 @@
-from pathlib import Path
 import configparser
+from pathlib import Path
 
-from qgis.PyQt.QtGui import QIcon
 from qgis.core import QgsProcessingProvider
+from qgis.PyQt.QtGui import QIcon
 
-from .text_constants import TextConstants
-from .processing.tool_possibilistic_membership import PossibilisticMembershipAlgorithm
 from .processing.tool_fuzzy_membership import FuzzyMembershipAlgorithm
 from .processing.tool_fuzzy_operation import FuzzyOperationAlgorithm
+from .processing.tool_possibilistic_membership import PossibilisticMembershipAlgorithm
 from .processing.tool_possibilistic_operation import PossibilisticOperationAlgorithm
+from .text_constants import TextConstants
 from .utils import get_icon_path
 
 
 class SoftQueriesProvider(QgsProcessingProvider):
-
     def __init__(self):
         super().__init__()
 
-        path = Path(__file__).parent / 'metadata.txt'
+        path = Path(__file__).parent / "metadata.txt"
 
         config = configparser.ConfigParser()
         config.read(path)
 
-        self.version = config['general']['version']
+        self.version = config["general"]["version"]
 
     def load(self) -> bool:
 

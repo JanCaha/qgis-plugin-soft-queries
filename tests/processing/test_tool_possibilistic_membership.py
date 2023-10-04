@@ -1,6 +1,8 @@
 from qgis.core import QgsRasterLayer
 
-from soft_queries.processing.tool_possibilistic_membership import PossibilisticMembershipAlgorithm
+from soft_queries.processing.tool_possibilistic_membership import (
+    PossibilisticMembershipAlgorithm,
+)
 
 
 def test_run(raster_layer_path: str, context, feedback):
@@ -13,7 +15,7 @@ def test_run(raster_layer_path: str, context, feedback):
         "RASTER": raster_layer_path,
         "OUTPUT_POSSIBILITY": "TEMPORARY_OUTPUT",
         "OUTPUT_NECESSITY": "TEMPORARY_OUTPUT",
-        "OPERATION": 0
+        "OPERATION": 0,
     }
 
     alg.checkParameterValues(parameters=params, context=context)

@@ -1,13 +1,19 @@
 from typing import Optional
 
-from qgis.PyQt.QtWidgets import (QComboBox, QStackedWidget, QDoubleSpinBox, QLabel, QGroupBox,
-                                 QFormLayout, QSpinBox, QWidget)
-
 from processing.gui.wrappers import WidgetWrapper
+from qgis.PyQt.QtWidgets import (
+    QComboBox,
+    QDoubleSpinBox,
+    QFormLayout,
+    QGroupBox,
+    QLabel,
+    QSpinBox,
+    QStackedWidget,
+    QWidget,
+)
 
 
 class FuzzyNumberWidget(QGroupBox):
-
     def __init__(self, parent=None) -> None:
 
         super(FuzzyNumberWidget, self).__init__("Fuzzy Number Definition", parent)
@@ -149,16 +155,20 @@ class FuzzyNumberWidget(QGroupBox):
 
         if self.fuzzy_type.currentText().lower() == "triangular":
 
-            return "triangular;{}|{}|{}".format(self.triangular_min.value(),
-                                                self.triangular_midpoint.value(),
-                                                self.triangular_max.value())
+            return "triangular;{}|{}|{}".format(
+                self.triangular_min.value(),
+                self.triangular_midpoint.value(),
+                self.triangular_max.value(),
+            )
 
         elif self.fuzzy_type.currentText().lower() == "trapezoidal":
 
-            return "trapezoidal;{}|{}|{}|{}".format(self.trapezoidal_min.value(),
-                                                    self.trapezoidal_kernel_min.value(),
-                                                    self.trapezoidal_kernel_max.value(),
-                                                    self.trapezoidal_max.value())
+            return "trapezoidal;{}|{}|{}|{}".format(
+                self.trapezoidal_min.value(),
+                self.trapezoidal_kernel_min.value(),
+                self.trapezoidal_kernel_max.value(),
+                self.trapezoidal_max.value(),
+            )
 
     def value_as_dict(self):
 
@@ -169,7 +179,7 @@ class FuzzyNumberWidget(QGroupBox):
                 "alpha_cuts": int(self.alpha_cuts.value()),
                 "min": self.triangular_min.value(),
                 "midpoint": self.triangular_midpoint.value(),
-                "max": self.triangular_max.value()
+                "max": self.triangular_max.value(),
             }
 
         elif self.fuzzy_type.currentText().lower() == "trapezoidal":
@@ -180,12 +190,11 @@ class FuzzyNumberWidget(QGroupBox):
                 "min": self.trapezoidal_min.value(),
                 "kernel_min": self.trapezoidal_kernel_min.value(),
                 "kernel_max": self.trapezoidal_kernel_max.value(),
-                "max": self.trapezoidal_max.value()
+                "max": self.trapezoidal_max.value(),
             }
 
 
 class FuzzyNumberWidgetWrapper(WidgetWrapper):
-
     def createWidget(self):
         return FuzzyNumberWidget()
 
@@ -197,7 +206,6 @@ class FuzzyNumberWidgetWrapper(WidgetWrapper):
 
 
 class DoubleSpinBox(QDoubleSpinBox):
-
     def __init__(self, parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
         self.setMinimum(-999999999.999999)

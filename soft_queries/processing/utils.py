@@ -1,17 +1,24 @@
 from __future__ import annotations
-from typing import List
-from pathlib import Path
-from dataclasses import dataclass
 
-from qgis.core import (QgsRasterFileWriter, QgsRasterLayer, QgsRasterDataProvider, Qgis,
-                       QgsRasterBlock, QgsRasterIterator)
+from dataclasses import dataclass
+from pathlib import Path
+from typing import List
+
+from qgis.core import (
+    Qgis,
+    QgsRasterBlock,
+    QgsRasterDataProvider,
+    QgsRasterFileWriter,
+    QgsRasterIterator,
+    QgsRasterLayer,
+)
 
 
 def create_raster_writer(path_raster: str) -> QgsRasterFileWriter:
 
     raster_writer = QgsRasterFileWriter(path_raster)
 
-    raster_writer.setOutputProviderKey('gdal')
+    raster_writer.setOutputProviderKey("gdal")
 
     ext = Path(path_raster).suffix.replace(".", "")
 
@@ -22,12 +29,17 @@ def create_raster_writer(path_raster: str) -> QgsRasterFileWriter:
     return raster_writer
 
 
-def create_raster(raster_writer: QgsRasterFileWriter,
-                  template_raster: QgsRasterLayer) -> QgsRasterDataProvider:
+def create_raster(
+    raster_writer: QgsRasterFileWriter, template_raster: QgsRasterLayer
+) -> QgsRasterDataProvider:
 
-    return raster_writer.createOneBandRaster(Qgis.Float64, template_raster.width(),
-                                             template_raster.height(), template_raster.extent(),
-                                             template_raster.crs())
+    return raster_writer.createOneBandRaster(
+        Qgis.Float64,
+        template_raster.width(),
+        template_raster.height(),
+        template_raster.extent(),
+        template_raster.crs(),
+    )
 
 
 def verify_crs_equal(rasters: List[QgsRasterLayer]) -> bool:
@@ -93,19 +105,27 @@ def verify_one_band(rasters: List[QgsRasterLayer]) -> bool:
 
 def feedback_total(data_block: QgsRasterBlock):
 
-    return 100.0 / (data_block.height() * data_block.width())\
-        if data_block.height() and data_block.width() else 0
+    return (
+        100.0 / (data_block.height() * data_block.width())
+        if data_block.height() and data_block.width()
+        else 0
+    )
 
 
-def create_raster_iterator(input_raster: QgsRasterLayer,
-                           raster_band: int = 1) -> QgsRasterIterator:
+def create_raster_iterator(
+    input_raster: QgsRasterLayer, raster_band: int = 1
+) -> QgsRasterIterator:
 
     input_raster_dp = input_raster.dataProvider()
 
     raster_iter = QgsRasterIterator(input_raster_dp)
 
-    raster_iter.startRasterRead(raster_band, input_raster_dp.xSize(), input_raster_dp.ySize(),
-                                input_raster_dp.extent())
+    raster_iter.startRasterRead(
+        raster_band,
+        input_raster_dp.xSize(),
+        input_raster_dp.ySize(),
+        input_raster_dp.extent(),
+    )
 
     raster_iter.setMaximumTileHeight(1)
     raster_iter.setMaximumTileHeight(1)
@@ -122,18 +142,34 @@ def create_empty_block(input_block: QgsRasterBlock) -> QgsRasterBlock:
     return new_block
 
 
-def writeBlock(raster_dp: QgsRasterDataProvider, raster_block: QgsRasterDataProvider,
-               raster_part: RasterPart) -> None:
+def writeBlock(
+    raster_dp: QgsRasterDataProvider,
+    raster_block: QgsRasterDataProvider,
+    raster_part: RasterPart,
+) -> None:
 
-    raster_dp.writeBlock(raster_block, raster_part.raster_band, raster_part.top_left_col,
-                         raster_part.top_left_row)
+    raster_dp.writeBlock(
+        raster_block,
+        raster_part.raster_band,
+        raster_part.top_left_col,
+        raster_part.top_left_row,
+    )
 
 
 @dataclass
 class RasterPart:
 
-    __slots__ = ("input_raster", "raster_band", "raster_it", "correct", "n_cols", "n_rows",
-                 "data_block", "top_left_col", "top_left_row")
+    __slots__ = (
+        "input_raster",
+        "raster_band",
+        "raster_it",
+        "correct",
+        "n_cols",
+        "n_rows",
+        "data_block",
+        "top_left_col",
+        "top_left_row",
+    )
 
     input_raster: QgsRasterLayer
     raster_band: int
@@ -157,8 +193,14 @@ class RasterPart:
 
     def nextData(self):
 
-        self.correct, self.n_cols, self.n_rows, self.data_block, self.top_left_col, self.top_left_row =\
-            self.raster_it.readNextRasterPart(self.raster_band)
+        (
+            self.correct,
+            self.n_cols,
+            self.n_rows,
+            self.data_block,
+            self.top_left_col,
+            self.top_left_row,
+        ) = self.raster_it.readNextRasterPart(self.raster_band)
 
     @property
     def data_range(self):

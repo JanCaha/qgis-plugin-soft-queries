@@ -1,15 +1,21 @@
-from qgis.PyQt.QtWidgets import (QMessageBox, QToolButton, QLineEdit, QLabel, QGridLayout,
-                                 QHBoxLayout, QDialog)
 from qgis.core import QgsApplication
+from qgis.PyQt.QtWidgets import (
+    QDialog,
+    QGridLayout,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QMessageBox,
+    QToolButton,
+)
 
+from ..FuzzyMath.class_factories import FuzzyNumber, FuzzyNumberFactory
 from ..text_constants import TextConstants
-from ..FuzzyMath.class_factories import FuzzyNumberFactory, FuzzyNumber
 from .widgetfuzzynumber import FuzzyNumberWidget
 from .widgetfuzzyvariables import FuzzyVariablesTreeWidget
 
 
 class FuzzyVariablesWidget(QDialog):
-
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -45,8 +51,10 @@ class FuzzyVariablesWidget(QDialog):
 
         layout.addWidget(self.treeWidget, 3, 0, 1, 2)
 
-        self.toolButton_add.setIcon(QgsApplication.getThemeIcon('/symbologyAdd.svg'))
-        self.toolButton_remove.setIcon(QgsApplication.getThemeIcon('/symbologyRemove.svg'))
+        self.toolButton_add.setIcon(QgsApplication.getThemeIcon("/symbologyAdd.svg"))
+        self.toolButton_remove.setIcon(
+            QgsApplication.getThemeIcon("/symbologyRemove.svg")
+        )
 
         self.toolButton_add.clicked.connect(self.add_fuzzy_variable)
         self.toolButton_remove.clicked.connect(self.remove_fuzzy_variable)
@@ -61,7 +69,9 @@ class FuzzyVariablesWidget(QDialog):
             dialog_error.setIcon(QMessageBox.Critical)
             dialog_error.setText(
                 "Cannot add `{}` as the fuzzy variable with the name already exist!".format(
-                    fuzzy_variable_name))
+                    fuzzy_variable_name
+                )
+            )
             dialog_error.setInformativeText("Please select another name.")
             dialog_error.setWindowTitle("Error")
             dialog_error.exec()
@@ -87,13 +97,18 @@ class FuzzyVariablesWidget(QDialog):
 
         if fn_def["fuzzy_number_type"] == "triangular":
 
-            fn = FuzzyNumberFactory.triangular(fn_def["min"], fn_def["midpoint"], fn_def["max"],
-                                               fn_def["alpha_cuts"])
+            fn = FuzzyNumberFactory.triangular(
+                fn_def["min"], fn_def["midpoint"], fn_def["max"], fn_def["alpha_cuts"]
+            )
 
         elif fn_def["fuzzy_number_type"] == "trapezoidal":
 
-            fn = FuzzyNumberFactory.trapezoidal(fn_def["min"], fn_def["kernel_min"],
-                                                fn_def["kernel_max"], fn_def["max"],
-                                                fn_def["alpha_cuts"])
+            fn = FuzzyNumberFactory.trapezoidal(
+                fn_def["min"],
+                fn_def["kernel_min"],
+                fn_def["kernel_max"],
+                fn_def["max"],
+                fn_def["alpha_cuts"],
+            )
 
         return fn

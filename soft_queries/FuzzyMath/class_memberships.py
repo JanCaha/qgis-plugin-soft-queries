@@ -16,7 +16,9 @@ class PossibilisticMembership:
 
     __slots__ = ("_possibility", "_necessity")
 
-    def __init__(self, possibility: Union[float, int], necessity: Union[float, int]) -> None:
+    def __init__(
+        self, possibility: Union[float, int], necessity: Union[float, int]
+    ) -> None:
         """
         Basic creator for the class.
 
@@ -49,10 +51,13 @@ class PossibilisticMembership:
 
         if possibility < 0 or 1 < possibility:
             raise ValueError(
-                f"Possibility value must be from range [0, 1], it is `{possibility}`.")
+                f"Possibility value must be from range [0, 1], it is `{possibility}`."
+            )
 
         if necessity < 0 or 1 < necessity:
-            raise ValueError(f"Necessity value must be from range [0, 1], it is `{necessity}`.")
+            raise ValueError(
+                f"Necessity value must be from range [0, 1], it is `{necessity}`."
+            )
 
         if possibility < necessity:
             raise ValueError(
@@ -89,7 +94,8 @@ class PossibilisticMembership:
 
     def __repr__(self) -> str:
         return "PossibilisticMembership(possibility: {0}, necessity: {1})".format(
-            self._possibility, self._necessity)
+            self._possibility, self._necessity
+        )
 
     def __eq__(self, __o: object) -> bool:
 
@@ -98,7 +104,9 @@ class PossibilisticMembership:
 
         else:
 
-            return (self.possibility == __o.possibility and self.necessity == __o.necessity)
+            return (
+                self.possibility == __o.possibility and self.necessity == __o.necessity
+            )
 
 
 class FuzzyMembership:
@@ -110,7 +118,7 @@ class FuzzyMembership:
     _membership: float
     """
 
-    __slots__ = ("_membership")
+    __slots__ = "_membership"
 
     def __init__(self, membership: Union[float, int]) -> None:
         """
@@ -136,7 +144,9 @@ class FuzzyMembership:
             )
 
         if membership < 0 or 1 < membership:
-            raise ValueError(f"Membership value must be from range [0, 1], it is `{membership}`.")
+            raise ValueError(
+                f"Membership value must be from range [0, 1], it is `{membership}`."
+            )
 
         self._membership = round(float(membership), get_precision())
 

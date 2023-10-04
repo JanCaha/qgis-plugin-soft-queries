@@ -14,8 +14,7 @@ def possibility_exceedance(fn_a: FuzzyNumber, fn_b: FuzzyNumber) -> float:
 
     else:
 
-        alphas = FuzzyNumber._prepare_alphas(fn_a.alpha_levels,
-                                             fn_b.alpha_levels)
+        alphas = FuzzyNumber._prepare_alphas(fn_a.alpha_levels, fn_b.alpha_levels)
 
         fn_a_values = fn_a.get_alpha_cuts_maxs(alphas, order_by_alphas_from_one=True)
         fn_b_values = fn_b.get_alpha_cuts_mins(alphas, order_by_alphas_from_one=True)
@@ -30,8 +29,9 @@ def possibility_exceedance(fn_a: FuzzyNumber, fn_b: FuzzyNumber) -> float:
 
         alphas.reverse()
 
-        return __value_intersection_y(fn_a_values, fn_b_values, alphas,
-                                      index=index, index_change=-1)
+        return __value_intersection_y(
+            fn_a_values, fn_b_values, alphas, index=index, index_change=-1
+        )
 
 
 def necessity_exceedance(fn_a: FuzzyNumber, fn_b: FuzzyNumber) -> float:
@@ -44,8 +44,7 @@ def necessity_exceedance(fn_a: FuzzyNumber, fn_b: FuzzyNumber) -> float:
 
     else:
 
-        alphas = FuzzyNumber._prepare_alphas(fn_a.alpha_levels,
-                                             fn_b.alpha_levels)
+        alphas = FuzzyNumber._prepare_alphas(fn_a.alpha_levels, fn_b.alpha_levels)
 
         fn_a_values = fn_a.get_alpha_cuts_mins(alphas, order_by_alphas_from_one=True)
         fn_b_values = fn_b.get_alpha_cuts_mins(alphas)
@@ -58,8 +57,9 @@ def necessity_exceedance(fn_a: FuzzyNumber, fn_b: FuzzyNumber) -> float:
 
             index += 1
 
-        return __value_intersection_y(fn_a_values, fn_b_values, alphas,
-                                      index=index, index_change=-1)
+        return __value_intersection_y(
+            fn_a_values, fn_b_values, alphas, index=index, index_change=-1
+        )
 
 
 def possibility_strict_exceedance(fn_a: FuzzyNumber, fn_b: FuzzyNumber) -> float:
@@ -72,8 +72,7 @@ def possibility_strict_exceedance(fn_a: FuzzyNumber, fn_b: FuzzyNumber) -> float
 
     else:
 
-        alphas = FuzzyNumber._prepare_alphas(fn_a.alpha_levels,
-                                             fn_b.alpha_levels)
+        alphas = FuzzyNumber._prepare_alphas(fn_a.alpha_levels, fn_b.alpha_levels)
 
         fn_a_values = fn_a.get_alpha_cuts_maxs(alphas)
         fn_b_values = fn_b.get_alpha_cuts_maxs(alphas, order_by_alphas_from_one=True)
@@ -86,8 +85,9 @@ def possibility_strict_exceedance(fn_a: FuzzyNumber, fn_b: FuzzyNumber) -> float
 
             index += 1
 
-        return __value_intersection_y(fn_a_values, fn_b_values, alphas,
-                                      index=index, index_change=1)
+        return __value_intersection_y(
+            fn_a_values, fn_b_values, alphas, index=index, index_change=1
+        )
 
 
 def necessity_strict_exceedance(fn_a: FuzzyNumber, fn_b: FuzzyNumber) -> float:
@@ -100,8 +100,7 @@ def necessity_strict_exceedance(fn_a: FuzzyNumber, fn_b: FuzzyNumber) -> float:
 
     else:
 
-        alphas = FuzzyNumber._prepare_alphas(fn_a.alpha_levels,
-                                             fn_b.alpha_levels)
+        alphas = FuzzyNumber._prepare_alphas(fn_a.alpha_levels, fn_b.alpha_levels)
 
         fn_a_values = fn_a.get_alpha_cuts_mins(alphas, order_by_alphas_from_one=True)
         fn_b_values = fn_b.get_alpha_cuts_maxs(alphas, order_by_alphas_from_one=True)
@@ -114,8 +113,9 @@ def necessity_strict_exceedance(fn_a: FuzzyNumber, fn_b: FuzzyNumber) -> float:
 
             index += 1
 
-        return __value_intersection_y(fn_a_values, fn_b_values, alphas,
-                                      index=index, index_change=1)
+        return __value_intersection_y(
+            fn_a_values, fn_b_values, alphas, index=index, index_change=1
+        )
 
 
 def possibility_undervaluation(fn_a: FuzzyNumber, fn_b: FuzzyNumber) -> float:
@@ -134,22 +134,27 @@ def necessity_strict_undervaluation(fn_a: FuzzyNumber, fn_b: FuzzyNumber) -> flo
     return 1 - possibility_exceedance(fn_a, fn_b)
 
 
-def __value_intersection_y(fn_a_values: List[float],
-                           fn_b_values: List[float],
-                           alphas: List[float],
-                           index: int,
-                           index_change: int):
+def __value_intersection_y(
+    fn_a_values: List[float],
+    fn_b_values: List[float],
+    alphas: List[float],
+    index: int,
+    index_change: int,
+):
 
-    return __intersection_y(fn_a_values[index], alphas[index],
-                            fn_a_values[index + index_change], alphas[index + index_change],
-                            fn_b_values[index], alphas[index],
-                            fn_b_values[index + index_change], alphas[index + index_change])
+    return __intersection_y(
+        fn_a_values[index],
+        alphas[index],
+        fn_a_values[index + index_change],
+        alphas[index + index_change],
+        fn_b_values[index],
+        alphas[index],
+        fn_b_values[index + index_change],
+        alphas[index + index_change],
+    )
 
 
-def __intersection_y(x1, y1,
-                     x2, y2,
-                     x3, y3,
-                     x4, y4):
+def __intersection_y(x1, y1, x2, y2, x3, y3, x4, y4):
     x12 = x1 - x2
     x34 = x3 - x4
     y12 = y1 - y2
@@ -168,23 +173,31 @@ def __intersection_y(x1, y1,
 
 def exceedance(fn_a: FuzzyNumber, fn_b: FuzzyNumber) -> PossibilisticMembership:
 
-    return PossibilisticMembership(possibility_exceedance(fn_a, fn_b),
-                                   necessity_exceedance(fn_a, fn_b))
+    return PossibilisticMembership(
+        possibility_exceedance(fn_a, fn_b), necessity_exceedance(fn_a, fn_b)
+    )
 
 
 def strict_exceedance(fn_a: FuzzyNumber, fn_b: FuzzyNumber) -> PossibilisticMembership:
 
-    return PossibilisticMembership(possibility_strict_exceedance(fn_a, fn_b),
-                                   necessity_strict_exceedance(fn_a, fn_b))
+    return PossibilisticMembership(
+        possibility_strict_exceedance(fn_a, fn_b),
+        necessity_strict_exceedance(fn_a, fn_b),
+    )
 
 
 def undervaluation(fn_a: FuzzyNumber, fn_b: FuzzyNumber) -> PossibilisticMembership:
 
-    return PossibilisticMembership(possibility_undervaluation(fn_a, fn_b),
-                                   necessity_undervaluation(fn_a, fn_b))
+    return PossibilisticMembership(
+        possibility_undervaluation(fn_a, fn_b), necessity_undervaluation(fn_a, fn_b)
+    )
 
 
-def strict_undervaluation(fn_a: FuzzyNumber, fn_b: FuzzyNumber) -> PossibilisticMembership:
+def strict_undervaluation(
+    fn_a: FuzzyNumber, fn_b: FuzzyNumber
+) -> PossibilisticMembership:
 
-    return PossibilisticMembership(possibility_strict_undervaluation(fn_a, fn_b),
-                                   necessity_strict_undervaluation(fn_a, fn_b))
+    return PossibilisticMembership(
+        possibility_strict_undervaluation(fn_a, fn_b),
+        necessity_strict_undervaluation(fn_a, fn_b),
+    )
