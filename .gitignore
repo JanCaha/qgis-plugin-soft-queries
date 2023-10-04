@@ -1,3 +1,4 @@
 tests/_data/*.aux.xml
 .coverage
 soft_queries/deps
+soft_queries/zip_build
