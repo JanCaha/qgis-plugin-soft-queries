@@ -9,6 +9,7 @@ from qgis.core import (
     QgsVectorLayer,
 )
 
+import soft_queries.utils as utils
 from soft_queries.plugin_soft_queries import SoftQueriesPlugin
 
 
@@ -49,6 +50,7 @@ def raster_fuzzy_2_path() -> str:
 
 @pytest.fixture(autouse=True, scope="session")
 def init_plugin(qgis_iface) -> SoftQueriesPlugin:
+    utils.add_deps_folder_to_path()
 
     plugin = SoftQueriesPlugin(qgis_iface)
 
