@@ -9,18 +9,24 @@ from .qgsexpressions_utils import error_message, load_help
 FUZZY_NUMERICS = Union[FuzzyNumber, int, float]
 
 
-def prepare_error_message(object: Any,
-                          parameter_name: str,
-                          class_name: str = "FuzzyNumber, int, float") -> str:
+def prepare_error_message(
+    object: Any, parameter_name: str, class_name: str = "FuzzyNumber, int, float"
+) -> str:
     return error_message(parameter_name, class_name, object)
 
 
-@qgsfunction(args="auto",
-             group=TextConstants.exp_funcs_group,
-             helpText=load_help("possibilistic_exceedance"),
-             register=False)
-def possibilistic_exceedance(fn_1: FUZZY_NUMERICS, fn_2: FUZZY_NUMERICS, feature: QgsFeature,
-                             parent: QgsExpression):
+@qgsfunction(
+    args="auto",
+    group=TextConstants.exp_funcs_group,
+    helpText=load_help("possibilistic_exceedance"),
+    register=False,
+)
+def possibilistic_exceedance(
+    fn_1: FUZZY_NUMERICS,
+    fn_2: FUZZY_NUMERICS,
+    feature: QgsFeature,
+    parent: QgsExpression,
+):
 
     _validateInputs(fn_1, fn_2)
 
@@ -29,12 +35,18 @@ def possibilistic_exceedance(fn_1: FUZZY_NUMERICS, fn_2: FUZZY_NUMERICS, feature
     return fn_1.exceedance(fn_2)
 
 
-@qgsfunction(args="auto",
-             group=TextConstants.exp_funcs_group,
-             helpText=load_help("possibilistic_undervaluation"),
-             register=False)
-def possibilistic_undervaluation(fn_1: FUZZY_NUMERICS, fn_2: FUZZY_NUMERICS, feature: QgsFeature,
-                                 parent: QgsExpression):
+@qgsfunction(
+    args="auto",
+    group=TextConstants.exp_funcs_group,
+    helpText=load_help("possibilistic_undervaluation"),
+    register=False,
+)
+def possibilistic_undervaluation(
+    fn_1: FUZZY_NUMERICS,
+    fn_2: FUZZY_NUMERICS,
+    feature: QgsFeature,
+    parent: QgsExpression,
+):
 
     _validateInputs(fn_1, fn_2)
 
@@ -43,12 +55,18 @@ def possibilistic_undervaluation(fn_1: FUZZY_NUMERICS, fn_2: FUZZY_NUMERICS, fea
     return fn_1.undervaluation(fn_2)
 
 
-@qgsfunction(args="auto",
-             group=TextConstants.exp_funcs_group,
-             helpText=load_help("possibilistic_strict_exceedance"),
-             register=False)
-def possibilistic_strict_exceedance(fn_1: FUZZY_NUMERICS, fn_2: FUZZY_NUMERICS,
-                                    feature: QgsFeature, parent: QgsExpression):
+@qgsfunction(
+    args="auto",
+    group=TextConstants.exp_funcs_group,
+    helpText=load_help("possibilistic_strict_exceedance"),
+    register=False,
+)
+def possibilistic_strict_exceedance(
+    fn_1: FUZZY_NUMERICS,
+    fn_2: FUZZY_NUMERICS,
+    feature: QgsFeature,
+    parent: QgsExpression,
+):
 
     _validateInputs(fn_1, fn_2)
 
@@ -57,12 +75,18 @@ def possibilistic_strict_exceedance(fn_1: FUZZY_NUMERICS, fn_2: FUZZY_NUMERICS,
     return fn_1.strict_exceedance(fn_2)
 
 
-@qgsfunction(args="auto",
-             group=TextConstants.exp_funcs_group,
-             helpText=load_help("possibilistic_strict_undervaluation"),
-             register=False)
-def possibilistic_strict_undervaluation(fn_1: FUZZY_NUMERICS, fn_2: FUZZY_NUMERICS,
-                                        feature: QgsFeature, parent: QgsExpression):
+@qgsfunction(
+    args="auto",
+    group=TextConstants.exp_funcs_group,
+    helpText=load_help("possibilistic_strict_undervaluation"),
+    register=False,
+)
+def possibilistic_strict_undervaluation(
+    fn_1: FUZZY_NUMERICS,
+    fn_2: FUZZY_NUMERICS,
+    feature: QgsFeature,
+    parent: QgsExpression,
+):
 
     _validateInputs(fn_1, fn_2)
 
@@ -71,8 +95,9 @@ def possibilistic_strict_undervaluation(fn_1: FUZZY_NUMERICS, fn_2: FUZZY_NUMERI
     return fn_1.strict_undervaluation(fn_2)
 
 
-def _returnAsFuzzyNumbers(fn_1: FUZZY_NUMERICS,
-                          fn_2: FUZZY_NUMERICS) -> Tuple[FuzzyNumber, FuzzyNumber]:
+def _returnAsFuzzyNumbers(
+    fn_1: FUZZY_NUMERICS, fn_2: FUZZY_NUMERICS
+) -> Tuple[FuzzyNumber, FuzzyNumber]:
 
     if isinstance(fn_1, (int, float)):
         fn_1 = FuzzyNumberFactory.crisp_number(fn_1)

@@ -4,24 +4,30 @@ from ..FuzzyMath import FuzzyNumberFactory
 
 
 class ParameterFuzzyNumber(QgsProcessingParameterDefinition):
-
-    def __init__(self, name='', description='', parent=None, optional=False):
+    def __init__(self, name="", description="", parent=None, optional=False):
         super().__init__(name, description, None, optional)
         self.parent = parent
         self.setMetadata(
-            {'widget_wrapper': 'soft_queries.gui.widgetfuzzynumber.FuzzyNumberWidgetWrapper'})
+            {
+                "widget_wrapper": "soft_queries.gui.widgetfuzzynumber.FuzzyNumberWidgetWrapper"
+            }
+        )
 
     def type(self):
-        return 'fuzzy_number'
+        return "fuzzy_number"
 
     def clone(self):
-        return ParameterFuzzyNumber(self.name(), self.description(), self.parent,
-                                    self.flags() & QgsProcessingParameterDefinition.FlagOptional)
+        return ParameterFuzzyNumber(
+            self.name(),
+            self.description(),
+            self.parent,
+            self.flags() & QgsProcessingParameterDefinition.FlagOptional,
+        )
 
     @staticmethod
     def valueToFuzzyNumber(value):
 
-        if value is None or value == '':
+        if value is None or value == "":
             return None
 
         if isinstance(value, str):
@@ -33,9 +39,14 @@ class ParameterFuzzyNumber(QgsProcessingParameterDefinition):
             values = split_value[1].split("|")
 
             if fn_type == "triangular":
-                return FuzzyNumberFactory.triangular(float(values[0]), float(values[1]),
-                                                     float(values[2]))
+                return FuzzyNumberFactory.triangular(
+                    float(values[0]), float(values[1]), float(values[2])
+                )
 
             elif fn_type == "trapezoidal":
-                return FuzzyNumberFactory.trapezoidal(float(values[0]), float(values[1]),
-                                                      float(values[2]), float(values[3]))
+                return FuzzyNumberFactory.trapezoidal(
+                    float(values[0]),
+                    float(values[1]),
+                    float(values[2]),
+                    float(values[3]),
+                )

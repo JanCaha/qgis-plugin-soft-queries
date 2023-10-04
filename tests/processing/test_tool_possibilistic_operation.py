@@ -20,12 +20,12 @@ def test_run(context, feedback):
     alg.initAlgorithm()
 
     params = {
-        'POSSIBILISTIC_RASTER_1': f"{path_r_1_poss.as_posix()}::~::{path_r_1_nec.as_posix()}",
-        'POSSIBILISTIC_RASTER_2': f"{path_r_2_poss.as_posix()}::~::{path_r_2_nec.as_posix()}",
-        'OPERATION': 0,
-        'OPERATION_TYPE': 0,
-        'OUTPUT_POSSIBILITY': 'TEMPORARY_OUTPUT',
-        'OUTPUT_NECESSITY': 'TEMPORARY_OUTPUT'
+        "POSSIBILISTIC_RASTER_1": f"{path_r_1_poss.as_posix()}::~::{path_r_1_nec.as_posix()}",
+        "POSSIBILISTIC_RASTER_2": f"{path_r_2_poss.as_posix()}::~::{path_r_2_nec.as_posix()}",
+        "OPERATION": 0,
+        "OPERATION_TYPE": 0,
+        "OUTPUT_POSSIBILITY": "TEMPORARY_OUTPUT",
+        "OUTPUT_NECESSITY": "TEMPORARY_OUTPUT",
     }
 
     alg.checkParameterValues(parameters=params, context=context)

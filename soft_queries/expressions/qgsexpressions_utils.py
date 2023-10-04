@@ -17,5 +17,6 @@ def load_help(function_name: str) -> str:
 
 
 def error_message(parameter_name: str, class_name: str, object: Any) -> str:
-    return "`{}` parameter is not of Python class `{}`. It is `{}`.".\
-        format(parameter_name, class_name, type(object).__name__)
+    return "`{}` parameter is not of Python class `{}`. It is `{}`.".format(
+        parameter_name, class_name, type(object).__name__
+    )

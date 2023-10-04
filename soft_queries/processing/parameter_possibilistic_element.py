@@ -4,29 +4,32 @@ from qgis.core import QgsProcessingParameterDefinition, QgsRasterLayer
 
 
 class ParameterPossibilisticElement(QgsProcessingParameterDefinition):
-
-    def __init__(self, name='', description='', parent=None, optional=False):
+    def __init__(self, name="", description="", parent=None, optional=False):
         super().__init__(name, description, None, optional)
         self.parent = parent
-        self.setMetadata({
-            'widget_wrapper':
-                'soft_queries.gui.widgetpossibilisticelement.PossibilisticElementWidgetWrapper'
-        })
+        self.setMetadata(
+            {
+                "widget_wrapper": "soft_queries.gui.widgetpossibilisticelement.PossibilisticElementWidgetWrapper"
+            }
+        )
 
     def type(self):
-        return 'possibilistic_element'
+        return "possibilistic_element"
 
     def clone(self):
         return ParameterPossibilisticElement(
-            self.name(), self.description(), self.parent,
-            self.flags() & QgsProcessingParameterDefinition.FlagOptional)
+            self.name(),
+            self.description(),
+            self.parent,
+            self.flags() & QgsProcessingParameterDefinition.FlagOptional,
+        )
 
     @staticmethod
     def valueToRasters(value: str) -> Tuple[QgsRasterLayer, QgsRasterLayer]:
         if value is None:
             return None
 
-        if value == '':
+        if value == "":
             return None
 
         if isinstance(value, str):

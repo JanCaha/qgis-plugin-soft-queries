@@ -13,10 +13,13 @@ def test_expr_possibilistic_membership():
     assert_is_correct(exp, PossibilisticMembership, PossibilisticMembership(0.5, 0.3))
 
 
-@pytest.mark.parametrize("exp_params, msg", [
-    ("'a', 0.5", "`possibility` parameter"),
-    ("0.5, 'a'", "`necessity` parameter"),
-])
+@pytest.mark.parametrize(
+    "exp_params, msg",
+    [
+        ("'a', 0.5", "`possibility` parameter"),
+        ("0.5, 'a'", "`necessity` parameter"),
+    ],
+)
 def test_expr_possibilistic_membership_erros(exp_params, msg):
 
     exp = QgsExpression(f"possibilistic_membership({exp_params})")
@@ -109,12 +112,26 @@ def test_expr_possibilistic_and():
     assert_is_correct(exp, PossibilisticMembership, PossibilisticMembership(0.5, 0.15))
 
 
-@pytest.mark.parametrize("exp_params, type, msg", [
-    ("0.5, possibilistic_membership(0.5, 0.3)", "min", "`possibilistic_membership1` parameter"),
-    ("possibilistic_membership(0.5, 0.3), 0.75", "min", "`possibilistic_membership2` parameter"),
-    ("possibilistic_membership(0.5, 0.3), possibilistic_membership(0.5, 0.3)",
-     "non_existing_operation_type", "`type` value `non_existing_operation_type`"),
-])
+@pytest.mark.parametrize(
+    "exp_params, type, msg",
+    [
+        (
+            "0.5, possibilistic_membership(0.5, 0.3)",
+            "min",
+            "`possibilistic_membership1` parameter",
+        ),
+        (
+            "possibilistic_membership(0.5, 0.3), 0.75",
+            "min",
+            "`possibilistic_membership2` parameter",
+        ),
+        (
+            "possibilistic_membership(0.5, 0.3), possibilistic_membership(0.5, 0.3)",
+            "non_existing_operation_type",
+            "`type` value `non_existing_operation_type`",
+        ),
+    ],
+)
 def test_expr_possibilistic_and_errors(exp_params, type, msg):
 
     exp = QgsExpression(f"possibilistic_and({exp_params}, '{type}')")
@@ -131,12 +148,26 @@ def test_expr_possibilistic_or():
     assert_is_correct(exp, PossibilisticMembership, PossibilisticMembership(0.7, 0.3))
 
 
-@pytest.mark.parametrize("exp_params, type, msg", [
-    ("0.5, possibilistic_membership(0.5, 0.3)", "max", "`possibilistic_membership1` parameter"),
-    ("possibilistic_membership(0.5, 0.3), 0.75", "max", "`possibilistic_membership2` parameter"),
-    ("possibilistic_membership(0.5, 0.3), possibilistic_membership(0.5, 0.3)",
-     "non_existing_operation_type", "`type` value `non_existing_operation_type`"),
-])
+@pytest.mark.parametrize(
+    "exp_params, type, msg",
+    [
+        (
+            "0.5, possibilistic_membership(0.5, 0.3)",
+            "max",
+            "`possibilistic_membership1` parameter",
+        ),
+        (
+            "possibilistic_membership(0.5, 0.3), 0.75",
+            "max",
+            "`possibilistic_membership2` parameter",
+        ),
+        (
+            "possibilistic_membership(0.5, 0.3), possibilistic_membership(0.5, 0.3)",
+            "non_existing_operation_type",
+            "`type` value `non_existing_operation_type`",
+        ),
+    ],
+)
 def test_expr_possibilistic_or_errors(exp_params, type, msg):
 
     exp = QgsExpression(f"possibilistic_or({exp_params}, '{type}')")

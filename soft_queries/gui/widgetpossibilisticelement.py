@@ -59,15 +59,17 @@ class PossibilisticElementWidget(QWidget):
 
     def value(self):
 
-        return "{}{}{}".format(self.raster_possibility.dataProvider().dataSourceUri(),
-                               self.text_separator,
-                               self.raster_necessity.dataProvider().dataSourceUri())
+        return "{}{}{}".format(
+            self.raster_possibility.dataProvider().dataSourceUri(),
+            self.text_separator,
+            self.raster_necessity.dataProvider().dataSourceUri(),
+        )
 
     def value_as_dict(self):
 
         return {
             "possibility": self.raster_possibility.dataProvider().dataSourceUri(),
-            "necessity": self.raster_necessity.dataProvider().dataSourceUri()
+            "necessity": self.raster_necessity.dataProvider().dataSourceUri(),
         }
 
 
@@ -75,7 +77,6 @@ class PossibilisticElementWidget(QWidget):
 
 
 class PossibilisticElementWidgetWrapper(WidgetWrapper):
-
     def createWidget(self):
         return PossibilisticElementWidget()
 

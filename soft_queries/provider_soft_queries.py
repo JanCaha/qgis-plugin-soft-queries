@@ -13,16 +13,15 @@ from .utils import get_icon_path
 
 
 class SoftQueriesProvider(QgsProcessingProvider):
-
     def __init__(self):
         super().__init__()
 
-        path = Path(__file__).parent / 'metadata.txt'
+        path = Path(__file__).parent / "metadata.txt"
 
         config = configparser.ConfigParser()
         config.read(path)
 
-        self.version = config['general']['version']
+        self.version = config["general"]["version"]
 
     def load(self) -> bool:
 

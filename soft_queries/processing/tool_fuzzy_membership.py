@@ -35,11 +35,15 @@ class FuzzyMembershipAlgorithm(QgsProcessingAlgorithm):
 
         self.addParameter(ParameterFuzzyNumber(self.FUZZYNUMBER, "Fuzzy Number"))
 
-        self.addParameter(QgsProcessingParameterRasterLayer(self.RASTER, "Raster layer"))
+        self.addParameter(
+            QgsProcessingParameterRasterLayer(self.RASTER, "Raster layer")
+        )
 
         self.addParameter(
-            QgsProcessingParameterRasterDestination(self.OUTPUT_FUZZY_MEMBERSHIP,
-                                                    "Output raster layer - fuzzy membership"))
+            QgsProcessingParameterRasterDestination(
+                self.OUTPUT_FUZZY_MEMBERSHIP, "Output raster layer - fuzzy membership"
+            )
+        )
 
     def checkParameterValues(self, parameters, context):
 
@@ -59,7 +63,9 @@ class FuzzyMembershipAlgorithm(QgsProcessingAlgorithm):
 
         raster_band = 1
 
-        fuzzy_number = ParameterFuzzyNumber.valueToFuzzyNumber(parameters[self.FUZZYNUMBER])
+        fuzzy_number = ParameterFuzzyNumber.valueToFuzzyNumber(
+            parameters[self.FUZZYNUMBER]
+        )
 
         input_raster = self.parameterAsRasterLayer(parameters, self.RASTER, context)
 
@@ -67,8 +73,9 @@ class FuzzyMembershipAlgorithm(QgsProcessingAlgorithm):
 
         input_raster_nodata = input_raster_dp.sourceNoDataValue(raster_band)
 
-        path_fuzzy_raster = self.parameterAsOutputLayer(parameters, self.OUTPUT_FUZZY_MEMBERSHIP,
-                                                        context)
+        path_fuzzy_raster = self.parameterAsOutputLayer(
+            parameters, self.OUTPUT_FUZZY_MEMBERSHIP, context
+        )
 
         fuzzy_raster_writer = create_raster_writer(path_fuzzy_raster)
 
@@ -90,7 +97,7 @@ class FuzzyMembershipAlgorithm(QgsProcessingAlgorithm):
 
         count = 0
 
-        while (r_input_data.correct):
+        while r_input_data.correct:
 
             if feedback.isCanceled():
                 break
@@ -103,8 +110,9 @@ class FuzzyMembershipAlgorithm(QgsProcessingAlgorithm):
 
                 else:
 
-                    new_block.setValue(i,
-                                       fuzzy_number.membership(r_input_data.value(i)).membership)
+                    new_block.setValue(
+                        i, fuzzy_number.membership(r_input_data.value(i)).membership
+                    )
 
             writeBlock(fuzzy_raster_dp, new_block, r_input_data)
 

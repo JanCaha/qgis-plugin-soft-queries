@@ -28,7 +28,9 @@ class FuzzyNumber:
 
     __slots__ = ("_alpha_cuts", "_alphas", "_precision")
 
-    def __init__(self, alphas: List[float], alpha_cuts: List[Interval], precision: int = None):
+    def __init__(
+        self, alphas: List[float], alpha_cuts: List[Interval], precision: int = None
+    ):
         """
         Basic creator for the class. But generally it is more useful to use functions `FuzzyNumberFactory.triangular()`,
         `FuzzyNumberFactory.trapezoidal()`, `FuzzyNumberFactory.crisp_number()` or `FuzzyNumberFactory.parse_string()` instead of this
@@ -47,14 +49,22 @@ class FuzzyNumber:
             self._precision = set_up_precision(precision)
 
         if not isinstance(alphas, List):
-            raise TypeError("`alphas` must be a list. It is `{0}`.".format(type(alphas).__name__))
+            raise TypeError(
+                "`alphas` must be a list. It is `{0}`.".format(type(alphas).__name__)
+            )
 
         if not isinstance(alpha_cuts, List):
-            raise TypeError("`alpha_cuts` must be a list. It is `{0}`.".format(type(alphas).__name__))
+            raise TypeError(
+                "`alpha_cuts` must be a list. It is `{0}`.".format(
+                    type(alphas).__name__
+                )
+            )
 
         if not (len(alphas) == len(alpha_cuts)):
-            raise ValueError("Lists `alphas` and `alpha_cuts` must be of same length. Currently the "
-                             "lengths are {0} and {1}.".format(len(alphas), len(alpha_cuts)))
+            raise ValueError(
+                "Lists `alphas` and `alpha_cuts` must be of same length. Currently the "
+                "lengths are {0} and {1}.".format(len(alphas), len(alpha_cuts))
+            )
 
         for alpha in alphas:
             if not isinstance(alpha, (int, float)):
@@ -82,16 +92,22 @@ class FuzzyNumber:
         for alpha in self.alpha_levels:
             if not previous_interval.is_empty:
                 if not (self.get_alpha_cut(alpha) in previous_interval):
-                    raise ValueError("Interval on lower alpha level has to contain the higher level alpha cuts."
-                                     "This does not hold for {0} and {1}.".format(previous_interval,
-                                                                                  self.get_alpha_cut(alpha)))
+                    raise ValueError(
+                        "Interval on lower alpha level has to contain the higher level alpha cuts."
+                        "This does not hold for {0} and {1}.".format(
+                            previous_interval, self.get_alpha_cut(alpha)
+                        )
+                    )
 
             previous_interval = self.get_alpha_cut(alpha)
 
         if not (self._alphas[0] == 0, self._alphas[-1] == 1):
-            raise ValueError("The lowest alpha level has to be 0 and the highest alpha level has to be 1."
-                             "This does not hold for {0} and {1}.".format(self._alphas[0],
-                                                                          self._alphas[-1]))
+            raise ValueError(
+                "The lowest alpha level has to be 0 and the highest alpha level has to be 1."
+                "This does not hold for {0} and {1}.".format(
+                    self._alphas[0], self._alphas[-1]
+                )
+            )
 
     @property
     def alpha_levels(self) -> List[float]:
@@ -282,9 +298,9 @@ class FuzzyNumber:
         string = ""
 
         for alpha in self._alphas:
-            string = string + "({0};{1},{2})".format(alpha,
-                                                     self.get_alpha_cut(alpha).min,
-                                                     self.get_alpha_cut(alpha).max)
+            string = string + "({0};{1},{2})".format(
+                alpha, self.get_alpha_cut(alpha).min, self.get_alpha_cut(alpha).max
+            )
 
         return string
 
@@ -297,10 +313,13 @@ class FuzzyNumber:
         str
         """
 
-        string = "Fuzzy number with support ({},{}), kernel ({}, {}) and {} more alpha-cuts.".\
-            format(self.min, self.max,
-                   self.kernel.min, self.kernel.max,
-                   len(self.alpha_levels) - 2)
+        string = "Fuzzy number with support ({},{}), kernel ({}, {}) and {} more alpha-cuts.".format(
+            self.min,
+            self.max,
+            self.kernel.min,
+            self.kernel.max,
+            len(self.alpha_levels) - 2,
+        )
 
         return string
 
@@ -311,10 +330,15 @@ class FuzzyNumber:
         elif isinstance(item, Interval):
             return interval.min <= item.min and interval.max <= self.max
         elif isinstance(item, FuzzyNumber):
-            return interval.min <= item.get_alpha_cut(0).min and item.get_alpha_cut(0).max <= interval.max
+            return (
+                interval.min <= item.get_alpha_cut(0).min
+                and item.get_alpha_cut(0).max <= interval.max
+            )
         else:
-            raise TypeError("Cannot test if object of type `{0}` is in FuzzyNumber. Only implemented for `float`, "
-                            "`int`, `Interval` and `FuzzyNumber`.".format(type(item).__name__))
+            raise TypeError(
+                "Cannot test if object of type `{0}` is in FuzzyNumber. Only implemented for `float`, "
+                "`int`, `Interval` and `FuzzyNumber`.".format(type(item).__name__)
+            )
 
     def __lt__(self, other):
         if isinstance(other, FuzzyNumber):
@@ -333,7 +357,9 @@ class FuzzyNumber:
             return NotImplemented
 
     @staticmethod
-    def get_alpha_cut_values(number_of_parts: int, precision: int = None) -> List[float]:
+    def get_alpha_cut_values(
+        number_of_parts: int, precision: int = None
+    ) -> List[float]:
         """
         Returns alpha cut values for given number of parts.
 
@@ -357,9 +383,12 @@ class FuzzyNumber:
             precision = set_up_precision(precision)
 
         if not isinstance(number_of_parts, int) or number_of_parts <= 1:
-            raise ValueError("`number_of_cuts` has to be integer and higher than 1. "
-                             "It is of type `{0}` and value `{1}`.".format(type(number_of_parts).__name__,
-                                                                           number_of_parts))
+            raise ValueError(
+                "`number_of_cuts` has to be integer and higher than 1. "
+                "It is of type `{0}` and value `{1}`.".format(
+                    type(number_of_parts).__name__, number_of_parts
+                )
+            )
 
         number_of_parts = int(number_of_parts)
 
@@ -448,58 +477,72 @@ class FuzzyNumber:
 
     def possibility_exceedance(self, fn_other: FuzzyNumber) -> float:
         from .fuzzynumber_comparisons import possibility_exceedance
+
         return possibility_exceedance(self, fn_other)
 
     def necessity_exceedance(self, fn_other: FuzzyNumber) -> float:
         from .fuzzynumber_comparisons import necessity_exceedance
+
         return necessity_exceedance(self, fn_other)
 
     def exceedance(self, fn_other: FuzzyNumber) -> PossibilisticMembership:
         from .fuzzynumber_comparisons import exceedance
+
         return exceedance(self, fn_other)
 
     def possibility_strict_exceedance(self, fn_other: FuzzyNumber) -> float:
         from .fuzzynumber_comparisons import possibility_strict_exceedance
+
         return possibility_strict_exceedance(self, fn_other)
 
     def necessity_strict_exceedance(self, fn_other: FuzzyNumber) -> float:
         from .fuzzynumber_comparisons import necessity_strict_exceedance
+
         return necessity_strict_exceedance(self, fn_other)
 
     def strict_exceedance(self, fn_other: FuzzyNumber) -> PossibilisticMembership:
         from .fuzzynumber_comparisons import strict_exceedance
+
         return strict_exceedance(self, fn_other)
 
     def possibility_undervaluation(self, fn_other: FuzzyNumber) -> float:
         from .fuzzynumber_comparisons import possibility_undervaluation
+
         return possibility_undervaluation(self, fn_other)
 
     def necessity_undervaluation(self, fn_other: FuzzyNumber) -> float:
         from .fuzzynumber_comparisons import necessity_undervaluation
+
         return necessity_undervaluation(self, fn_other)
 
     def undervaluation(self, fn_other: FuzzyNumber) -> PossibilisticMembership:
         from .fuzzynumber_comparisons import undervaluation
+
         return undervaluation(self, fn_other)
 
     def possibility_strict_undervaluation(self, fn_other: FuzzyNumber) -> float:
         from .fuzzynumber_comparisons import possibility_strict_undervaluation
+
         return possibility_strict_undervaluation(self, fn_other)
 
     def necessity_strict_undervaluation(self, fn_other: FuzzyNumber) -> float:
         from .fuzzynumber_comparisons import necessity_strict_undervaluation
+
         return necessity_strict_undervaluation(self, fn_other)
 
     def strict_undervaluation(self, fn_other: FuzzyNumber) -> PossibilisticMembership:
         from .fuzzynumber_comparisons import strict_undervaluation
+
         return strict_undervaluation(self, fn_other)
 
-    def apply_function(self,
-                       function: Callable,
-                       *args,
-                       monotone: bool = False,
-                       number_elements: int = 1000,
-                       **kwargs) -> FuzzyNumber:
+    def apply_function(
+        self,
+        function: Callable,
+        *args,
+        monotone: bool = False,
+        number_elements: int = 1000,
+        **kwargs,
+    ) -> FuzzyNumber:
         """
         Apply mathematical function to fuzzy number.
 
@@ -527,15 +570,23 @@ class FuzzyNumber:
         """
 
         if not isinstance(function, (FunctionType, BuiltinFunctionType)):
-            raise ValueError("`function` must be either `FunctionType` or `BuiltinFunctionType`. `function` currently "
-                             "is `{}`.".format(type(function)))
+            raise ValueError(
+                "`function` must be either `FunctionType` or `BuiltinFunctionType`. `function` currently "
+                "is `{}`.".format(type(function))
+            )
 
         if not isinstance(number_elements, (int, float)):
-            raise ValueError("`number_elements` must be either `int` or `float`. `number_elements` is currently "
-                             "`{}`.".format(type(number_elements)))
+            raise ValueError(
+                "`number_elements` must be either `int` or `float`. `number_elements` is currently "
+                "`{}`.".format(type(number_elements))
+            )
 
         if not isinstance(monotone, bool):
-            raise ValueError("`monotone` must be `bool`. `monotone` is currently `{}`.".format(monotone))
+            raise ValueError(
+                "`monotone` must be `bool`. `monotone` is currently `{}`.".format(
+                    monotone
+                )
+            )
 
         intervals: List[Interval] = []
 
@@ -551,11 +602,13 @@ class FuzzyNumber:
 
             number_elements_cut = (alpha_width / width) * number_elements
 
-            interval = self.get_alpha_cut(alpha).apply_function(function,
-                                                                *args,
-                                                                monotone=monotone,
-                                                                number_elements=number_elements_cut,
-                                                                **kwargs)
+            interval = self.get_alpha_cut(alpha).apply_function(
+                function,
+                *args,
+                monotone=monotone,
+                number_elements=number_elements_cut,
+                **kwargs,
+            )
 
             if i != 0:
                 interval = interval.union_hull(intervals[i - 1])
@@ -568,11 +621,16 @@ class FuzzyNumber:
         return FuzzyNumber(self.alpha_levels, intervals, precision=self._precision)
 
     @staticmethod
-    def _iterate_alphas_one_value(x: FuzzyNumber, operation: Callable, *args) -> FuzzyNumber:
+    def _iterate_alphas_one_value(
+        x: FuzzyNumber, operation: Callable, *args
+    ) -> FuzzyNumber:
 
         if not callable(operation):
-            raise TypeError("`operation` needs to be a function. It is `{0}`."
-                            .format(type(operation).__name__))
+            raise TypeError(
+                "`operation` needs to be a function. It is `{0}`.".format(
+                    type(operation).__name__
+                )
+            )
 
         alphas, intervals = FuzzyNumber.__prepare_alphas_intervals(x.alpha_levels)
 
@@ -588,14 +646,19 @@ class FuzzyNumber:
     def _iterate_alphas_two_values(x, y, operation: Callable) -> FuzzyNumber:
 
         if not isinstance(operation, FunctionType):
-            raise TypeError("`operation` needs to be a function. It is `{0}`."
-                            .format(type(operation).__name__))
+            raise TypeError(
+                "`operation` needs to be a function. It is `{0}`.".format(
+                    type(operation).__name__
+                )
+            )
 
         fuzzy_x = isinstance(x, FuzzyNumber)
         fuzzy_y = isinstance(y, FuzzyNumber)
 
         if fuzzy_x and fuzzy_y:
-            alphas, intervals = FuzzyNumber.__prepare_alphas_intervals(x.alpha_levels, y.alpha_levels)
+            alphas, intervals = FuzzyNumber.__prepare_alphas_intervals(
+                x.alpha_levels, y.alpha_levels
+            )
             precision = x.precision
         elif fuzzy_x:
             alphas, intervals = FuzzyNumber.__prepare_alphas_intervals(x.alpha_levels)
@@ -618,10 +681,12 @@ class FuzzyNumber:
 
         return FuzzyNumber(alphas, intervals, precision=precision)
 
-    def __get_cuts_values(self,
-                          alphas: List[float] = None,
-                          order_by_alphas_from_one: bool = False,
-                          value_type: str = "min") -> List[float]:
+    def __get_cuts_values(
+        self,
+        alphas: List[float] = None,
+        order_by_alphas_from_one: bool = False,
+        value_type: str = "min",
+    ) -> List[float]:
         if alphas is None:
             alphas = self.alpha_levels
         else:
@@ -642,9 +707,9 @@ class FuzzyNumber:
 
         return values
 
-    def get_alpha_cuts_mins(self,
-                            alphas: List[float] = None,
-                            order_by_alphas_from_one: bool = False) -> List[float]:
+    def get_alpha_cuts_mins(
+        self, alphas: List[float] = None, order_by_alphas_from_one: bool = False
+    ) -> List[float]:
         """
         Extract minimimal values of provided alpha cuts as list.
 
@@ -661,13 +726,15 @@ class FuzzyNumber:
         -------
         List[float]
         """
-        return self.__get_cuts_values(alphas=alphas,
-                                      order_by_alphas_from_one=order_by_alphas_from_one,
-                                      value_type="min")
+        return self.__get_cuts_values(
+            alphas=alphas,
+            order_by_alphas_from_one=order_by_alphas_from_one,
+            value_type="min",
+        )
 
-    def get_alpha_cuts_maxs(self,
-                            alphas: List[float] = None,
-                            order_by_alphas_from_one: bool = False) -> List[float]:
+    def get_alpha_cuts_maxs(
+        self, alphas: List[float] = None, order_by_alphas_from_one: bool = False
+    ) -> List[float]:
         """
         Extract maximal values of provided alpha cuts as list.
 
@@ -684,13 +751,16 @@ class FuzzyNumber:
         -------
         List[float]
         """
-        return self.__get_cuts_values(alphas=alphas,
-                                      order_by_alphas_from_one=order_by_alphas_from_one,
-                                      value_type="max")
+        return self.__get_cuts_values(
+            alphas=alphas,
+            order_by_alphas_from_one=order_by_alphas_from_one,
+            value_type="max",
+        )
 
     @staticmethod
-    def _prepare_alphas(alpha_levels1: List[float],
-                        alpha_levels2: List[float]) -> List[float]:
+    def _prepare_alphas(
+        alpha_levels1: List[float], alpha_levels2: List[float]
+    ) -> List[float]:
         """
         Prepares list of alphas based on two input lists of alphas by selecting only distinct alpha values.
 
@@ -707,8 +777,9 @@ class FuzzyNumber:
         return alphas
 
     @staticmethod
-    def __prepare_alphas_intervals(alpha_levels1: List[float],
-                                   alpha_levels2: List[float] = None) -> Tuple[List[float], List[Interval]]:
+    def __prepare_alphas_intervals(
+        alpha_levels1: List[float], alpha_levels2: List[float] = None
+    ) -> Tuple[List[float], List[Interval]]:
         """
         Prepares list of alphas and list of empty `Interval`s for provided alpha levels.
 
@@ -735,8 +806,10 @@ class FuzzyNumber:
     def membership(self, value: Union[float, int]):
 
         if not isinstance(value, (int, float)):
-            raise TypeError("Cannot get membership of `{0}` in FuzzyNumber. Only implemented for `float`, "
-                            "`int`.".format(type(value).__name__))
+            raise TypeError(
+                "Cannot get membership of `{0}` in FuzzyNumber. Only implemented for `float`, "
+                "`int`.".format(type(value).__name__)
+            )
 
         if value not in self:
             return FuzzyMembership(0)
@@ -757,7 +830,10 @@ class FuzzyNumber:
             y1 = self._alphas[last_alpha_containing]
             y2 = self._alphas[last_alpha_containing + 1]
 
-            if self.alpha_cuts[last_alpha_containing].min <= value and value <= self.alpha_cuts[last_alpha_containing + 1].min:
+            if (
+                self.alpha_cuts[last_alpha_containing].min <= value
+                and value <= self.alpha_cuts[last_alpha_containing + 1].min
+            ):
                 x1 = self.alpha_cuts[last_alpha_containing].min
                 x2 = self.alpha_cuts[last_alpha_containing + 1].min
 
@@ -771,10 +847,14 @@ class FuzzyNumber:
             return FuzzyMembership((k * value) + q)
 
     @classmethod
-    def triangular(cls,
-                   minimum: float, kernel: float, maximum: float,
-                   number_of_cuts: int = None,
-                   precision: int = None) -> FuzzyNumber:
+    def triangular(
+        cls,
+        minimum: float,
+        kernel: float,
+        maximum: float,
+        number_of_cuts: int = None,
+        precision: int = None,
+    ) -> FuzzyNumber:
         """
         Creates triangular `FuzzyNumber` based on input parameters.
 
@@ -801,16 +881,23 @@ class FuzzyNumber:
 
         warnings.warn(
             "The function is deprecated since version 0.5, use the function from `FuzzyNumberFactory` instead. The function will be removed in future version.",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
 
         from .class_factories import FuzzyNumberFactory
+
         return FuzzyNumberFactory.triangular(minimum, kernel, maximum, precision)
 
     @classmethod
-    def trapezoidal(cls,
-                    minimum: float, kernel_minimum: float, kernel_maximum: float, maximum: float,
-                    number_of_cuts: int = None,
-                    precision: int = None) -> FuzzyNumber:
+    def trapezoidal(
+        cls,
+        minimum: float,
+        kernel_minimum: float,
+        kernel_maximum: float,
+        maximum: float,
+        number_of_cuts: int = None,
+        precision: int = None,
+    ) -> FuzzyNumber:
         """
         Creates trapezoidal `FuzzyNumber` based on input parameters.
 
@@ -840,15 +927,17 @@ class FuzzyNumber:
 
         warnings.warn(
             "The function is deprecated since version 0.5, use the function from `FuzzyNumberFactory` instead. The function will be removed in future version.",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
 
         from .class_factories import FuzzyNumberFactory
-        return FuzzyNumberFactory.trapezoidal(minimum, kernel_minimum, kernel_maximum, maximum, precision)
+
+        return FuzzyNumberFactory.trapezoidal(
+            minimum, kernel_minimum, kernel_maximum, maximum, precision
+        )
 
     @classmethod
-    def crisp_number(cls,
-                     value: float,
-                     precision: int = None) -> FuzzyNumber:
+    def crisp_number(cls, value: float, precision: int = None) -> FuzzyNumber:
         """
         Creates `FuzzyNumber` based on input parameters.
 
@@ -866,15 +955,15 @@ class FuzzyNumber:
 
         warnings.warn(
             "The function is deprecated since version 0.5, use the function from `FuzzyNumberFactory` instead. The function will be removed in future version.",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
 
         from .class_factories import FuzzyNumberFactory
+
         return FuzzyNumberFactory.crisp_number(value, precision)
 
     @classmethod
-    def parse_string(cls,
-                     string: str,
-                     precision: int = None) -> FuzzyNumber:
+    def parse_string(cls, string: str, precision: int = None) -> FuzzyNumber:
         """
         Creates `FuzzyNumber` based on input string. The input string should be output of `__repr__()` function of
         `FuzzyNumber`.
@@ -892,7 +981,9 @@ class FuzzyNumber:
 
         warnings.warn(
             "The function is deprecated since version 0.5, use the function from `FuzzyNumberFactory` instead. The function will be removed in future version.",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
 
         from .class_factories import FuzzyNumberFactory
+
         return FuzzyNumberFactory.parse_string(string, precision)

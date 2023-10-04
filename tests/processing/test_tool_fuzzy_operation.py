@@ -15,7 +15,7 @@ def test_run(raster_fuzzy_1_path: str, raster_fuzzy_2_path: str, context, feedba
         "FUZZY_RASTER_2": raster_fuzzy_2_path,
         "OPERATION": 0,
         "OPERATION_TYPE": 0,
-        "OUTPUT_FUZZY_MEMBERSHIP": "TEMPORARY_OUTPUT"
+        "OUTPUT_FUZZY_MEMBERSHIP": "TEMPORARY_OUTPUT",
     }
 
     alg.checkParameterValues(parameters=params, context=context)
@@ -25,4 +25,6 @@ def test_run(raster_fuzzy_1_path: str, raster_fuzzy_2_path: str, context, feedba
     assert result[1]
     assert isinstance(result[0], dict)
     assert isinstance(result[0]["OUTPUT_FUZZY_MEMBERSHIP"], str)
-    assert isinstance(QgsRasterLayer(result[0]["OUTPUT_FUZZY_MEMBERSHIP"]), QgsRasterLayer)
+    assert isinstance(
+        QgsRasterLayer(result[0]["OUTPUT_FUZZY_MEMBERSHIP"]), QgsRasterLayer
+    )

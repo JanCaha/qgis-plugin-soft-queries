@@ -48,8 +48,7 @@ if cmd_folder not in sys.path:
     sys.path.insert(0, cmd_folder)
 
 
-class SoftQueriesPlugin():
-
+class SoftQueriesPlugin:
     def __init__(self, iface):
 
         self.iface: QgisInterface = iface
@@ -97,10 +96,12 @@ class SoftQueriesPlugin():
     def initGui(self):
         self.initProcessing()
 
-        self.add_action(icon_path=get_icon_path("soft_queries.svg"),
-                        text=TextConstants.fuzzy_variables,
-                        callback=self.run_tool_fuzzy_variables,
-                        add_to_toolbar=True)
+        self.add_action(
+            icon_path=get_icon_path("soft_queries.svg"),
+            text=TextConstants.fuzzy_variables,
+            callback=self.run_tool_fuzzy_variables,
+            add_to_toolbar=True,
+        )
 
     def run_tool_fuzzy_variables(self):
 
@@ -117,17 +118,19 @@ class SoftQueriesPlugin():
 
         self.unregister_exp_functions()
 
-    def add_action(self,
-                   icon_path,
-                   text,
-                   callback,
-                   enabled_flag=True,
-                   add_to_menu=True,
-                   add_to_toolbar=True,
-                   status_tip=None,
-                   whats_this=None,
-                   parent=None,
-                   add_to_specific_toolbar=None):
+    def add_action(
+        self,
+        icon_path,
+        text,
+        callback,
+        enabled_flag=True,
+        add_to_menu=True,
+        add_to_toolbar=True,
+        status_tip=None,
+        whats_this=None,
+        parent=None,
+        add_to_specific_toolbar=None,
+    ):
 
         icon = QIcon(icon_path)
         action = QAction(icon, text, parent)

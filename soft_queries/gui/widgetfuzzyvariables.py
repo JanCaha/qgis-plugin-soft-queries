@@ -8,7 +8,6 @@ from ..FuzzyMath import FuzzyNumber
 
 
 class FuzzyVariablesTreeWidget(QTreeWidget):
-
     def __init__(self, parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
 

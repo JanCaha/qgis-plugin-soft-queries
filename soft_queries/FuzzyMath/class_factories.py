@@ -11,11 +11,13 @@ class FuzzyNumberFactory:
     """
 
     @staticmethod
-    def triangular(minimum: float,
-                   kernel: float,
-                   maximum: float,
-                   number_of_cuts: int = None,
-                   precision: int = None) -> FuzzyNumber:
+    def triangular(
+        minimum: float,
+        kernel: float,
+        maximum: float,
+        number_of_cuts: int = None,
+        precision: int = None,
+    ) -> FuzzyNumber:
         """
         Creates triangular `FuzzyNumber` based on input parameters.
 
@@ -43,21 +45,25 @@ class FuzzyNumberFactory:
         if not minimum <= kernel <= maximum:
             raise ValueError(
                 "The fuzzy number is invalid. The structure needs to be `minimum` <= `kernel` "
-                "<= `maximum`. Currently it is `{0}` <= `{1}` <= `{2}`, which does not hold.".
-                format(minimum, kernel, maximum))
+                "<= `maximum`. Currently it is `{0}` <= `{1}` <= `{2}`, which does not hold.".format(
+                    minimum, kernel, maximum
+                )
+            )
 
         if number_of_cuts is None or number_of_cuts <= 2:
 
-            return FuzzyNumber(alphas=[0, 1],
-                               alpha_cuts=[
-                                   IntervalFactory.infimum_supremum(minimum,
-                                                                    maximum,
-                                                                    precision=precision),
-                                   IntervalFactory.infimum_supremum(kernel,
-                                                                    kernel,
-                                                                    precision=precision)
-            ],
-                precision=precision)
+            return FuzzyNumber(
+                alphas=[0, 1],
+                alpha_cuts=[
+                    IntervalFactory.infimum_supremum(
+                        minimum, maximum, precision=precision
+                    ),
+                    IntervalFactory.infimum_supremum(
+                        kernel, kernel, precision=precision
+                    ),
+                ],
+                precision=precision,
+            )
 
         else:
             alphas = FuzzyNumber.get_alpha_cut_values(number_of_cuts, precision)
@@ -67,30 +73,32 @@ class FuzzyNumberFactory:
             i = 0
             for alpha in alphas:
                 if alpha == 0:
-                    intervals[i] = IntervalFactory.infimum_supremum(minimum,
-                                                                    maximum,
-                                                                    precision=precision)
+                    intervals[i] = IntervalFactory.infimum_supremum(
+                        minimum, maximum, precision=precision
+                    )
                 elif alpha == 1:
-                    intervals[i] = IntervalFactory.infimum_supremum(kernel,
-                                                                    kernel,
-                                                                    precision=precision)
+                    intervals[i] = IntervalFactory.infimum_supremum(
+                        kernel, kernel, precision=precision
+                    )
                 else:
                     int_min = ((kernel - minimum) / (number_of_cuts - 1)) * i + minimum
                     int_max = maximum - ((maximum - kernel) / (number_of_cuts - 1)) * i
-                    intervals[i] = IntervalFactory.infimum_supremum(int_min,
-                                                                    int_max,
-                                                                    precision=precision)
+                    intervals[i] = IntervalFactory.infimum_supremum(
+                        int_min, int_max, precision=precision
+                    )
                 i += 1
 
             return FuzzyNumber(alphas=alphas, alpha_cuts=intervals, precision=precision)
 
     @staticmethod
-    def trapezoidal(minimum: float,
-                    kernel_minimum: float,
-                    kernel_maximum: float,
-                    maximum: float,
-                    number_of_cuts: int = None,
-                    precision: int = None) -> FuzzyNumber:
+    def trapezoidal(
+        minimum: float,
+        kernel_minimum: float,
+        kernel_maximum: float,
+        maximum: float,
+        number_of_cuts: int = None,
+        precision: int = None,
+    ) -> FuzzyNumber:
         """
         Creates trapezoidal `FuzzyNumber` based on input parameters.
 
@@ -123,20 +131,24 @@ class FuzzyNumberFactory:
                 "The fuzzy number is invalid. The structure needs to be "
                 "`minimum` <= `kernel_minimum` <= `kernel_maximum` <= `maximum`. "
                 "Currently it is `{0}` <= `{1}` <= `{2}` <= `{3}`, which does not hold.".format(
-                    minimum, kernel_minimum, kernel_maximum, maximum))
+                    minimum, kernel_minimum, kernel_maximum, maximum
+                )
+            )
 
         if number_of_cuts is None or number_of_cuts <= 2:
 
-            return FuzzyNumber(alphas=[0, 1],
-                               alpha_cuts=[
-                                   IntervalFactory.infimum_supremum(minimum,
-                                                                    maximum,
-                                                                    precision=precision),
-                                   IntervalFactory.infimum_supremum(kernel_minimum,
-                                                                    kernel_maximum,
-                                                                    precision=precision)
-            ],
-                precision=precision)
+            return FuzzyNumber(
+                alphas=[0, 1],
+                alpha_cuts=[
+                    IntervalFactory.infimum_supremum(
+                        minimum, maximum, precision=precision
+                    ),
+                    IntervalFactory.infimum_supremum(
+                        kernel_minimum, kernel_maximum, precision=precision
+                    ),
+                ],
+                precision=precision,
+            )
 
         else:
             alphas = FuzzyNumber.get_alpha_cut_values(number_of_cuts, precision)
@@ -146,19 +158,24 @@ class FuzzyNumberFactory:
             i = 0
             for alpha in alphas:
                 if alpha == 0:
-                    intervals[i] = IntervalFactory.infimum_supremum(minimum,
-                                                                    maximum,
-                                                                    precision=precision)
+                    intervals[i] = IntervalFactory.infimum_supremum(
+                        minimum, maximum, precision=precision
+                    )
                 elif alpha == 1:
-                    intervals[i] = IntervalFactory.infimum_supremum(kernel_minimum,
-                                                                    kernel_maximum,
-                                                                    precision=precision)
+                    intervals[i] = IntervalFactory.infimum_supremum(
+                        kernel_minimum, kernel_maximum, precision=precision
+                    )
                 else:
-                    int_min = ((kernel_minimum - minimum) / (number_of_cuts - 1)) * i + minimum
-                    int_max = maximum - ((maximum - kernel_maximum) / (number_of_cuts - 1)) * i
-                    intervals[i] = IntervalFactory.infimum_supremum(int_min,
-                                                                    int_max,
-                                                                    precision=precision)
+                    int_min = (
+                        (kernel_minimum - minimum) / (number_of_cuts - 1)
+                    ) * i + minimum
+                    int_max = (
+                        maximum
+                        - ((maximum - kernel_maximum) / (number_of_cuts - 1)) * i
+                    )
+                    intervals[i] = IntervalFactory.infimum_supremum(
+                        int_min, int_max, precision=precision
+                    )
                 i += 1
 
             return FuzzyNumber(alphas=alphas, alpha_cuts=intervals, precision=precision)
@@ -180,12 +197,14 @@ class FuzzyNumberFactory:
         FuzzyNumber
         """
 
-        return FuzzyNumber(alphas=[0, 1],
-                           alpha_cuts=[
-                               IntervalFactory.infimum_supremum(value, value, precision=precision),
-                               IntervalFactory.infimum_supremum(value, value, precision=precision)
-        ],
-            precision=precision)
+        return FuzzyNumber(
+            alphas=[0, 1],
+            alpha_cuts=[
+                IntervalFactory.infimum_supremum(value, value, precision=precision),
+                IntervalFactory.infimum_supremum(value, value, precision=precision),
+            ],
+            precision=precision,
+        )
 
     @staticmethod
     def parse_string(string: str, precision: int = None) -> FuzzyNumber:
@@ -221,23 +240,30 @@ class FuzzyNumberFactory:
             if len(numbers) != 3:
                 raise ValueError(
                     "Cannot parse FuzzyNumber from this definition. "
-                    "Not all elements provide 3 values (alpha cut value and interval).")
+                    "Not all elements provide 3 values (alpha cut value and interval)."
+                )
 
             numbers = [float(x) for x in numbers]
 
             try:
                 FuzzyNumber._validate_alpha(numbers[0])
             except ValueError as err:
-                raise ValueError("`{}` element of Fuzzy Number is incorrectly defined. {}".format(
-                    a_cut_def, err))
+                raise ValueError(
+                    "`{}` element of Fuzzy Number is incorrectly defined. {}".format(
+                        a_cut_def, err
+                    )
+                )
 
             alphas[i] = numbers[0]
 
             try:
                 alpha_cuts[i] = IntervalFactory.infimum_supremum(numbers[1], numbers[2])
             except ValueError as err:
-                raise ValueError("`{}` element of Fuzzy Number is incorrectly defined. {}".format(
-                    a_cut_def, err))
+                raise ValueError(
+                    "`{}` element of Fuzzy Number is incorrectly defined. {}".format(
+                        a_cut_def, err
+                    )
+                )
 
             i += 1
 
@@ -261,7 +287,9 @@ class IntervalFactory:
         return Interval(float("nan"), float("nan"))
 
     @staticmethod
-    def infimum_supremum(minimum: float, maximum: float, precision: int = None) -> Interval:
+    def infimum_supremum(
+        minimum: float, maximum: float, precision: int = None
+    ) -> Interval:
         """
         Interval defined by minimum and maximum.
 
@@ -288,7 +316,9 @@ class IntervalFactory:
             raise ValueError(
                 "The interval is invalid. `minimum` must be lower or equal to"
                 " `maximum`. Currently it is `{0}` <= `{1}`, which does not hold.".format(
-                    minimum, maximum))
+                    minimum, maximum
+                )
+            )
 
         return Interval(minimum, maximum, precision=precision)
 
@@ -313,7 +343,9 @@ class IntervalFactory:
         return Interval(a, b, precision=precision)
 
     @staticmethod
-    def midpoint_width(midpoint: float, width: float, precision: int = None) -> Interval:
+    def midpoint_width(
+        midpoint: float, width: float, precision: int = None
+    ) -> Interval:
         """
         Interval defined by midpoint and width. The interval is [midpoint - width, midpoint + width].
 
@@ -336,8 +368,10 @@ class IntervalFactory:
             If `width < 0` which is not valid width definition.
         """
         if width < 0:
-            raise ArithmeticError("`width` of interval must number higher or at least equal to 0. "
-                                  "The value `{0}` does not fulfill this.".format(width))
+            raise ArithmeticError(
+                "`width` of interval must number higher or at least equal to 0. "
+                "The value `{0}` does not fulfill this.".format(width)
+            )
 
         midpoint = float(midpoint)
         width = float(width)
@@ -369,7 +403,9 @@ class IntervalFactory:
         numbers = re_values.findall(string)
 
         if len(numbers) != 2:
-            raise ValueError("Cannot parse Interval from this definition. "
-                             "Element does not provide 2 values (minimal and maximal).")
+            raise ValueError(
+                "Cannot parse Interval from this definition. "
+                "Element does not provide 2 values (minimal and maximal)."
+            )
 
         return Interval(numbers[0], numbers[1], precision=precision)

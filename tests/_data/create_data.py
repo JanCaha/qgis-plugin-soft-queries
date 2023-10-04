@@ -18,25 +18,33 @@ def fuzzy_rasters():
     params = {
         "FUZZY_NUMBER": "triangular;1005.0|1015.0|1025.0",
         "RASTER": input_raster_path.as_posix(),
-        "OUTPUT_FUZZY_MEMBERSHIP": "TEMPORARY_OUTPUT"
+        "OUTPUT_FUZZY_MEMBERSHIP": "TEMPORARY_OUTPUT",
     }
 
     output_path = Path(__file__).parent / "fuzzy_1.tif"
 
     params.update({"OUTPUT_FUZZY_MEMBERSHIP": output_path.as_posix()})
 
-    result = alg.run(parameters=params,
-                     context=QgsProcessingContext(),
-                     feedback=QgsProcessingFeedback())
+    result = alg.run(
+        parameters=params,
+        context=QgsProcessingContext(),
+        feedback=QgsProcessingFeedback(),
+    )
 
     output_path = Path(__file__).parent / "fuzzy_2.tif"
 
-    params.update({
-        "FUZZY_NUMBER": "triangular;995.0|1005.0|1015.0",
-        "OUTPUT_FUZZY_MEMBERSHIP": output_path.as_posix()
-    })
+    params.update(
+        {
+            "FUZZY_NUMBER": "triangular;995.0|1005.0|1015.0",
+            "OUTPUT_FUZZY_MEMBERSHIP": output_path.as_posix(),
+        }
+    )
 
-    alg.run(parameters=params, context=QgsProcessingContext(), feedback=QgsProcessingFeedback())
+    alg.run(
+        parameters=params,
+        context=QgsProcessingContext(),
+        feedback=QgsProcessingFeedback(),
+    )
 
 
 def possibilistic_rasters():
@@ -52,10 +60,14 @@ def possibilistic_rasters():
         "RASTER": input_raster_path.as_posix(),
         "OUTPUT_POSSIBILITY": output_path_poss.as_posix(),
         "OUTPUT_NECESSITY": output_path_nec.as_posix(),
-        "OPERATION": 0
+        "OPERATION": 0,
     }
 
-    alg.run(parameters=params, context=QgsProcessingContext(), feedback=QgsProcessingFeedback())
+    alg.run(
+        parameters=params,
+        context=QgsProcessingContext(),
+        feedback=QgsProcessingFeedback(),
+    )
 
     output_path_poss = Path(__file__).parent / "r_2_poss.tif"
     output_path_nec = Path(__file__).parent / "r_2_nec.tif"
@@ -65,10 +77,14 @@ def possibilistic_rasters():
         "RASTER": input_raster_path.as_posix(),
         "OUTPUT_POSSIBILITY": output_path_poss.as_posix(),
         "OUTPUT_NECESSITY": output_path_nec.as_posix(),
-        "OPERATION": 0
+        "OPERATION": 0,
     }
 
-    alg.run(parameters=params, context=QgsProcessingContext(), feedback=QgsProcessingFeedback())
+    alg.run(
+        parameters=params,
+        context=QgsProcessingContext(),
+        feedback=QgsProcessingFeedback(),
+    )
 
 
 if __name__ == "__main__":
