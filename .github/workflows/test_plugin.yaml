@@ -37,4 +37,4 @@ jobs:
  
       - name: Run Tests
         run: |
-          QT_QPA_PLATFORM=offscreen pytest tests --cov=qmapshaper --cov-report=term-missing:skip-covered -rP -vv -s
+          QT_QPA_PLATFORM=offscreen pytest tests --cov=soft_queries --cov-report=term-missing:skip-covered -rP -vv -s
