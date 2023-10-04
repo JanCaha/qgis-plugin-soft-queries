@@ -1,8 +1,8 @@
 from typing import Any, Tuple, Union
 
+from FuzzyMath import FuzzyNumber, FuzzyNumberFactory
 from qgis.core import QgsExpression, QgsFeature, qgsfunction
 
-from ..FuzzyMath import FuzzyNumber, FuzzyNumberFactory
 from ..text_constants import TextConstants
 from .qgsexpressions_utils import error_message, load_help
 
@@ -27,7 +27,6 @@ def possibilistic_exceedance(
     feature: QgsFeature,
     parent: QgsExpression,
 ):
-
     _validateInputs(fn_1, fn_2)
 
     fn_1, fn_2 = _returnAsFuzzyNumbers(fn_1, fn_2)
@@ -47,7 +46,6 @@ def possibilistic_undervaluation(
     feature: QgsFeature,
     parent: QgsExpression,
 ):
-
     _validateInputs(fn_1, fn_2)
 
     fn_1, fn_2 = _returnAsFuzzyNumbers(fn_1, fn_2)
@@ -67,7 +65,6 @@ def possibilistic_strict_exceedance(
     feature: QgsFeature,
     parent: QgsExpression,
 ):
-
     _validateInputs(fn_1, fn_2)
 
     fn_1, fn_2 = _returnAsFuzzyNumbers(fn_1, fn_2)
@@ -87,7 +84,6 @@ def possibilistic_strict_undervaluation(
     feature: QgsFeature,
     parent: QgsExpression,
 ):
-
     _validateInputs(fn_1, fn_2)
 
     fn_1, fn_2 = _returnAsFuzzyNumbers(fn_1, fn_2)
@@ -98,7 +94,6 @@ def possibilistic_strict_undervaluation(
 def _returnAsFuzzyNumbers(
     fn_1: FUZZY_NUMERICS, fn_2: FUZZY_NUMERICS
 ) -> Tuple[FuzzyNumber, FuzzyNumber]:
-
     if isinstance(fn_1, (int, float)):
         fn_1 = FuzzyNumberFactory.crisp_number(fn_1)
 
@@ -109,7 +104,6 @@ def _returnAsFuzzyNumbers(
 
 
 def _validateInputs(fn_1: FUZZY_NUMERICS, fn_2: FUZZY_NUMERICS) -> None:
-
     if not isinstance(fn_1, (FuzzyNumber, int, float)):
         raise Exception(prepare_error_message(fn_1, "fn_1"))
 

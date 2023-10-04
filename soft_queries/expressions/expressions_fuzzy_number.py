@@ -1,7 +1,7 @@
+from FuzzyMath import FuzzyNumberFactory
 from qgis.core import QgsExpression, QgsFeature, qgsfunction
 
 from ..database.class_db import FuzzyDatabase
-from ..FuzzyMath import FuzzyNumberFactory
 from ..text_constants import TextConstants
 from .qgsexpressions_utils import load_help
 
@@ -15,7 +15,6 @@ from .qgsexpressions_utils import load_help
 def fuzzy_number_triangular(
     min: float, kernel: float, max: float, feature: QgsFeature, parent: QgsExpression
 ):
-
     if not isinstance(min, (int, float)):
         raise Exception(
             "`min` should be `int` or `float` but it is `{}`.".format(
@@ -54,7 +53,6 @@ def fuzzy_number_trapezoidal(
     feature: QgsFeature,
     parent: QgsExpression,
 ):
-
     if not isinstance(min, (int, float)):
         raise Exception(
             "`min` should be `int` or `float` but it is `{}`.".format(
@@ -93,7 +91,6 @@ def fuzzy_number_trapezoidal(
     register=False,
 )
 def get_fuzzy_number_from_db(name: str, feature: QgsFeature, parent: QgsExpression):
-
     fdb = FuzzyDatabase()
 
     fn = fdb.get_fuzzy_variable(name)

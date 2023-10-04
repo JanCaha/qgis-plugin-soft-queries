@@ -1,14 +1,14 @@
 from typing import Any, Union
 
-from qgis.core import QgsExpression, QgsFeature, qgsfunction
-
-from ..FuzzyMath import PossibilisticAnd, PossibilisticMembership, PossibilisticOr
-from ..FuzzyMath.class_membership_operations import (
+from FuzzyMath import PossibilisticAnd, PossibilisticMembership, PossibilisticOr
+from FuzzyMath.class_membership_operations import (
     FUZZY_AND_NAMES,
     FUZZY_OR_NAMES,
     FuzzyAnd,
     FuzzyOr,
 )
+from qgis.core import QgsExpression, QgsFeature, qgsfunction
+
 from ..text_constants import TextConstants
 from .expressions_fuzzy_membership import prepare_type_error_message
 from .qgsexpressions_utils import error_message, load_help
@@ -34,7 +34,6 @@ def possibilistic_membership(
     feature: QgsFeature,
     parent: QgsExpression,
 ):
-
     if not isinstance(possibility, (int, float)):
         raise Exception(prepare_error_message(possibility, "possibility", "int, float"))
 
@@ -57,7 +56,6 @@ def possibility(
     feature: QgsFeature,
     parent: QgsExpression,
 ):
-
     if isinstance(possibilistic_membership, PossibilisticMembership):
         return possibilistic_membership.possibility
 
@@ -76,7 +74,6 @@ def necessity(
     feature: QgsFeature,
     parent: QgsExpression,
 ):
-
     if isinstance(possibilistic_membership, PossibilisticMembership):
         return possibilistic_membership.necessity
 
@@ -97,7 +94,6 @@ def possibilistic_and(
     feature: QgsFeature,
     parent: QgsExpression,
 ):
-
     if not isinstance(possibilistic_membership1, PossibilisticMembership):
         raise Exception(
             prepare_error_message(
@@ -133,7 +129,6 @@ def possibilistic_or(
     feature: QgsFeature,
     parent: QgsExpression,
 ):
-
     if not isinstance(possibilistic_membership1, PossibilisticMembership):
         raise Exception(
             prepare_error_message(

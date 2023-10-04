@@ -1,3 +1,8 @@
+from FuzzyMath.class_membership_operations import (
+    PossibilisticAnd,
+    PossibilisticMembership,
+    PossibilisticOr,
+)
 from qgis.core import (
     QgsProcessingAlgorithm,
     QgsProcessingException,
@@ -6,11 +11,6 @@ from qgis.core import (
     QgsProcessingParameterRasterDestination,
 )
 
-from ..FuzzyMath.class_membership_operations import (
-    PossibilisticAnd,
-    PossibilisticMembership,
-    PossibilisticOr,
-)
 from .parameter_possibilistic_element import ParameterPossibilisticElement
 from .utils import (
     RasterPart,
@@ -25,7 +25,6 @@ from .utils import (
 
 
 class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):
-
     POSSIBILISTIC_RASTER_1 = "POSSIBILISTIC_RASTER_1"
     POSSIBILISTIC_RASTER_2 = "POSSIBILISTIC_RASTER_2"
     OPERATION = "OPERATION"
@@ -60,7 +59,6 @@ class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):
         return PossibilisticOperationAlgorithm()
 
     def initAlgorithm(self, config=None):
-
         self.addParameter(
             ParameterPossibilisticElement(
                 self.POSSIBILISTIC_RASTER_1, "Possibilistic Layer 1"
@@ -104,7 +102,6 @@ class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):
         )
 
     def checkParameterValues(self, parameters, context):
-
         (
             raster_1_possibility,
             raster_1_necessity,
@@ -127,25 +124,21 @@ class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):
         ]
 
         if not verify_one_band(rasters):
-
             msg = "Input rasters can have only one band. One of them has other band number."
 
             return False, msg
 
         if not verify_crs_equal(rasters):
-
             msg = "CRS of input rasters have to be equal. Right now they are not."
 
             return False, msg
 
         if not verify_size_equal(rasters):
-
             msg = "Sizes of input rasters have to be equal. Right now they are not."
 
             return False, msg
 
         if not verify_extent_equal(rasters):
-
             msg = "Extents of input rasters have to be equal. Right now they are not."
 
             return False, msg
@@ -153,7 +146,6 @@ class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):
         return super().checkParameterValues(parameters, context)
 
     def processAlgorithm(self, parameters, context, feedback: QgsProcessingFeedback):
-
         raster_band = 1
 
         (
@@ -178,7 +170,6 @@ class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):
         )
 
         if "/" in operation_type:
-
             if operation == self.operations["And"]:
                 operation_type = operation_type.split("/")[0]
             else:
@@ -252,24 +243,20 @@ class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):
             and r_2_poss_data.correct
             and r_2_nec_data.correct
         ):
-
             if feedback.isCanceled():
                 break
 
             for i in range(r_1_poss_data.data_range):
-
                 if (
                     r_1_poss_data.isNoData(i)
                     or r_1_nec_data.isNoData(i)
                     or r_2_poss_data.isNoData(i)
                     or r_2_poss_data.isNoData(i)
                 ):
-
                     possibility_new_block.setIsNoData(i)
                     necessity_new_block.setIsNoData(i)
 
                 else:
-
                     pm = operation(
                         PossibilisticMembership(
                             r_1_poss_data.value(i), r_1_nec_data.value(i)
@@ -297,7 +284,6 @@ class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):
                 and r_2_poss_data.correct
                 and r_2_nec_data.correct
             ):
-
                 possibility_new_block = r_1_poss_data.create_empty_block()
                 necessity_new_block = r_1_poss_data.create_empty_block()
 

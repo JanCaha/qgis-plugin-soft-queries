@@ -1,3 +1,4 @@
+from FuzzyMath.class_membership_operations import FuzzyAnd, FuzzyMembership, FuzzyOr
 from qgis.core import (
     QgsProcessingAlgorithm,
     QgsProcessingException,
@@ -7,7 +8,6 @@ from qgis.core import (
     QgsProcessingParameterRasterLayer,
 )
 
-from ..FuzzyMath.class_membership_operations import FuzzyAnd, FuzzyMembership, FuzzyOr
 from .utils import (
     RasterPart,
     create_raster,
@@ -21,7 +21,6 @@ from .utils import (
 
 
 class FuzzyOperationAlgorithm(QgsProcessingAlgorithm):
-
     FUZZY_RASTER_1 = "FUZZY_RASTER_1"
     FUZZY_RASTER_2 = "FUZZY_RASTER_2"
     OPERATION = "OPERATION"
@@ -52,7 +51,6 @@ class FuzzyOperationAlgorithm(QgsProcessingAlgorithm):
         return FuzzyOperationAlgorithm()
 
     def initAlgorithm(self, config=None):
-
         self.addParameter(
             QgsProcessingParameterRasterLayer(self.FUZZY_RASTER_1, "Raster Layer 1")
         )
@@ -86,7 +84,6 @@ class FuzzyOperationAlgorithm(QgsProcessingAlgorithm):
         )
 
     def checkParameterValues(self, parameters, context):
-
         fuzzy_input_raster_1 = self.parameterAsRasterLayer(
             parameters, self.FUZZY_RASTER_1, context
         )
@@ -97,13 +94,11 @@ class FuzzyOperationAlgorithm(QgsProcessingAlgorithm):
         rasters = [fuzzy_input_raster_1, fuzzy_input_raster_2]
 
         if not verify_one_band(rasters):
-
             msg = "Input rasters can have only one band. One of them has other band number."
 
             return False, msg
 
         if not verify_crs_equal(rasters):
-
             msg = (
                 "CRS of input rasters have to be equal. Right now they are not."
                 "{} = {}".format(
@@ -115,7 +110,6 @@ class FuzzyOperationAlgorithm(QgsProcessingAlgorithm):
             return False, msg
 
         if not verify_size_equal(rasters):
-
             msg = (
                 "Sizes of input rasters have to be equal. Right now they are not "
                 "({}, {}) = ({}, {})".format(
@@ -129,7 +123,6 @@ class FuzzyOperationAlgorithm(QgsProcessingAlgorithm):
             return False, msg
 
         if not verify_extent_equal(rasters):
-
             msg = "Extents of input rasters have to be equal. Right now they are not."
 
             return False, msg
@@ -137,7 +130,6 @@ class FuzzyOperationAlgorithm(QgsProcessingAlgorithm):
         return super().checkParameterValues(parameters, context)
 
     def processAlgorithm(self, parameters, context, feedback: QgsProcessingFeedback):
-
         raster_band = 1
 
         fuzzy_operation = self.parameterAsEnumString(
@@ -150,7 +142,6 @@ class FuzzyOperationAlgorithm(QgsProcessingAlgorithm):
         )
 
         if "/" in operation_type:
-
             if fuzzy_operation == self.operations["And"]:
                 operation_type = operation_type.split("/")[0]
             else:
@@ -205,18 +196,14 @@ class FuzzyOperationAlgorithm(QgsProcessingAlgorithm):
         count = 0
 
         while r_fuzzy_1.correct and r_fuzzy_2.correct:
-
             if feedback.isCanceled():
                 break
 
             for i in range(r_fuzzy_1.data_range):
-
                 if r_fuzzy_1.isNoData(i) or r_fuzzy_2.isNoData(i):
-
                     new_block.setIsNoData(i)
 
                 else:
-
                     fm = fuzzy_operation(
                         FuzzyMembership(r_fuzzy_1.value(i)),
                         FuzzyMembership(r_fuzzy_2.value(i)),
@@ -231,7 +218,6 @@ class FuzzyOperationAlgorithm(QgsProcessingAlgorithm):
             r_fuzzy_2.nextData()
 
             if r_fuzzy_1.correct and r_fuzzy_2.correct:
-
                 new_block = r_fuzzy_1.create_empty_block()
 
             feedback.setProgress(int(count * total))

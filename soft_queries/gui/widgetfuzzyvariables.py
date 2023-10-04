@@ -1,10 +1,10 @@
 from typing import List, Optional
 
+from FuzzyMath import FuzzyNumber
 from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtWidgets import QTreeWidget, QTreeWidgetItem, QWidget
 
 from ..database.class_db import FuzzyDatabase
-from ..FuzzyMath import FuzzyNumber
 
 
 class FuzzyVariablesTreeWidget(QTreeWidget):
@@ -18,13 +18,11 @@ class FuzzyVariablesTreeWidget(QTreeWidget):
         self.refresh()
 
     def refresh(self):
-
         data = self._database.get_fuzzy_variables()
 
         self.clear()
 
         for name in data.keys():
-
             item = QTreeWidgetItem()
             item.setText(0, name)
             item.setText(1, str(data[name]))
@@ -45,7 +43,6 @@ class FuzzyVariablesTreeWidget(QTreeWidget):
         fuzzy_variables_ids = [""] * child_count
 
         for i in range(child_count):
-
             item = root.child(i)
 
             fuzzy_variables_ids[i] = item.text(0)

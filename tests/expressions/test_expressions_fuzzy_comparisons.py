@@ -1,7 +1,6 @@
 import pytest
+from FuzzyMath import PossibilisticMembership
 from qgis.core import QgsExpression
-
-from soft_queries.FuzzyMath import PossibilisticMembership
 
 from . import assert_has_error, assert_is_correct
 
@@ -15,7 +14,6 @@ from . import assert_has_error, assert_is_correct
     ],
 )
 def test_validate_inputs_convert_fns(params):
-
     exp = QgsExpression(f"possibilistic_exceedance({params})")
 
     assert_is_correct(exp, PossibilisticMembership)
@@ -29,7 +27,6 @@ def test_validate_inputs_convert_fns(params):
     ],
 )
 def test_validate_inputs_convert_fns_errors(params, msg):
-
     exp = QgsExpression(f"possibilistic_exceedance({params})")
 
     assert_has_error(exp, msg)
@@ -57,7 +54,6 @@ def test_validate_inputs_convert_fns_errors(params, msg):
     ],
 )
 def test_comparisons(params, exp):
-
     exp = QgsExpression(f"{exp}({params})")
 
     assert_is_correct(exp, PossibilisticMembership)

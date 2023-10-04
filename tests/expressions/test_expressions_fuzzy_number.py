@@ -1,7 +1,6 @@
 import pytest
+from FuzzyMath import FuzzyNumber, FuzzyNumberFactory
 from qgis.core import QgsExpression
-
-from soft_queries.FuzzyMath import FuzzyNumber, FuzzyNumberFactory
 
 from . import assert_has_error, assert_is_correct, assert_is_empty
 
@@ -15,7 +14,6 @@ from . import assert_has_error, assert_is_correct, assert_is_empty
     ],
 )
 def test_exp_fuzzy_number_triangular(exp):
-
     exp = QgsExpression(exp)
 
     assert_is_correct(exp, FuzzyNumber)
@@ -34,7 +32,6 @@ def test_exp_fuzzy_number_triangular(exp):
     ],
 )
 def test_exp_fuzzy_number_triangular_errors(exp, msg):
-
     exp = QgsExpression(exp)
 
     assert_has_error(exp, msg)
@@ -49,7 +46,6 @@ def test_exp_fuzzy_number_triangular_errors(exp, msg):
     ],
 )
 def test_exp_fuzzy_number_trapezoidal(exp):
-
     exp = QgsExpression(exp)
 
     result = exp.evaluate()
@@ -73,14 +69,12 @@ def test_exp_fuzzy_number_trapezoidal(exp):
     ],
 )
 def test_exp_fuzzy_number_trapezoidal_errors(exp, msg):
-
     exp = QgsExpression(exp)
 
     assert_has_error(exp, msg)
 
 
 def test_exp_fuzzy_number_to_string_repr():
-
     exp = QgsExpression("sq_to_string_repr(fuzzy_number_trapezoidal(1,2,3,4))")
 
     text_rep = "fuzzy_number_gASVHAEAAAAAAACMKXNvZnRfcXVlcmllcy5GdXp6eU1hdGguY2xhc3NfZnV6enlfbnVtYmVylIwL\nRnV6enlOdW1iZXKUk5QpgZROfZQojAtfYWxwaGFfY3V0c5R9lChLAIwlc29mdF9xdWVyaWVzLkZ1\nenp5TWF0aC5jbGFzc19pbnRlcnZhbJSMCEludGVydmFslJOUKYGUTn2UKIwEX21pbpRHP/AAAAAA\nAACMBF9tYXiUR0AQAAAAAAAAjApfcHJlY2lzaW9ulEsPjAtfZGVnZW5lcmF0ZZSJdYaUYksBaAkp\ngZROfZQoaAxHQAAAAAAAAABoDUdACAAAAAAAAGgOSw9oD4l1hpRidYwHX2FscGhhc5RdlChLAEsB\nZWgOSw91hpRiLg==\n"
@@ -96,14 +90,12 @@ def test_exp_fuzzy_number_to_string_repr():
     ],
 )
 def test_exp_fuzzy_number_to_string_repr_error(exp):
-
     exp = QgsExpression(exp)
 
     assert_has_error(exp)
 
 
 def test_exp_fuzzy_number_from_string_repr():
-
     text_rep = "fuzzy_number_gASVHAEAAAAAAACMKXNvZnRfcXVlcmllcy5GdXp6eU1hdGguY2xhc3NfZnV6enlfbnVtYmVylIwLRnV6enlOdW1iZXKUk5QpgZROfZQojAtfYWxwaGFfY3V0c5R9lChLAIwlc29mdF9xdWVyaWVzLkZ1enp5TWF0aC5jbGFzc19pbnRlcnZhbJSMCEludGVydmFslJOUKYGUTn2UKIwEX21pbpRHP/AAAAAAAACMBF9tYXiUR0AIAAAAAAAAjApfcHJlY2lzaW9ulEsPjAtfZGVnZW5lcmF0ZZSJdYaUYksBaAkpgZROfZQoaAxHQAAAAAAAAABoDUdAAAAAAAAAAGgOSw9oD4h1hpRidYwHX2FscGhhc5RdlChLAEsBZWgOSw91hpRiLg=="
 
     exp = QgsExpression(f"sq_from_string_repr('{text_rep}')")
@@ -119,14 +111,12 @@ def test_exp_fuzzy_number_from_string_repr():
     ],
 )
 def test_exp_fuzzy_number_from_string_repr_error(exp):
-
     exp = QgsExpression(exp)
 
     assert_has_error(exp)
 
 
 def test_exp_get_fuzzy_number_from_db():
-
     exp = QgsExpression("get_fuzzy_number_from_db('a')")
 
     assert_is_correct(exp, FuzzyNumber)
@@ -137,7 +127,6 @@ def test_exp_get_fuzzy_number_from_db():
 
 
 def test_exp_fuzzy_number_as_text():
-
     exp = QgsExpression("sq_as_string(fuzzy_number_triangular(1,2,3))")
 
     assert_is_correct(
@@ -155,7 +144,6 @@ def test_exp_fuzzy_number_as_text():
     ],
 )
 def test_exp_fuzzy_number_as_text_error(exp):
-
     exp = QgsExpression(exp)
 
     assert_has_error(exp, "Parameter `sq_object`")

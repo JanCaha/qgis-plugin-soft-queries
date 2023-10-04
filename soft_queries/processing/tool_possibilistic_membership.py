@@ -1,3 +1,4 @@
+from FuzzyMath import FuzzyNumberFactory, exceedance, undervaluation
 from qgis.core import (
     QgsProcessingAlgorithm,
     QgsProcessingException,
@@ -7,7 +8,6 @@ from qgis.core import (
     QgsProcessingParameterRasterLayer,
 )
 
-from ..FuzzyMath import FuzzyNumberFactory, exceedance, undervaluation
 from .parameter_fuzzy_number import ParameterFuzzyNumber
 from .utils import (
     RasterPart,
@@ -19,7 +19,6 @@ from .utils import (
 
 
 class PossibilisticMembershipAlgorithm(QgsProcessingAlgorithm):
-
     FUZZYNUMBER = "FUZZY_NUMBER"
     RASTER = "RASTER"
     OUTPUT_POSSIBILITY = "OUTPUT_POSSIBILITY"
@@ -46,7 +45,6 @@ class PossibilisticMembershipAlgorithm(QgsProcessingAlgorithm):
         return PossibilisticMembershipAlgorithm()
 
     def initAlgorithm(self, config=None):
-
         self.addParameter(ParameterFuzzyNumber(self.FUZZYNUMBER, "Fuzzy Number"))
 
         self.addParameter(
@@ -72,13 +70,11 @@ class PossibilisticMembershipAlgorithm(QgsProcessingAlgorithm):
         )
 
     def checkParameterValues(self, parameters, context):
-
         input_raster = self.parameterAsRasterLayer(parameters, self.RASTER, context)
 
         rasters = [input_raster]
 
         if not verify_one_band(rasters):
-
             msg = "Input raster can have only one band."
 
             return False, msg
@@ -86,7 +82,6 @@ class PossibilisticMembershipAlgorithm(QgsProcessingAlgorithm):
         return super().checkParameterValues(parameters, context)
 
     def processAlgorithm(self, parameters, context, feedback: QgsProcessingFeedback):
-
         raster_band = 1
 
         fuzzy_number = ParameterFuzzyNumber.valueToFuzzyNumber(
@@ -144,19 +139,15 @@ class PossibilisticMembershipAlgorithm(QgsProcessingAlgorithm):
         count = 0
 
         while r_input_data.correct:
-
             if feedback.isCanceled():
                 break
 
             for i in range(r_input_data.data_range):
-
                 if r_input_data.isNoData(i):
-
                     new_block_possibility.setIsNoData(i)
                     new_block_necessity.setIsNoData(i)
 
                 else:
-
                     pm = operation_function(
                         fuzzy_number,
                         FuzzyNumberFactory.crisp_number(r_input_data.value(i)),
@@ -171,7 +162,6 @@ class PossibilisticMembershipAlgorithm(QgsProcessingAlgorithm):
             r_input_data.nextData()
 
             if r_input_data.correct:
-
                 new_block_possibility = r_input_data.create_empty_block()
                 new_block_necessity = r_input_data.create_empty_block()
 

@@ -1,16 +1,15 @@
 from typing import Any, List, Union
 
-from qgis.core import QgsExpression, QgsFeature, qgsfunction
-
-from soft_queries.FuzzyMath.class_fuzzy_number import FuzzyNumber
-
-from ..FuzzyMath import FuzzyAnd, FuzzyMembership, FuzzyOr
-from ..FuzzyMath.class_membership_operations import (
+from FuzzyMath import FuzzyAnd, FuzzyMembership, FuzzyOr
+from FuzzyMath.class_fuzzy_number import FuzzyNumber
+from FuzzyMath.class_membership_operations import (
     FUZZY_AND_NAMES,
     FUZZY_OR_NAMES,
     fuzzyAnds,
     fuzzyOrs,
 )
+from qgis.core import QgsExpression, QgsFeature, qgsfunction
+
 from ..text_constants import TextConstants
 from .qgsexpressions_utils import error_message, load_help
 
@@ -36,7 +35,6 @@ def prepare_type_error_message(type_value: str, allowed_values: List[str]) -> st
 def fuzzy_membership(
     value: Union[float, int], feature: QgsFeature, parent: QgsExpression
 ):
-
     if isinstance(value, (int, float)):
         return FuzzyMembership(value)
 
@@ -57,7 +55,6 @@ def fuzzy_and(
     feature: QgsFeature,
     parent: QgsExpression,
 ):
-
     if not isinstance(fuzzy_membership1, FuzzyMembership):
         raise Exception(prepare_error_message(fuzzy_membership, "fuzzy_membership1"))
 
@@ -83,7 +80,6 @@ def fuzzy_or(
     feature: QgsFeature,
     parent: QgsExpression,
 ):
-
     if not isinstance(fuzzy_membership1, FuzzyMembership):
         raise Exception(prepare_error_message(fuzzy_membership, "fuzzy_membership1"))
 
@@ -105,7 +101,6 @@ def fuzzy_or(
 def membership(
     fuzzy_membership: FuzzyMembership, feature: QgsFeature, parent: QgsExpression
 ):
-
     if isinstance(fuzzy_membership, FuzzyMembership):
         return fuzzy_membership.membership
 
@@ -125,7 +120,6 @@ def calculate_fuzzy_membership(
     feature: QgsFeature,
     parent: QgsExpression,
 ):
-
     if not isinstance(fn, FuzzyNumber):
         raise Exception(prepare_error_message(fn, "fn", "FuzzyNumber"))
 

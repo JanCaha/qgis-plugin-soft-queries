@@ -1,8 +1,8 @@
 from typing import Any, Union
 
+from FuzzyMath import FuzzyMembership, FuzzyNumber, PossibilisticMembership
 from qgis.core import QgsExpression, QgsFeature, qgsfunction
 
-from ..FuzzyMath import FuzzyMembership, FuzzyNumber, PossibilisticMembership
 from ..text_constants import TextConstants
 from ..utils import python_object_to_string, string_to_python_object
 from .qgsexpressions_utils import load_help
@@ -17,7 +17,6 @@ def prepare_error_message(
     parameter_name: str = "sq_object",
     class_name: str = "FuzzyNumber, FuzzyMembership, PossibilisticMembership",
 ) -> str:
-
     return "Parameter `{}` needs to be of classes `{}` but it is `{}`.".format(
         parameter_name, class_name, type(object).__name__
     )
@@ -34,7 +33,6 @@ def sq_to_string_repr(
     feature: QgsFeature,
     parent: QgsExpression,
 ):
-
     if isinstance(sq_object, FuzzyNumber):
         return python_object_to_string(sq_object, FUZZY_NUMBER_STRING)
 
@@ -42,7 +40,6 @@ def sq_to_string_repr(
         return python_object_to_string(sq_object, FUZZY_MEMBERSHIP_STRING)
 
     if isinstance(sq_object, PossibilisticMembership):
-
         return python_object_to_string(sq_object, POSSIBILISTIC_MEMBERSHIP_STRING)
 
     else:
@@ -60,7 +57,6 @@ def sq_as_string(
     feature: QgsFeature,
     parent: QgsExpression,
 ):
-
     if isinstance(sq_object, FuzzyNumber):
         return str(sq_object)
 
@@ -68,7 +64,6 @@ def sq_as_string(
         return repr(sq_object)
 
     if isinstance(sq_object, PossibilisticMembership):
-
         return repr(sq_object)
 
     else:
@@ -84,7 +79,6 @@ def sq_as_string(
 def sq_from_string_repr(
     sq_string_object: str, feature: QgsFeature, parent: QgsExpression
 ):
-
     if isinstance(sq_string_object, str) and sq_string_object.startswith(
         FUZZY_NUMBER_STRING
     ):
@@ -98,7 +92,6 @@ def sq_from_string_repr(
     if isinstance(sq_string_object, str) and sq_string_object.startswith(
         POSSIBILISTIC_MEMBERSHIP_STRING
     ):
-
         return string_to_python_object(
             sq_string_object, POSSIBILISTIC_MEMBERSHIP_STRING
         )

@@ -1,6 +1,5 @@
+from FuzzyMath import FuzzyNumberFactory
 from qgis.core import QgsProcessingParameterDefinition
-
-from ..FuzzyMath import FuzzyNumberFactory
 
 
 class ParameterFuzzyNumber(QgsProcessingParameterDefinition):
@@ -26,12 +25,10 @@ class ParameterFuzzyNumber(QgsProcessingParameterDefinition):
 
     @staticmethod
     def valueToFuzzyNumber(value):
-
         if value is None or value == "":
             return None
 
         if isinstance(value, str):
-
             split_value = value.split(";")
 
             fn_type = split_value[0]

@@ -1,3 +1,4 @@
+from FuzzyMath.class_factories import FuzzyNumber, FuzzyNumberFactory
 from qgis.core import QgsApplication
 from qgis.PyQt.QtWidgets import (
     QDialog,
@@ -9,7 +10,6 @@ from qgis.PyQt.QtWidgets import (
     QToolButton,
 )
 
-from ..FuzzyMath.class_factories import FuzzyNumber, FuzzyNumberFactory
 from ..text_constants import TextConstants
 from .widgetfuzzynumber import FuzzyNumberWidget
 from .widgetfuzzyvariables import FuzzyVariablesTreeWidget
@@ -60,11 +60,9 @@ class FuzzyVariablesWidget(QDialog):
         self.toolButton_remove.clicked.connect(self.remove_fuzzy_variable)
 
     def add_fuzzy_variable(self) -> None:
-
         fuzzy_variable_name = self.fuzzy_name.text()
 
         if self.treeWidget.fuzzy_variable_exist(fuzzy_variable_name):
-
             dialog_error = QMessageBox()
             dialog_error.setIcon(QMessageBox.Critical)
             dialog_error.setText(
@@ -83,7 +81,6 @@ class FuzzyVariablesWidget(QDialog):
         self.treeWidget.refresh()
 
     def remove_fuzzy_variable(self):
-
         fuzzy_number_name = self.treeWidget.current_fuzzy_number_name()
 
         if fuzzy_number_name:
@@ -92,17 +89,14 @@ class FuzzyVariablesWidget(QDialog):
         self.treeWidget.refresh()
 
     def fuzzy_number(self) -> FuzzyNumber:
-
         fn_def = self.widget_fuzzy_number.value_as_dict()
 
         if fn_def["fuzzy_number_type"] == "triangular":
-
             fn = FuzzyNumberFactory.triangular(
                 fn_def["min"], fn_def["midpoint"], fn_def["max"], fn_def["alpha_cuts"]
             )
 
         elif fn_def["fuzzy_number_type"] == "trapezoidal":
-
             fn = FuzzyNumberFactory.trapezoidal(
                 fn_def["min"],
                 fn_def["kernel_min"],

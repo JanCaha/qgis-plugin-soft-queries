@@ -21,20 +21,17 @@ def get_icons_folder() -> Path:
 
 
 def get_icon_path(file_name: str) -> str:
-
     file: Path = get_icons_folder() / file_name
 
     return file.absolute().as_posix()
 
 
 def log(text: Any) -> None:
-
     if LOG_DEV:
         QgsMessageLog.logMessage(str(text), TextConstants.plugin_name, Qgis.Info)
 
 
 def python_object_to_string(object: Any, prefix: Optional[str] = None) -> str:
-
     object_string = codecs.encode(pickle.dumps(object), "base64").decode()
 
     if prefix:
@@ -44,9 +41,7 @@ def python_object_to_string(object: Any, prefix: Optional[str] = None) -> str:
 
 
 def string_to_python_object(object_string: str, prefix: Optional[str] = None) -> Any:
-
     if prefix:
-
         if not object_string.startswith(prefix):
             raise ValueError("Object string does not start with the prefix.")
 
@@ -55,11 +50,9 @@ def string_to_python_object(object_string: str, prefix: Optional[str] = None) ->
     unpickled = pickle.loads(codecs.decode(object_string.encode(), "base64"))
 
     if unpickled:
-
         return unpickled
 
     else:
-
         return None
 
 
