@@ -1,0 +1,40 @@
+name: Tests for Plugin Soft Queries
+
+on:
+  push:
+    paths:
+    - "soft_queries/**"
+    - ".github/workflows/test_plugin.yaml"
+    - "tests/**"
+
+jobs:
+
+  Tests-plugin-QMapshaper:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Install QGIS
+        run: |
+          sudo wget -qO /etc/apt/keyrings/qgis-archive-keyring.gpg https://download.qgis.org/downloads/qgis-archive-keyring.gpg
+          sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/qgis-archive-keyring.gpg] https://qgis.org/ubuntu `lsb_release -c -s` main" > /etc/apt/sources.list.d/qgis.list'
+          sudo apt-get update
+          sudo apt-get install -y qgis
+            
+      - name: Install Python packages
+        run: pip install pytest pytest-qgis pytest-cov pytest-qt pillow pb_tool 
+
+      - name: Set PYTHONPATH
+        run: |
+          echo "PYTHONPATH=/usr/share/qgis/python/plugins:/usr/share/qgis/python:." >> $GITHUB_ENV
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Print Python Path
+        run: echo $PYTHONPATH
+ 
+      - name: Run Tests
+        run: |
+          QT_QPA_PLATFORM=offscreen pytest tests --cov=qmapshaper --cov-report=term-missing:skip-covered -rP -vv -s
