@@ -1,11 +1,23 @@
-from qgis.core import (QgsProcessingAlgorithm, QgsProcessingParameterRasterDestination,
-                       QgsProcessingParameterRasterLayer, QgsProcessingException,
-                       QgsProcessingFeedback, QgsProcessingParameterEnum)
+from qgis.core import (
+    QgsProcessingAlgorithm,
+    QgsProcessingException,
+    QgsProcessingFeedback,
+    QgsProcessingParameterEnum,
+    QgsProcessingParameterRasterDestination,
+    QgsProcessingParameterRasterLayer,
+)
 
-from ..FuzzyMath.class_membership_operations import FuzzyAnd, FuzzyOr, FuzzyMembership
-
-from .utils import (create_raster_writer, create_raster, verify_crs_equal, verify_extent_equal,
-                    verify_size_equal, verify_one_band, RasterPart, writeBlock)
+from ..FuzzyMath.class_membership_operations import FuzzyAnd, FuzzyMembership, FuzzyOr
+from .utils import (
+    RasterPart,
+    create_raster,
+    create_raster_writer,
+    verify_crs_equal,
+    verify_extent_equal,
+    verify_one_band,
+    verify_size_equal,
+    writeBlock,
+)
 
 
 class FuzzyOperationAlgorithm(QgsProcessingAlgorithm):

@@ -1,13 +1,18 @@
-from typing import Any, Union, List
-from qgis.core import (qgsfunction, QgsExpression, QgsFeature)
+from typing import Any, List, Union
+
+from qgis.core import QgsExpression, QgsFeature, qgsfunction
 
 from soft_queries.FuzzyMath.class_fuzzy_number import FuzzyNumber
 
-from ..FuzzyMath import FuzzyMembership, FuzzyAnd, FuzzyOr
-from ..FuzzyMath.class_membership_operations import fuzzyAnds, fuzzyOrs, FUZZY_OR_NAMES, FUZZY_AND_NAMES
-
+from ..FuzzyMath import FuzzyAnd, FuzzyMembership, FuzzyOr
+from ..FuzzyMath.class_membership_operations import (
+    FUZZY_AND_NAMES,
+    FUZZY_OR_NAMES,
+    fuzzyAnds,
+    fuzzyOrs,
+)
 from ..text_constants import TextConstants
-from .qgsexpressions_utils import load_help, error_message
+from .qgsexpressions_utils import error_message, load_help
 
 
 def prepare_error_message(object: Any,

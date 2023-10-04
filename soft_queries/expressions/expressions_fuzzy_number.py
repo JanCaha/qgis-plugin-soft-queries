@@ -1,10 +1,9 @@
-from qgis.core import (qgsfunction, QgsExpression, QgsFeature)
+from qgis.core import QgsExpression, QgsFeature, qgsfunction
 
+from ..database.class_db import FuzzyDatabase
 from ..FuzzyMath import FuzzyNumberFactory
-
 from ..text_constants import TextConstants
 from .qgsexpressions_utils import load_help
-from ..database.class_db import FuzzyDatabase
 
 
 @qgsfunction(args="auto",

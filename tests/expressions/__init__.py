@@ -1,7 +1,7 @@
-from typing import Any
 import re
-import pytest
+from typing import Any
 
+import pytest
 from qgis.core import QgsExpression
 
 

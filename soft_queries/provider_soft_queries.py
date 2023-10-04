@@ -1,14 +1,14 @@
-from pathlib import Path
 import configparser
+from pathlib import Path
 
-from qgis.PyQt.QtGui import QIcon
 from qgis.core import QgsProcessingProvider
+from qgis.PyQt.QtGui import QIcon
 
-from .text_constants import TextConstants
-from .processing.tool_possibilistic_membership import PossibilisticMembershipAlgorithm
 from .processing.tool_fuzzy_membership import FuzzyMembershipAlgorithm
 from .processing.tool_fuzzy_operation import FuzzyOperationAlgorithm
+from .processing.tool_possibilistic_membership import PossibilisticMembershipAlgorithm
 from .processing.tool_possibilistic_operation import PossibilisticOperationAlgorithm
+from .text_constants import TextConstants
 from .utils import get_icon_path
 
 

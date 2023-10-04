@@ -1,10 +1,10 @@
-from typing import Any, Union, Tuple
+from typing import Any, Tuple, Union
 
-from qgis.core import qgsfunction, QgsExpression, QgsFeature
+from qgis.core import QgsExpression, QgsFeature, qgsfunction
 
 from ..FuzzyMath import FuzzyNumber, FuzzyNumberFactory
 from ..text_constants import TextConstants
-from .qgsexpressions_utils import load_help, error_message
+from .qgsexpressions_utils import error_message, load_help
 
 FUZZY_NUMERICS = Union[FuzzyNumber, int, float]
 

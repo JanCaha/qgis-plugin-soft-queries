@@ -1,10 +1,17 @@
 from __future__ import annotations
-from typing import List
-from pathlib import Path
-from dataclasses import dataclass
 
-from qgis.core import (QgsRasterFileWriter, QgsRasterLayer, QgsRasterDataProvider, Qgis,
-                       QgsRasterBlock, QgsRasterIterator)
+from dataclasses import dataclass
+from pathlib import Path
+from typing import List
+
+from qgis.core import (
+    Qgis,
+    QgsRasterBlock,
+    QgsRasterDataProvider,
+    QgsRasterFileWriter,
+    QgsRasterIterator,
+    QgsRasterLayer,
+)
 
 
 def create_raster_writer(path_raster: str) -> QgsRasterFileWriter:

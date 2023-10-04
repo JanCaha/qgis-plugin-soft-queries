@@ -1,7 +1,7 @@
-from typing import Optional, List
+from typing import List, Optional
 
-from qgis.PyQt.QtWidgets import (QTreeWidget, QTreeWidgetItem, QWidget)
 from qgis.PyQt.QtCore import Qt
+from qgis.PyQt.QtWidgets import QTreeWidget, QTreeWidgetItem, QWidget
 
 from ..database.class_db import FuzzyDatabase
 from ..FuzzyMath import FuzzyNumber

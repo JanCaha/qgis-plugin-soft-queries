@@ -1,9 +1,9 @@
-from typing import Dict
-from pathlib import Path
 import sqlite3
+from pathlib import Path
+from typing import Dict
 
 from ..FuzzyMath.class_fuzzy_number import FuzzyNumber
-from ..utils import string_to_python_object, python_object_to_string
+from ..utils import python_object_to_string, string_to_python_object
 
 
 class FuzzyDatabase:

@@ -1,7 +1,10 @@
 from pathlib import Path
+
 from qgis.core import QgsRasterLayer
 
-from soft_queries.processing.tool_possibilistic_operation import PossibilisticOperationAlgorithm
+from soft_queries.processing.tool_possibilistic_operation import (
+    PossibilisticOperationAlgorithm,
+)
 
 path_folder = Path(__file__).parent.parent / "_data"
 

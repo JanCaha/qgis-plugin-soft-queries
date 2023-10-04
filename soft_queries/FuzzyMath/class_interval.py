@@ -1,14 +1,14 @@
 from __future__ import annotations
-from typing import Callable
-from types import FunctionType, BuiltinFunctionType
-from inspect import signature, BoundArguments
+
 import math
 import warnings
+from inspect import BoundArguments, signature
+from types import BuiltinFunctionType, FunctionType
+from typing import Callable
 
 import numpy as np
 
-from .fuzzymath_utils import (get_precision,
-                              set_up_precision)
+from .fuzzymath_utils import get_precision, set_up_precision
 
 
 class Interval:

@@ -1,28 +1,45 @@
+import inspect
 import os
 import sys
-import inspect
 
-from qgis.core import (QgsApplication, QgsExpression)
-from qgis.gui import (QgisInterface)
+from qgis.core import QgsApplication, QgsExpression
+from qgis.gui import QgisInterface
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
 
-from .provider_soft_queries import SoftQueriesProvider
+from .expressions.expressions_fuzzy_comparisons import (
+    possibilistic_exceedance,
+    possibilistic_strict_exceedance,
+    possibilistic_strict_undervaluation,
+    possibilistic_undervaluation,
+)
+from .expressions.expressions_fuzzy_membership import (
+    calculate_fuzzy_membership,
+    fuzzy_and,
+    fuzzy_membership,
+    fuzzy_or,
+    membership,
+)
+from .expressions.expressions_fuzzy_number import (
+    fuzzy_number_trapezoidal,
+    fuzzy_number_triangular,
+    get_fuzzy_number_from_db,
+)
+from .expressions.expressions_general import (
+    sq_as_string,
+    sq_from_string_repr,
+    sq_to_string_repr,
+)
+from .expressions.expressions_possibilistic_membership import (
+    necessity,
+    possibilistic_and,
+    possibilistic_membership,
+    possibilistic_or,
+    possibility,
+)
 from .gui.FuzzyVariablesWidget import FuzzyVariablesWidget
+from .provider_soft_queries import SoftQueriesProvider
 from .text_constants import TextConstants
-from .expressions.expressions_general import (sq_as_string, sq_from_string_repr, sq_to_string_repr)
-from .expressions.expressions_fuzzy_number import (fuzzy_number_triangular,
-                                                   fuzzy_number_trapezoidal,
-                                                   get_fuzzy_number_from_db)
-from .expressions.expressions_fuzzy_membership import (fuzzy_membership, fuzzy_and, fuzzy_or,
-                                                       membership, calculate_fuzzy_membership)
-from .expressions.expressions_possibilistic_membership import (possibilistic_membership,
-                                                               possibility, necessity,
-                                                               possibilistic_and, possibilistic_or)
-from .expressions.expressions_fuzzy_comparisons import (possibilistic_exceedance,
-                                                        possibilistic_strict_exceedance,
-                                                        possibilistic_undervaluation,
-                                                        possibilistic_strict_undervaluation)
 from .utils import get_icon_path
 
 cmd_folder = os.path.split(inspect.getfile(inspect.currentframe()))[0]

@@ -1,12 +1,13 @@
 from __future__ import annotations
-from types import FunctionType, BuiltinFunctionType
-from typing import Callable, List, Tuple, Union
-from bisect import bisect_left
+
 import warnings
+from bisect import bisect_left
+from types import BuiltinFunctionType, FunctionType
+from typing import Callable, List, Tuple, Union
 
 from .class_interval import Interval
-from .class_memberships import PossibilisticMembership, FuzzyMembership
-from .fuzzymath_utils import (set_up_precision, get_precision)
+from .class_memberships import FuzzyMembership, PossibilisticMembership
+from .fuzzymath_utils import get_precision, set_up_precision
 
 
 class FuzzyNumber:

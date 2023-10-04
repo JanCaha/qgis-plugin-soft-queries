@@ -1,5 +1,5 @@
-from typing import Literal, Tuple
 import inspect
+from typing import Literal, Tuple
 
 from .class_memberships import FuzzyMembership, PossibilisticMembership
 

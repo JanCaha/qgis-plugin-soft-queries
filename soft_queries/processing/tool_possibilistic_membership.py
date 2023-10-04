@@ -1,11 +1,21 @@
-from qgis.core import (QgsProcessingAlgorithm, QgsProcessingParameterRasterDestination,
-                       QgsProcessingParameterRasterLayer, QgsProcessingException,
-                       QgsProcessingFeedback, QgsProcessingParameterEnum)
+from qgis.core import (
+    QgsProcessingAlgorithm,
+    QgsProcessingException,
+    QgsProcessingFeedback,
+    QgsProcessingParameterEnum,
+    QgsProcessingParameterRasterDestination,
+    QgsProcessingParameterRasterLayer,
+)
 
-from ..FuzzyMath import (FuzzyNumberFactory, exceedance, undervaluation)
-
+from ..FuzzyMath import FuzzyNumberFactory, exceedance, undervaluation
 from .parameter_fuzzy_number import ParameterFuzzyNumber
-from .utils import (create_raster_writer, create_raster, verify_one_band, RasterPart, writeBlock)
+from .utils import (
+    RasterPart,
+    create_raster,
+    create_raster_writer,
+    verify_one_band,
+    writeBlock,
+)
 
 
 class PossibilisticMembershipAlgorithm(QgsProcessingAlgorithm):

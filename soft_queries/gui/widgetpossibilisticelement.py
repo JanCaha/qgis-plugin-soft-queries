@@ -1,9 +1,7 @@
-from qgis.PyQt.QtWidgets import (QGroupBox, QWidget, QFormLayout, QVBoxLayout)
-from qgis.gui import QgsMapLayerComboBox
-
-from qgis.core import QgsRasterLayer, QgsMapLayerProxyModel
-
 from processing.gui.wrappers import WidgetWrapper
+from qgis.core import QgsMapLayerProxyModel, QgsRasterLayer
+from qgis.gui import QgsMapLayerComboBox
+from qgis.PyQt.QtWidgets import QFormLayout, QGroupBox, QVBoxLayout, QWidget
 
 
 class PossibilisticElementWidget(QWidget):

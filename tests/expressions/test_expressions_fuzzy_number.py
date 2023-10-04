@@ -1,5 +1,4 @@
 import pytest
-
 from qgis.core import QgsExpression
 
 from soft_queries.FuzzyMath import FuzzyNumber, FuzzyNumberFactory

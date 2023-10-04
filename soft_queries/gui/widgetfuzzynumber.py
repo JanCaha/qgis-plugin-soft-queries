@@ -1,9 +1,16 @@
 from typing import Optional
 
-from qgis.PyQt.QtWidgets import (QComboBox, QStackedWidget, QDoubleSpinBox, QLabel, QGroupBox,
-                                 QFormLayout, QSpinBox, QWidget)
-
 from processing.gui.wrappers import WidgetWrapper
+from qgis.PyQt.QtWidgets import (
+    QComboBox,
+    QDoubleSpinBox,
+    QFormLayout,
+    QGroupBox,
+    QLabel,
+    QSpinBox,
+    QStackedWidget,
+    QWidget,
+)
 
 
 class FuzzyNumberWidget(QGroupBox):

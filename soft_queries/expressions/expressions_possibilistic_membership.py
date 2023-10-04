@@ -1,12 +1,17 @@
 from typing import Any, Union
-from qgis.core import (qgsfunction, QgsExpression, QgsFeature)
 
-from ..FuzzyMath import PossibilisticMembership, PossibilisticAnd, PossibilisticOr
-from ..FuzzyMath.class_membership_operations import FuzzyOr, FuzzyAnd, FUZZY_AND_NAMES, FUZZY_OR_NAMES
+from qgis.core import QgsExpression, QgsFeature, qgsfunction
 
+from ..FuzzyMath import PossibilisticAnd, PossibilisticMembership, PossibilisticOr
+from ..FuzzyMath.class_membership_operations import (
+    FUZZY_AND_NAMES,
+    FUZZY_OR_NAMES,
+    FuzzyAnd,
+    FuzzyOr,
+)
 from ..text_constants import TextConstants
-from .qgsexpressions_utils import load_help, error_message
 from .expressions_fuzzy_membership import prepare_type_error_message
+from .qgsexpressions_utils import error_message, load_help
 
 
 def prepare_error_message(object: Any,

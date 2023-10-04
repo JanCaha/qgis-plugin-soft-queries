@@ -1,8 +1,7 @@
 import pytest
+from qgis.core import QgsExpression
 
 from soft_queries.FuzzyMath import PossibilisticMembership
-
-from qgis.core import QgsExpression
 
 from . import assert_has_error, assert_is_correct
 

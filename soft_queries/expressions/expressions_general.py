@@ -1,7 +1,8 @@
 from typing import Any, Union
-from qgis.core import (qgsfunction, QgsFeature, QgsExpression)
 
-from ..FuzzyMath import FuzzyNumber, FuzzyMembership, PossibilisticMembership
+from qgis.core import QgsExpression, QgsFeature, qgsfunction
+
+from ..FuzzyMath import FuzzyMembership, FuzzyNumber, PossibilisticMembership
 from ..text_constants import TextConstants
 from ..utils import python_object_to_string, string_to_python_object
 from .qgsexpressions_utils import load_help

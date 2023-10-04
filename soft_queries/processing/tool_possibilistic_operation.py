@@ -1,12 +1,27 @@
-from qgis.core import (QgsProcessingAlgorithm, QgsProcessingParameterRasterDestination,
-                       QgsProcessingException, QgsProcessingFeedback, QgsProcessingParameterEnum)
+from qgis.core import (
+    QgsProcessingAlgorithm,
+    QgsProcessingException,
+    QgsProcessingFeedback,
+    QgsProcessingParameterEnum,
+    QgsProcessingParameterRasterDestination,
+)
 
-from ..FuzzyMath.class_membership_operations import PossibilisticAnd, PossibilisticOr, PossibilisticMembership
-
-from .utils import (create_raster_writer, create_raster, verify_crs_equal, verify_extent_equal,
-                    verify_size_equal, verify_one_band, RasterPart, writeBlock)
-
+from ..FuzzyMath.class_membership_operations import (
+    PossibilisticAnd,
+    PossibilisticMembership,
+    PossibilisticOr,
+)
 from .parameter_possibilistic_element import ParameterPossibilisticElement
+from .utils import (
+    RasterPart,
+    create_raster,
+    create_raster_writer,
+    verify_crs_equal,
+    verify_extent_equal,
+    verify_one_band,
+    verify_size_equal,
+    writeBlock,
+)
 
 
 class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):

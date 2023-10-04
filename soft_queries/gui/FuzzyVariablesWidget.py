@@ -1,9 +1,16 @@
-from qgis.PyQt.QtWidgets import (QMessageBox, QToolButton, QLineEdit, QLabel, QGridLayout,
-                                 QHBoxLayout, QDialog)
 from qgis.core import QgsApplication
+from qgis.PyQt.QtWidgets import (
+    QDialog,
+    QGridLayout,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QMessageBox,
+    QToolButton,
+)
 
+from ..FuzzyMath.class_factories import FuzzyNumber, FuzzyNumberFactory
 from ..text_constants import TextConstants
-from ..FuzzyMath.class_factories import FuzzyNumberFactory, FuzzyNumber
 from .widgetfuzzynumber import FuzzyNumberWidget
 from .widgetfuzzyvariables import FuzzyVariablesTreeWidget
 
