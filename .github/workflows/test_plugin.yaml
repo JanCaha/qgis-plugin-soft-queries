@@ -9,7 +9,7 @@ on:
 
 jobs:
 
-  Tests-plugin-QMapshaper:
+  Tests-plugin-Soft-Queries:
 
     runs-on: ubuntu-latest
 
