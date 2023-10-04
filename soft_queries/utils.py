@@ -1,6 +1,7 @@
 import codecs
 import os
 import pickle
+import sys
 from pathlib import Path
 from typing import Any, Optional
 
@@ -60,3 +61,14 @@ def string_to_python_object(object_string: str, prefix: Optional[str] = None) ->
     else:
 
         return None
+
+
+def add_deps_folder_to_path() -> None:
+    try:
+        import FuzzyMath
+    except ModuleNotFoundError:
+        this_dir = Path(__file__).parent
+        deps_dir = this_dir / "deps"
+        if deps_dir.exists():
+            for f in deps_dir.iterdir():
+                sys.path.append(f.as_posix())
