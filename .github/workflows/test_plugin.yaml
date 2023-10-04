@@ -35,6 +35,13 @@ jobs:
       - name: Print Python Path
         run: echo $PYTHONPATH
  
+      - uses: robinraju/release-downloader@v1.8
+        with: 
+          repository: "JanCaha/FuzzyMath"
+          latest: true
+          fileName: "FuzzyMath-*-py3-none-any.whl"
+          out-file-path: "soft_queries/deps"
+
       - name: Run Tests
         run: |
           QT_QPA_PLATFORM=offscreen pytest tests --cov=soft_queries --cov-report=term-missing:skip-covered -rP -vv -s
