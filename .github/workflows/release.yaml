@@ -31,6 +31,13 @@ jobs:
         run: |
           echo "VERSION=$(cat soft_queries/metadata.txt | grep '^version' | grep -o '[0-9\.]*')" >> $GITHUB_OUTPUT
 
+      - uses: robinraju/release-downloader@v1.8
+        with: 
+          repository: "JanCaha/FuzzyMath"
+          latest: true
+          fileName: "FuzzyMath-*-py3-none-any.whl"
+          out-file-path: "soft_queries/deps"
+          
       - name: Zip plugin
         run: |
           cd soft_queries
