@@ -6,7 +6,7 @@
 name=Soft Queries
 qgisMinimumVersion=3.22
 description=This plugin brings tools that allow processing of data using fuzzy set theory and possibility theory.
-version=0.1.0
+version=0.2.0
 author=Jan Caha
 email=jan.caha@outlook.com
 
