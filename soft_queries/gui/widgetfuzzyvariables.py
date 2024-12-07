@@ -22,11 +22,11 @@ class FuzzyVariablesTreeWidget(QTreeWidget):
 
         self.clear()
 
-        for name in data.keys():
+        for name, fuzzy_number in data.items():
             item = QTreeWidgetItem()
             item.setText(0, name)
-            item.setText(1, str(data[name]))
-            item.setData(0, Qt.UserRole, data[name])
+            item.setText(1, str(fuzzy_number))
+            item.setData(0, Qt.UserRole, fuzzy_number)
 
             self.addTopLevelItem(item)
 
