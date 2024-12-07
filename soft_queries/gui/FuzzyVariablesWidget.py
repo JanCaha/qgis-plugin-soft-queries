@@ -1,14 +1,6 @@
 from FuzzyMath.class_factories import FuzzyNumber, FuzzyNumberFactory
 from qgis.core import QgsApplication
-from qgis.PyQt.QtWidgets import (
-    QDialog,
-    QGridLayout,
-    QHBoxLayout,
-    QLabel,
-    QLineEdit,
-    QMessageBox,
-    QToolButton,
-)
+from qgis.PyQt.QtWidgets import QDialog, QGridLayout, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QToolButton
 
 from ..text_constants import TextConstants
 from .widgetfuzzynumber import FuzzyNumberWidget
@@ -37,38 +29,37 @@ class FuzzyVariablesWidget(QDialog):
 
         layout.addWidget(self.widget_fuzzy_number, 1, 0, 1, 2)
 
-        lineLayout = QHBoxLayout()
+        line_layout = QHBoxLayout()
 
-        self.toolButton_add = QToolButton()
-        self.toolButton_remove = QToolButton()
+        self.tool_button_add = QToolButton()
+        self.tool_button_add.setEnabled(False)
+        self.tool_button_remove = QToolButton()
 
-        lineLayout.addStretch(1)
-        lineLayout.addWidget(self.toolButton_add)
-        lineLayout.addWidget(self.toolButton_remove)
-        layout.addLayout(lineLayout, 2, 1, 1, 1)
+        line_layout.addStretch(1)
+        line_layout.addWidget(self.tool_button_add)
+        line_layout.addWidget(self.tool_button_remove)
+        layout.addLayout(line_layout, 2, 1, 1, 1)
 
-        self.treeWidget = FuzzyVariablesTreeWidget()
+        self.tree_widget = FuzzyVariablesTreeWidget()
 
-        layout.addWidget(self.treeWidget, 3, 0, 1, 2)
+        layout.addWidget(self.tree_widget, 3, 0, 1, 2)
 
-        self.toolButton_add.setIcon(QgsApplication.getThemeIcon("/symbologyAdd.svg"))
-        self.toolButton_remove.setIcon(
-            QgsApplication.getThemeIcon("/symbologyRemove.svg")
-        )
+        self.tool_button_add.setIcon(QgsApplication.getThemeIcon("/symbologyAdd.svg"))
+        self.tool_button_remove.setIcon(QgsApplication.getThemeIcon("/symbologyRemove.svg"))
 
-        self.toolButton_add.clicked.connect(self.add_fuzzy_variable)
-        self.toolButton_remove.clicked.connect(self.remove_fuzzy_variable)
+        self.tool_button_add.clicked.connect(self.add_fuzzy_variable)
+        self.tool_button_remove.clicked.connect(self.remove_fuzzy_variable)
+        self.fuzzy_name.textChanged.connect(self.activate_addition)
+        self.tree_widget.currentItemChanged.connect(self.activate_deletion)
 
     def add_fuzzy_variable(self) -> None:
         fuzzy_variable_name = self.fuzzy_name.text()
 
-        if self.treeWidget.fuzzy_variable_exist(fuzzy_variable_name):
+        if self.tree_widget.fuzzy_variable_exist(fuzzy_variable_name):
             dialog_error = QMessageBox()
             dialog_error.setIcon(QMessageBox.Critical)
             dialog_error.setText(
-                "Cannot add `{}` as the fuzzy variable with the name already exist!".format(
-                    fuzzy_variable_name
-                )
+                "Cannot add `{}` as the fuzzy variable with the name already exist!".format(fuzzy_variable_name)
             )
             dialog_error.setInformativeText("Please select another name.")
             dialog_error.setWindowTitle("Error")
@@ -77,24 +68,22 @@ class FuzzyVariablesWidget(QDialog):
             return
 
         fn = self.fuzzy_number()
-        self.treeWidget.database.add_fuzzy_variable(fuzzy_variable_name, fn)
-        self.treeWidget.refresh()
+        self.tree_widget.database.add_fuzzy_variable(fuzzy_variable_name, fn)
+        self.tree_widget.refresh()
 
     def remove_fuzzy_variable(self):
-        fuzzy_number_name = self.treeWidget.current_fuzzy_number_name()
+        fuzzy_number_name = self.tree_widget.current_fuzzy_number_name()
 
         if fuzzy_number_name:
-            self.treeWidget.database.delete_fuzzy_variable(fuzzy_number_name)
+            self.tree_widget.database.delete_fuzzy_variable(fuzzy_number_name)
 
-        self.treeWidget.refresh()
+        self.tree_widget.refresh()
 
     def fuzzy_number(self) -> FuzzyNumber:
         fn_def = self.widget_fuzzy_number.value_as_dict()
 
         if fn_def["fuzzy_number_type"] == "triangular":
-            fn = FuzzyNumberFactory.triangular(
-                fn_def["min"], fn_def["midpoint"], fn_def["max"], fn_def["alpha_cuts"]
-            )
+            fn = FuzzyNumberFactory.triangular(fn_def["min"], fn_def["midpoint"], fn_def["max"], fn_def["alpha_cuts"])
 
         elif fn_def["fuzzy_number_type"] == "trapezoidal":
             fn = FuzzyNumberFactory.trapezoidal(
@@ -106,3 +95,15 @@ class FuzzyVariablesWidget(QDialog):
             )
 
         return fn
+
+    def activate_addition(self) -> None:
+        if len(self.fuzzy_name.text().strip()) == 0:
+            self.tool_button_add.setEnabled(False)
+        else:
+            self.tool_button_add.setEnabled(True)
+
+    def activate_deletion(self) -> None:
+        if self.tree_widget.currentIndex().row() == -1:
+            self.tool_button_remove.setEnabled(False)
+        else:
+            self.tool_button_remove.setEnabled(True)
