@@ -9,9 +9,7 @@ from .qgsexpressions_utils import error_message, load_help
 FUZZY_NUMERICS = Union[FuzzyNumber, int, float]
 
 
-def prepare_error_message(
-    object: Any, parameter_name: str, class_name: str = "FuzzyNumber, int, float"
-) -> str:
+def prepare_error_message(object: Any, parameter_name: str, class_name: str = "FuzzyNumber, int, float") -> str:
     return error_message(parameter_name, class_name, object)
 
 
@@ -91,9 +89,7 @@ def possibilistic_strict_undervaluation(
     return fn_1.strict_undervaluation(fn_2)
 
 
-def _returnAsFuzzyNumbers(
-    fn_1: FUZZY_NUMERICS, fn_2: FUZZY_NUMERICS
-) -> Tuple[FuzzyNumber, FuzzyNumber]:
+def _returnAsFuzzyNumbers(fn_1: FUZZY_NUMERICS, fn_2: FUZZY_NUMERICS) -> Tuple[FuzzyNumber, FuzzyNumber]:
     if isinstance(fn_1, (int, float)):
         fn_1 = FuzzyNumberFactory.crisp_number(fn_1)
 

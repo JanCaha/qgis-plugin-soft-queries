@@ -22,9 +22,7 @@ def extract_error_string(expression: QgsExpression) -> str:
     return error_msg
 
 
-def assert_is_correct(
-    expression: QgsExpression, result_class: type = None, value: Any = None
-) -> None:
+def assert_is_correct(expression: QgsExpression, result_class: type = None, value: Any = None) -> None:
 
     __tracebackhide__ = True
 
@@ -32,17 +30,13 @@ def assert_is_correct(
 
     if result_class:
         if not isinstance(result, result_class):
-            pytest.fail(
-                f"Result should be `{result_class.__name__}` but is `{type(result).__name__}`."
-            )
+            pytest.fail(f"Result should be `{result_class.__name__}` but is `{type(result).__name__}`.")
 
     if expression.hasEvalError():
         pytest.fail(f"`{expression.expression()}` has eval error.")
 
     if expression.evalErrorString() != "":
-        pytest.fail(
-            f"`{expression.expression()}` has error string `{expression.evalErrorString()}`."
-        )
+        pytest.fail(f"`{expression.expression()}` has error string `{expression.evalErrorString()}`.")
 
     if value:
         if not value == result:
@@ -56,9 +50,7 @@ def assert_has_error(expression: QgsExpression, error_message: str = None) -> No
     result = expression.evaluate()
 
     if result:
-        pytest.fail(
-            f"`{expression.expression()}` has return value but it should be empty."
-        )
+        pytest.fail(f"`{expression.expression()}` has return value but it should be empty.")
 
     if not expression.hasEvalError():
         pytest.fail(f"`{expression.expression()}` does not have eval error.")
@@ -78,9 +70,7 @@ def assert_is_empty(expression: QgsExpression) -> None:
     result = expression.evaluate()
 
     if result:
-        pytest.fail(
-            f"`{expression.expression()}` has return value but it should be empty."
-        )
+        pytest.fail(f"`{expression.expression()}` has return value but it should be empty.")
 
     if expression.hasEvalError():
         pytest.fail(f"`{expression.expression()}` has an eval error.")

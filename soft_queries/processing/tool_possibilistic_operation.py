@@ -1,8 +1,4 @@
-from FuzzyMath.class_membership_operations import (
-    PossibilisticAnd,
-    PossibilisticMembership,
-    PossibilisticOr,
-)
+from FuzzyMath.class_membership_operations import PossibilisticAnd, PossibilisticMembership, PossibilisticOr
 from qgis.core import (
     QgsProcessingAlgorithm,
     QgsProcessingException,
@@ -59,17 +55,9 @@ class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):
         return PossibilisticOperationAlgorithm()
 
     def initAlgorithm(self, config=None):
-        self.addParameter(
-            ParameterPossibilisticElement(
-                self.POSSIBILISTIC_RASTER_1, "Possibilistic Layer 1"
-            )
-        )
+        self.addParameter(ParameterPossibilisticElement(self.POSSIBILISTIC_RASTER_1, "Possibilistic Layer 1"))
 
-        self.addParameter(
-            ParameterPossibilisticElement(
-                self.POSSIBILISTIC_RASTER_2, "Possibilistic Layer 2"
-            )
-        )
+        self.addParameter(ParameterPossibilisticElement(self.POSSIBILISTIC_RASTER_2, "Possibilistic Layer 2"))
 
         self.addParameter(
             QgsProcessingParameterEnum(
@@ -90,31 +78,23 @@ class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):
         )
 
         self.addParameter(
-            QgsProcessingParameterRasterDestination(
-                self.OUTPUT_POSSIBILITY, "Output raster layer - possibility"
-            )
+            QgsProcessingParameterRasterDestination(self.OUTPUT_POSSIBILITY, "Output raster layer - possibility")
         )
 
         self.addParameter(
-            QgsProcessingParameterRasterDestination(
-                self.OUTPUT_NECESSITY, "Output raster layer - necessity"
-            )
+            QgsProcessingParameterRasterDestination(self.OUTPUT_NECESSITY, "Output raster layer - necessity")
         )
 
     def checkParameterValues(self, parameters, context):
         (
             raster_1_possibility,
             raster_1_necessity,
-        ) = ParameterPossibilisticElement.valueToRasters(
-            parameters[self.POSSIBILISTIC_RASTER_1]
-        )
+        ) = ParameterPossibilisticElement.valueToRasters(parameters[self.POSSIBILISTIC_RASTER_1])
 
         (
             raster_2_possibility,
             raster_2_necessity,
-        ) = ParameterPossibilisticElement.valueToRasters(
-            parameters[self.POSSIBILISTIC_RASTER_2]
-        )
+        ) = ParameterPossibilisticElement.valueToRasters(parameters[self.POSSIBILISTIC_RASTER_2])
 
         rasters = [
             raster_1_possibility,
@@ -151,23 +131,17 @@ class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):
         (
             raster_1_possibility,
             raster_1_necessity,
-        ) = ParameterPossibilisticElement.valueToRasters(
-            parameters[self.POSSIBILISTIC_RASTER_1]
-        )
+        ) = ParameterPossibilisticElement.valueToRasters(parameters[self.POSSIBILISTIC_RASTER_1])
 
         (
             raster_2_possibility,
             raster_2_necessity,
-        ) = ParameterPossibilisticElement.valueToRasters(
-            parameters[self.POSSIBILISTIC_RASTER_2]
-        )
+        ) = ParameterPossibilisticElement.valueToRasters(parameters[self.POSSIBILISTIC_RASTER_2])
 
         operation = self.parameterAsEnumString(parameters, self.OPERATION, context)
         operation = self.operations[operation]
 
-        operation_type = self.parameterAsEnumString(
-            parameters, self.OPERATION_TYPE, context
-        )
+        operation_type = self.parameterAsEnumString(parameters, self.OPERATION_TYPE, context)
 
         if "/" in operation_type:
             if operation == self.operations["And"]:
@@ -176,28 +150,20 @@ class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):
                 operation_type = operation_type.split("/")[1]
 
         feedback.pushInfo(
-            "Processing operation `{}` with type of operation `{}`.".format(
-                operation.__name__, operation_type
-            )
+            "Processing operation `{}` with type of operation `{}`.".format(operation.__name__, operation_type)
         )
 
         raster_1_possibility_dp = raster_1_possibility.dataProvider()
 
         fuzzy_input_nodata = raster_1_possibility_dp.sourceNoDataValue(raster_band)
 
-        path_possibility_raster = self.parameterAsOutputLayer(
-            parameters, self.OUTPUT_POSSIBILITY, context
-        )
+        path_possibility_raster = self.parameterAsOutputLayer(parameters, self.OUTPUT_POSSIBILITY, context)
 
-        path_necessity_raster = self.parameterAsOutputLayer(
-            parameters, self.OUTPUT_NECESSITY, context
-        )
+        path_necessity_raster = self.parameterAsOutputLayer(parameters, self.OUTPUT_NECESSITY, context)
 
         possibility_raster_writer = create_raster_writer(path_possibility_raster)
 
-        possibility_raster_dp = create_raster(
-            possibility_raster_writer, raster_1_possibility
-        )
+        possibility_raster_dp = create_raster(possibility_raster_writer, raster_1_possibility)
 
         if not possibility_raster_dp:
             raise QgsProcessingException("Data provider for possibility not created.")
@@ -207,9 +173,7 @@ class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):
 
         necessity_raster_writer = create_raster_writer(path_necessity_raster)
 
-        necessity_raster_dp = create_raster(
-            necessity_raster_writer, raster_1_possibility
-        )
+        necessity_raster_dp = create_raster(necessity_raster_writer, raster_1_possibility)
 
         if not necessity_raster_dp:
             raise QgsProcessingException("Data provider for necessity not created.")
@@ -220,11 +184,7 @@ class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):
         possibility_raster_dp.setNoDataValue(raster_band, fuzzy_input_nodata)
         necessity_raster_dp.setNoDataValue(raster_band, fuzzy_input_nodata)
 
-        total = (
-            100.0 / (raster_1_possibility.height())
-            if raster_1_possibility.height()
-            else 0
-        )
+        total = 100.0 / (raster_1_possibility.height()) if raster_1_possibility.height() else 0
 
         r_1_poss_data = RasterPart(raster_1_possibility, raster_band)
         r_1_nec_data = RasterPart(raster_1_necessity, raster_band)
@@ -237,12 +197,7 @@ class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):
 
         count = 0
 
-        while (
-            r_1_poss_data.correct
-            and r_1_nec_data.correct
-            and r_2_poss_data.correct
-            and r_2_nec_data.correct
-        ):
+        while r_1_poss_data.correct and r_1_nec_data.correct and r_2_poss_data.correct and r_2_nec_data.correct:
             if feedback.isCanceled():
                 break
 
@@ -258,12 +213,8 @@ class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):
 
                 else:
                     pm = operation(
-                        PossibilisticMembership(
-                            r_1_poss_data.value(i), r_1_nec_data.value(i)
-                        ),
-                        PossibilisticMembership(
-                            r_2_poss_data.value(i), r_2_nec_data.value(i)
-                        ),
+                        PossibilisticMembership(r_1_poss_data.value(i), r_1_nec_data.value(i)),
+                        PossibilisticMembership(r_2_poss_data.value(i), r_2_nec_data.value(i)),
                         operation_type,
                     )
 
@@ -278,12 +229,7 @@ class PossibilisticOperationAlgorithm(QgsProcessingAlgorithm):
             r_2_poss_data.nextData()
             r_2_nec_data.nextData()
 
-            if (
-                r_1_poss_data.correct
-                and r_1_nec_data.correct
-                and r_2_poss_data.correct
-                and r_2_nec_data.correct
-            ):
+            if r_1_poss_data.correct and r_1_nec_data.correct and r_2_poss_data.correct and r_2_nec_data.correct:
                 possibility_new_block = r_1_poss_data.create_empty_block()
                 necessity_new_block = r_1_poss_data.create_empty_block()
 

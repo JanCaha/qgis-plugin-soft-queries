@@ -8,9 +8,7 @@ class ParameterPossibilisticElement(QgsProcessingParameterDefinition):
         super().__init__(name, description, None, optional)
         self.parent = parent
         self.setMetadata(
-            {
-                "widget_wrapper": "soft_queries.gui.widgetpossibilisticelement.PossibilisticElementWidgetWrapper"
-            }
+            {"widget_wrapper": "soft_queries.gui.widgetpossibilisticelement.PossibilisticElementWidgetWrapper"}
         )
 
     def type(self):

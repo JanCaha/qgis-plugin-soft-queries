@@ -1,12 +1,7 @@
 from typing import Any, Union
 
 from FuzzyMath import PossibilisticAnd, PossibilisticMembership, PossibilisticOr
-from FuzzyMath.class_membership_operations import (
-    FUZZY_AND_NAMES,
-    FUZZY_OR_NAMES,
-    FuzzyAnd,
-    FuzzyOr,
-)
+from FuzzyMath.class_membership_operations import FUZZY_AND_NAMES, FUZZY_OR_NAMES, FuzzyAnd, FuzzyOr
 from qgis.core import QgsExpression, QgsFeature, qgsfunction
 
 from ..text_constants import TextConstants
@@ -95,25 +90,15 @@ def possibilistic_and(
     parent: QgsExpression,
 ):
     if not isinstance(possibilistic_membership1, PossibilisticMembership):
-        raise Exception(
-            prepare_error_message(
-                possibilistic_membership1, "possibilistic_membership1"
-            )
-        )
+        raise Exception(prepare_error_message(possibilistic_membership1, "possibilistic_membership1"))
 
     if not isinstance(possibilistic_membership2, PossibilisticMembership):
-        raise Exception(
-            prepare_error_message(
-                possibilistic_membership2, "possibilistic_membership2"
-            )
-        )
+        raise Exception(prepare_error_message(possibilistic_membership2, "possibilistic_membership2"))
 
     if not (isinstance(type, str) and type in FUZZY_AND_NAMES):
         raise Exception(prepare_type_error_message(type, FUZZY_AND_NAMES))
 
-    return PossibilisticAnd.possibilisticAnd(
-        possibilistic_membership1, possibilistic_membership2, type=type
-    )
+    return PossibilisticAnd.possibilisticAnd(possibilistic_membership1, possibilistic_membership2, type=type)
 
 
 @qgsfunction(
@@ -130,22 +115,12 @@ def possibilistic_or(
     parent: QgsExpression,
 ):
     if not isinstance(possibilistic_membership1, PossibilisticMembership):
-        raise Exception(
-            prepare_error_message(
-                possibilistic_membership1, "possibilistic_membership1"
-            )
-        )
+        raise Exception(prepare_error_message(possibilistic_membership1, "possibilistic_membership1"))
 
     if not isinstance(possibilistic_membership2, PossibilisticMembership):
-        raise Exception(
-            prepare_error_message(
-                possibilistic_membership2, "possibilistic_membership2"
-            )
-        )
+        raise Exception(prepare_error_message(possibilistic_membership2, "possibilistic_membership2"))
 
     if not (isinstance(type, str) and type in FUZZY_OR_NAMES):
         raise Exception(prepare_type_error_message(type, FUZZY_OR_NAMES))
 
-    return PossibilisticOr.possibilisticOr(
-        possibilistic_membership1, possibilistic_membership2, type=type
-    )
+    return PossibilisticOr.possibilisticOr(possibilistic_membership1, possibilistic_membership2, type=type)

@@ -2,12 +2,7 @@ from typing import Any, List, Union
 
 from FuzzyMath import FuzzyAnd, FuzzyMembership, FuzzyOr
 from FuzzyMath.class_fuzzy_number import FuzzyNumber
-from FuzzyMath.class_membership_operations import (
-    FUZZY_AND_NAMES,
-    FUZZY_OR_NAMES,
-    fuzzyAnds,
-    fuzzyOrs,
-)
+from FuzzyMath.class_membership_operations import FUZZY_AND_NAMES, FUZZY_OR_NAMES, fuzzyAnds, fuzzyOrs
 from qgis.core import QgsExpression, QgsFeature, qgsfunction
 
 from ..text_constants import TextConstants
@@ -32,9 +27,7 @@ def prepare_type_error_message(type_value: str, allowed_values: List[str]) -> st
     helpText=load_help("fuzzy_membership"),
     register=False,
 )
-def fuzzy_membership(
-    value: Union[float, int], feature: QgsFeature, parent: QgsExpression
-):
+def fuzzy_membership(value: Union[float, int], feature: QgsFeature, parent: QgsExpression):
     if isinstance(value, (int, float)):
         return FuzzyMembership(value)
 
@@ -98,9 +91,7 @@ def fuzzy_or(
     helpText=load_help("membership"),
     register=False,
 )
-def membership(
-    fuzzy_membership: FuzzyMembership, feature: QgsFeature, parent: QgsExpression
-):
+def membership(fuzzy_membership: FuzzyMembership, feature: QgsFeature, parent: QgsExpression):
     if isinstance(fuzzy_membership, FuzzyMembership):
         return fuzzy_membership.membership
 

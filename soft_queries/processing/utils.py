@@ -29,9 +29,7 @@ def create_raster_writer(path_raster: str) -> QgsRasterFileWriter:
     return raster_writer
 
 
-def create_raster(
-    raster_writer: QgsRasterFileWriter, template_raster: QgsRasterLayer
-) -> QgsRasterDataProvider:
+def create_raster(raster_writer: QgsRasterFileWriter, template_raster: QgsRasterLayer) -> QgsRasterDataProvider:
 
     return raster_writer.createOneBandRaster(
         Qgis.Float64,
@@ -105,16 +103,10 @@ def verify_one_band(rasters: List[QgsRasterLayer]) -> bool:
 
 def feedback_total(data_block: QgsRasterBlock):
 
-    return (
-        100.0 / (data_block.height() * data_block.width())
-        if data_block.height() and data_block.width()
-        else 0
-    )
+    return 100.0 / (data_block.height() * data_block.width()) if data_block.height() and data_block.width() else 0
 
 
-def create_raster_iterator(
-    input_raster: QgsRasterLayer, raster_band: int = 1
-) -> QgsRasterIterator:
+def create_raster_iterator(input_raster: QgsRasterLayer, raster_band: int = 1) -> QgsRasterIterator:
 
     input_raster_dp = input_raster.dataProvider()
 

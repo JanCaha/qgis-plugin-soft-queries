@@ -9,13 +9,7 @@ from qgis.core import (
 )
 
 from .parameter_fuzzy_number import ParameterFuzzyNumber
-from .utils import (
-    RasterPart,
-    create_raster,
-    create_raster_writer,
-    verify_one_band,
-    writeBlock,
-)
+from .utils import RasterPart, create_raster, create_raster_writer, verify_one_band, writeBlock
 
 
 class PossibilisticMembershipAlgorithm(QgsProcessingAlgorithm):
@@ -47,26 +41,18 @@ class PossibilisticMembershipAlgorithm(QgsProcessingAlgorithm):
     def initAlgorithm(self, config=None):
         self.addParameter(ParameterFuzzyNumber(self.FUZZYNUMBER, "Fuzzy Number"))
 
+        self.addParameter(QgsProcessingParameterRasterLayer(self.RASTER, "Raster layer"))
+
         self.addParameter(
-            QgsProcessingParameterRasterLayer(self.RASTER, "Raster layer")
+            QgsProcessingParameterEnum(self.OPERATION, "Operation to use", self.operation_enum, defaultValue=0)
         )
 
         self.addParameter(
-            QgsProcessingParameterEnum(
-                self.OPERATION, "Operation to use", self.operation_enum, defaultValue=0
-            )
+            QgsProcessingParameterRasterDestination(self.OUTPUT_POSSIBILITY, "Output raster layer - possibility")
         )
 
         self.addParameter(
-            QgsProcessingParameterRasterDestination(
-                self.OUTPUT_POSSIBILITY, "Output raster layer - possibility"
-            )
-        )
-
-        self.addParameter(
-            QgsProcessingParameterRasterDestination(
-                self.OUTPUT_NECESSITY, "Output raster layer - necessity"
-            )
+            QgsProcessingParameterRasterDestination(self.OUTPUT_NECESSITY, "Output raster layer - necessity")
         )
 
     def checkParameterValues(self, parameters, context):
@@ -84,9 +70,7 @@ class PossibilisticMembershipAlgorithm(QgsProcessingAlgorithm):
     def processAlgorithm(self, parameters, context, feedback: QgsProcessingFeedback):
         raster_band = 1
 
-        fuzzy_number = ParameterFuzzyNumber.valueToFuzzyNumber(
-            parameters[self.FUZZYNUMBER]
-        )
+        fuzzy_number = ParameterFuzzyNumber.valueToFuzzyNumber(parameters[self.FUZZYNUMBER])
 
         operation_type = self.parameterAsEnum(parameters, self.OPERATION, context)
 
@@ -98,13 +82,9 @@ class PossibilisticMembershipAlgorithm(QgsProcessingAlgorithm):
 
         input_raster_nodata = input_raster_dp.sourceNoDataValue(raster_band)
 
-        path_possibility_raster = self.parameterAsOutputLayer(
-            parameters, self.OUTPUT_POSSIBILITY, context
-        )
+        path_possibility_raster = self.parameterAsOutputLayer(parameters, self.OUTPUT_POSSIBILITY, context)
 
-        path_necessity_raster = self.parameterAsOutputLayer(
-            parameters, self.OUTPUT_NECESSITY, context
-        )
+        path_necessity_raster = self.parameterAsOutputLayer(parameters, self.OUTPUT_NECESSITY, context)
 
         possibility_raster_writer = create_raster_writer(path_possibility_raster)
 

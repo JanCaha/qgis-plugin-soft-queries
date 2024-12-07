@@ -76,27 +76,15 @@ def sq_as_string(
     helpText=load_help("sq_from_string_repr"),
     register=False,
 )
-def sq_from_string_repr(
-    sq_string_object: str, feature: QgsFeature, parent: QgsExpression
-):
-    if isinstance(sq_string_object, str) and sq_string_object.startswith(
-        FUZZY_NUMBER_STRING
-    ):
+def sq_from_string_repr(sq_string_object: str, feature: QgsFeature, parent: QgsExpression):
+    if isinstance(sq_string_object, str) and sq_string_object.startswith(FUZZY_NUMBER_STRING):
         return string_to_python_object(sq_string_object, FUZZY_NUMBER_STRING)
 
-    if isinstance(sq_string_object, str) and sq_string_object.startswith(
-        FUZZY_MEMBERSHIP_STRING
-    ):
+    if isinstance(sq_string_object, str) and sq_string_object.startswith(FUZZY_MEMBERSHIP_STRING):
         return string_to_python_object(sq_string_object, FUZZY_MEMBERSHIP_STRING)
 
-    if isinstance(sq_string_object, str) and sq_string_object.startswith(
-        POSSIBILISTIC_MEMBERSHIP_STRING
-    ):
-        return string_to_python_object(
-            sq_string_object, POSSIBILISTIC_MEMBERSHIP_STRING
-        )
+    if isinstance(sq_string_object, str) and sq_string_object.startswith(POSSIBILISTIC_MEMBERSHIP_STRING):
+        return string_to_python_object(sq_string_object, POSSIBILISTIC_MEMBERSHIP_STRING)
 
     else:
-        raise Exception(
-            prepare_error_message(sq_string_object, "str (with correct prefix)")
-        )
+        raise Exception(prepare_error_message(sq_string_object, "str (with correct prefix)"))

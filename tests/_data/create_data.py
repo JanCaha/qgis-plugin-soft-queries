@@ -3,9 +3,7 @@ from pathlib import Path
 from qgis.core import QgsProcessingContext, QgsProcessingFeedback
 
 from soft_queries.processing.tool_fuzzy_membership import FuzzyMembershipAlgorithm
-from soft_queries.processing.tool_possibilistic_membership import (
-    PossibilisticMembershipAlgorithm,
-)
+from soft_queries.processing.tool_possibilistic_membership import PossibilisticMembershipAlgorithm
 
 input_raster_path = Path(__file__).parent / "dsm_epsg_5514.tif"
 

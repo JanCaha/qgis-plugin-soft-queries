@@ -29,14 +29,10 @@ class FuzzyDatabase:
 
         return data_dict
 
-    def add_fuzzy_variable(
-        self, fuzzy_variable_name: str, fuzzy_number: FuzzyNumber
-    ) -> None:
+    def add_fuzzy_variable(self, fuzzy_variable_name: str, fuzzy_number: FuzzyNumber) -> None:
         sql = "INSERT INTO fuzzy_variables VALUES (?,?)"
 
-        self.db_connection.execute(
-            sql, [fuzzy_variable_name, python_object_to_string(fuzzy_number)]
-        )
+        self.db_connection.execute(sql, [fuzzy_variable_name, python_object_to_string(fuzzy_number)])
 
         self.db_connection.commit()
 

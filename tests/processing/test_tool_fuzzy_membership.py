@@ -21,6 +21,4 @@ def test_run(raster_layer_path: str, context, feedback):
     assert result[1]
     assert isinstance(result[0], dict)
     assert isinstance(result[0]["OUTPUT_FUZZY_MEMBERSHIP"], str)
-    assert isinstance(
-        QgsRasterLayer(result[0]["OUTPUT_FUZZY_MEMBERSHIP"]), QgsRasterLayer
-    )
+    assert isinstance(QgsRasterLayer(result[0]["OUTPUT_FUZZY_MEMBERSHIP"]), QgsRasterLayer)

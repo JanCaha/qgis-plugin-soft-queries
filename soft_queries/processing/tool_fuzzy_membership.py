@@ -7,13 +7,7 @@ from qgis.core import (
 )
 
 from .parameter_fuzzy_number import ParameterFuzzyNumber
-from .utils import (
-    RasterPart,
-    create_raster,
-    create_raster_writer,
-    verify_one_band,
-    writeBlock,
-)
+from .utils import RasterPart, create_raster, create_raster_writer, verify_one_band, writeBlock
 
 
 class FuzzyMembershipAlgorithm(QgsProcessingAlgorithm):
@@ -35,9 +29,7 @@ class FuzzyMembershipAlgorithm(QgsProcessingAlgorithm):
 
         self.addParameter(ParameterFuzzyNumber(self.FUZZYNUMBER, "Fuzzy Number"))
 
-        self.addParameter(
-            QgsProcessingParameterRasterLayer(self.RASTER, "Raster layer")
-        )
+        self.addParameter(QgsProcessingParameterRasterLayer(self.RASTER, "Raster layer"))
 
         self.addParameter(
             QgsProcessingParameterRasterDestination(
@@ -63,9 +55,7 @@ class FuzzyMembershipAlgorithm(QgsProcessingAlgorithm):
 
         raster_band = 1
 
-        fuzzy_number = ParameterFuzzyNumber.valueToFuzzyNumber(
-            parameters[self.FUZZYNUMBER]
-        )
+        fuzzy_number = ParameterFuzzyNumber.valueToFuzzyNumber(parameters[self.FUZZYNUMBER])
 
         input_raster = self.parameterAsRasterLayer(parameters, self.RASTER, context)
 
@@ -73,9 +63,7 @@ class FuzzyMembershipAlgorithm(QgsProcessingAlgorithm):
 
         input_raster_nodata = input_raster_dp.sourceNoDataValue(raster_band)
 
-        path_fuzzy_raster = self.parameterAsOutputLayer(
-            parameters, self.OUTPUT_FUZZY_MEMBERSHIP, context
-        )
+        path_fuzzy_raster = self.parameterAsOutputLayer(parameters, self.OUTPUT_FUZZY_MEMBERSHIP, context)
 
         fuzzy_raster_writer = create_raster_writer(path_fuzzy_raster)
 
@@ -110,9 +98,7 @@ class FuzzyMembershipAlgorithm(QgsProcessingAlgorithm):
 
                 else:
 
-                    new_block.setValue(
-                        i, fuzzy_number.membership(r_input_data.value(i)).membership
-                    )
+                    new_block.setValue(i, fuzzy_number.membership(r_input_data.value(i)).membership)
 
             writeBlock(fuzzy_raster_dp, new_block, r_input_data)
 

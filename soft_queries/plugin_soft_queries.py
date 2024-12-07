@@ -25,11 +25,7 @@ from .expressions.expressions_fuzzy_number import (
     fuzzy_number_triangular,
     get_fuzzy_number_from_db,
 )
-from .expressions.expressions_general import (
-    sq_as_string,
-    sq_from_string_repr,
-    sq_to_string_repr,
-)
+from .expressions.expressions_general import sq_as_string, sq_from_string_repr, sq_to_string_repr
 from .expressions.expressions_possibilistic_membership import (
     necessity,
     possibilistic_and,

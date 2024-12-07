@@ -6,11 +6,7 @@ class ParameterFuzzyNumber(QgsProcessingParameterDefinition):
     def __init__(self, name="", description="", parent=None, optional=False):
         super().__init__(name, description, None, optional)
         self.parent = parent
-        self.setMetadata(
-            {
-                "widget_wrapper": "soft_queries.gui.widgetfuzzynumber.FuzzyNumberWidgetWrapper"
-            }
-        )
+        self.setMetadata({"widget_wrapper": "soft_queries.gui.widgetfuzzynumber.FuzzyNumberWidgetWrapper"})
 
     def type(self):
         return "fuzzy_number"
@@ -36,9 +32,7 @@ class ParameterFuzzyNumber(QgsProcessingParameterDefinition):
             values = split_value[1].split("|")
 
             if fn_type == "triangular":
-                return FuzzyNumberFactory.triangular(
-                    float(values[0]), float(values[1]), float(values[2])
-                )
+                return FuzzyNumberFactory.triangular(float(values[0]), float(values[1]), float(values[2]))
 
             elif fn_type == "trapezoidal":
                 return FuzzyNumberFactory.trapezoidal(

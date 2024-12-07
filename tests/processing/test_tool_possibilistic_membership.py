@@ -1,8 +1,6 @@
 from qgis.core import QgsRasterLayer
 
-from soft_queries.processing.tool_possibilistic_membership import (
-    PossibilisticMembershipAlgorithm,
-)
+from soft_queries.processing.tool_possibilistic_membership import PossibilisticMembershipAlgorithm
 
 
 def test_run(raster_layer_path: str, context, feedback):

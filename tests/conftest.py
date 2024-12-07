@@ -1,13 +1,7 @@
 from pathlib import Path
 
 import pytest
-from qgis.core import (
-    QgsExpression,
-    QgsProcessingContext,
-    QgsProcessingFeedback,
-    QgsRasterLayer,
-    QgsVectorLayer,
-)
+from qgis.core import QgsExpression, QgsProcessingContext, QgsProcessingFeedback, QgsRasterLayer, QgsVectorLayer
 
 import soft_queries.utils as utils
 from soft_queries.plugin_soft_queries import SoftQueriesPlugin
