@@ -30,10 +30,10 @@ def possibilistic_membership(
     parent: QgsExpression,
 ):
     if not isinstance(possibility, (int, float)):
-        raise Exception(prepare_error_message(possibility, "possibility", "int, float"))
+        raise TypeError(prepare_error_message(possibility, "possibility", "int, float"))
 
     if not isinstance(necessity, (int, float)):
-        raise Exception(prepare_error_message(necessity, "necessity", "int, float"))
+        raise TypeError(prepare_error_message(necessity, "necessity", "int, float"))
 
     pm = PossibilisticMembership(possibility, necessity)
 
@@ -55,7 +55,7 @@ def possibility(
         return possibilistic_membership.possibility
 
     else:
-        raise Exception(prepare_error_message(possibilistic_membership))
+        raise TypeError(prepare_error_message(possibilistic_membership))
 
 
 @qgsfunction(
@@ -73,7 +73,7 @@ def necessity(
         return possibilistic_membership.necessity
 
     else:
-        raise Exception(prepare_error_message(possibilistic_membership))
+        raise TypeError(prepare_error_message(possibilistic_membership))
 
 
 @qgsfunction(
@@ -90,13 +90,13 @@ def possibilistic_and(
     parent: QgsExpression,
 ):
     if not isinstance(possibilistic_membership1, PossibilisticMembership):
-        raise Exception(prepare_error_message(possibilistic_membership1, "possibilistic_membership1"))
+        raise TypeError(prepare_error_message(possibilistic_membership1, "possibilistic_membership1"))
 
     if not isinstance(possibilistic_membership2, PossibilisticMembership):
-        raise Exception(prepare_error_message(possibilistic_membership2, "possibilistic_membership2"))
+        raise TypeError(prepare_error_message(possibilistic_membership2, "possibilistic_membership2"))
 
     if not (isinstance(type, str) and type in FUZZY_AND_NAMES):
-        raise Exception(prepare_type_error_message(type, FUZZY_AND_NAMES))
+        raise TypeError(prepare_type_error_message(type, FUZZY_AND_NAMES))
 
     return PossibilisticAnd.possibilisticAnd(possibilistic_membership1, possibilistic_membership2, type=type)
 
@@ -115,12 +115,12 @@ def possibilistic_or(
     parent: QgsExpression,
 ):
     if not isinstance(possibilistic_membership1, PossibilisticMembership):
-        raise Exception(prepare_error_message(possibilistic_membership1, "possibilistic_membership1"))
+        raise TypeError(prepare_error_message(possibilistic_membership1, "possibilistic_membership1"))
 
     if not isinstance(possibilistic_membership2, PossibilisticMembership):
-        raise Exception(prepare_error_message(possibilistic_membership2, "possibilistic_membership2"))
+        raise TypeError(prepare_error_message(possibilistic_membership2, "possibilistic_membership2"))
 
     if not (isinstance(type, str) and type in FUZZY_OR_NAMES):
-        raise Exception(prepare_type_error_message(type, FUZZY_OR_NAMES))
+        raise TypeError(prepare_type_error_message(type, FUZZY_OR_NAMES))
 
     return PossibilisticOr.possibilisticOr(possibilistic_membership1, possibilistic_membership2, type=type)

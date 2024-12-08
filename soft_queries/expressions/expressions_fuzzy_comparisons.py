@@ -101,7 +101,7 @@ def _returnAsFuzzyNumbers(fn_1: FUZZY_NUMERICS, fn_2: FUZZY_NUMERICS) -> Tuple[F
 
 def _validateInputs(fn_1: FUZZY_NUMERICS, fn_2: FUZZY_NUMERICS) -> None:
     if not isinstance(fn_1, (FuzzyNumber, int, float)):
-        raise Exception(prepare_error_message(fn_1, "fn_1"))
+        raise TypeError(prepare_error_message(fn_1, "fn_1"))
 
     if not isinstance(fn_2, (FuzzyNumber, int, float)):
-        raise Exception(prepare_error_message(fn_2, "fn_2"))
+        raise TypeError(prepare_error_message(fn_2, "fn_2"))

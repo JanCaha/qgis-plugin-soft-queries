@@ -32,7 +32,7 @@ def fuzzy_membership(value: Union[float, int], feature: QgsFeature, parent: QgsE
         return FuzzyMembership(value)
 
     else:
-        raise Exception(prepare_error_message(value, "value", "int, float"))
+        raise TypeError(prepare_error_message(value, "value", "int, float"))
 
 
 @qgsfunction(
@@ -49,13 +49,13 @@ def fuzzy_and(
     parent: QgsExpression,
 ):
     if not isinstance(fuzzy_membership1, FuzzyMembership):
-        raise Exception(prepare_error_message(fuzzy_membership, "fuzzy_membership1"))
+        raise TypeError(prepare_error_message(fuzzy_membership, "fuzzy_membership1"))
 
     if not isinstance(fuzzy_membership2, FuzzyMembership):
-        raise Exception(prepare_error_message(fuzzy_membership, "fuzzy_membership2"))
+        raise TypeError(prepare_error_message(fuzzy_membership, "fuzzy_membership2"))
 
     if not (isinstance(type, str) and type in FUZZY_AND_NAMES):
-        raise Exception(prepare_type_error_message(type, FUZZY_AND_NAMES))
+        raise TypeError(prepare_type_error_message(type, FUZZY_AND_NAMES))
 
     return FuzzyAnd.fuzzyAnd(fuzzy_membership1, fuzzy_membership2, type=type)
 
@@ -74,13 +74,13 @@ def fuzzy_or(
     parent: QgsExpression,
 ):
     if not isinstance(fuzzy_membership1, FuzzyMembership):
-        raise Exception(prepare_error_message(fuzzy_membership, "fuzzy_membership1"))
+        raise TypeError(prepare_error_message(fuzzy_membership, "fuzzy_membership1"))
 
     if not isinstance(fuzzy_membership2, FuzzyMembership):
-        raise Exception(prepare_error_message(fuzzy_membership, "fuzzy_membership2"))
+        raise TypeError(prepare_error_message(fuzzy_membership, "fuzzy_membership2"))
 
     if not (isinstance(type, str) and type in FUZZY_OR_NAMES):
-        raise Exception(prepare_type_error_message(type, FUZZY_OR_NAMES))
+        raise TypeError(prepare_type_error_message(type, FUZZY_OR_NAMES))
 
     return FuzzyOr.fuzzyOr(fuzzy_membership1, fuzzy_membership2, type=type)
 
@@ -96,7 +96,7 @@ def membership(fuzzy_membership: FuzzyMembership, feature: QgsFeature, parent: Q
         return fuzzy_membership.membership
 
     else:
-        raise Exception(prepare_error_message(fuzzy_membership))
+        raise TypeError(prepare_error_message(fuzzy_membership))
 
 
 @qgsfunction(
@@ -112,9 +112,9 @@ def calculate_fuzzy_membership(
     parent: QgsExpression,
 ):
     if not isinstance(fn, FuzzyNumber):
-        raise Exception(prepare_error_message(fn, "fn", "FuzzyNumber"))
+        raise TypeError(prepare_error_message(fn, "fn", "FuzzyNumber"))
 
     if not isinstance(value, (int, float)):
-        raise Exception(prepare_error_message(value, "value", "float, int"))
+        raise TypeError(prepare_error_message(value, "value", "float, int"))
 
     return fn.membership(value)
