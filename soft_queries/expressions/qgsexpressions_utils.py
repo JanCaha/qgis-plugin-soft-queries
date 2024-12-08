@@ -6,17 +6,15 @@ def load_help(function_name: str) -> str:
 
     path = Path(__file__).parent / "help_files" / "{}.html".format(function_name)
 
-    help = ""
+    help_text = ""
 
     if path.exists():
 
-        with open(path) as file:
-            help = file.read()
+        with open(path, encoding="utf-8") as file:
+            help_text = file.read()
 
-    return help
+    return help_text
 
 
 def error_message(parameter_name: str, class_name: str, object: Any) -> str:
-    return "`{}` parameter is not of Python class `{}`. It is `{}`.".format(
-        parameter_name, class_name, type(object).__name__
-    )
+    return f"`{parameter_name}` parameter is not of Python class `{class_name}`. It is `{type(object).__name__}`."
