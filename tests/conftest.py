@@ -1,16 +1,9 @@
-from pathlib import Path
-
 import pytest
-from qgis.core import QgsExpression, QgsProcessingContext, QgsProcessingFeedback, QgsRasterLayer, QgsVectorLayer
+from qgis.core import QgsProcessingContext, QgsProcessingFeedback, QgsVectorLayer
+from utils import data_path
 
 import soft_queries.utils as utils
 from soft_queries.plugin_soft_queries import SoftQueriesPlugin
-
-
-def data_path(file_name: str) -> str:
-    path = Path(__file__).parent / "_data" / file_name
-
-    return path.as_posix()
 
 
 @pytest.fixture
@@ -52,5 +45,8 @@ def init_plugin(qgis_iface) -> SoftQueriesPlugin:
 @pytest.fixture
 def points_data() -> QgsVectorLayer:
     layer = QgsVectorLayer(data_path("points.gpkg"), "points", "ogr")
+
+    assert layer
+    assert layer.isValid()
 
     return layer
