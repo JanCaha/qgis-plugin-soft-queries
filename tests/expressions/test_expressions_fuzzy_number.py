@@ -2,7 +2,7 @@ import pytest
 from FuzzyMath import FuzzyNumber, FuzzyNumberFactory
 from qgis.core import QgsExpression
 
-from . import assert_has_error, assert_is_correct, assert_is_empty
+from tests.assert_helpers import assert_has_error, assert_is_correct, assert_is_empty
 
 
 @pytest.mark.parametrize(

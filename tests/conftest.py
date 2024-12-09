@@ -1,9 +1,11 @@
 import pytest
 from qgis.core import QgsProcessingContext, QgsProcessingFeedback, QgsVectorLayer
-from utils import data_path
 
 import soft_queries.utils as utils
 from soft_queries.plugin_soft_queries import SoftQueriesPlugin
+from tests.utils import data_path
+
+pytest.register_assert_rewrite("assert_helpers")
 
 
 @pytest.fixture

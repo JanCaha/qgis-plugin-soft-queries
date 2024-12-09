@@ -2,7 +2,7 @@ import pytest
 from FuzzyMath import PossibilisticMembership
 from qgis.core import QgsExpression
 
-from . import assert_has_error, assert_is_correct
+from tests.assert_helpers import assert_has_error, assert_is_correct
 
 
 def test_expr_possibilistic_membership():
