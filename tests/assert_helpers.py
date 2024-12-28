@@ -48,7 +48,7 @@ def assert_has_error(expression: QgsExpression, error_message: str = None) -> No
 
     result = expression.evaluate()
 
-    assert result is None, f"`{expression.expression()}` has return value but it should be empty."
+    assert result is None, f"`{expression.expression()}` has return value `{result}` but it should be empty `{None}`."
 
     assert expression.hasEvalError() is True, f"`{expression.expression()}` does not have eval error."
 
@@ -65,6 +65,6 @@ def assert_is_empty(expression: QgsExpression) -> None:
 
     result = expression.evaluate()
 
-    assert result is None, f"`{expression.expression()}` has return value but it should be empty."
+    assert result is None, f"`{expression.expression()}` has return value `{result}` but it should be empty `{None}`."
 
     assert expression.hasEvalError() is False, f"`{expression.expression()}` has an eval error."
