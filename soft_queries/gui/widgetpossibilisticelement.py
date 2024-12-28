@@ -59,11 +59,13 @@ class PossibilisticElementWidget(QWidget):
 
     def value(self):
 
-        return "{}{}{}".format(
-            self.raster_possibility.dataProvider().dataSourceUri(),
-            self.text_separator,
-            self.raster_necessity.dataProvider().dataSourceUri(),
+        string = (
+            f"{self.raster_possibility.dataProvider().dataSourceUri()}"
+            f"{self.text_separator}"
+            f"{self.raster_necessity.dataProvider().dataSourceUri()}"
         )
+
+        return string
 
     def value_as_dict(self):
 

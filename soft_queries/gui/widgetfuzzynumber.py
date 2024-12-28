@@ -153,22 +153,23 @@ class FuzzyNumberWidget(QGroupBox):
 
     def value(self):
 
+        string = ""
+
         if self.fuzzy_type.currentText().lower() == "triangular":
 
-            return "triangular;{}|{}|{}".format(
-                self.triangular_min.value(),
-                self.triangular_midpoint.value(),
-                self.triangular_max.value(),
+            string = (
+                "triangular;"
+                f"{self.triangular_min.value()}|{self.triangular_midpoint.value()}|{self.triangular_max.value()}"
             )
 
         elif self.fuzzy_type.currentText().lower() == "trapezoidal":
-
-            return "trapezoidal;{}|{}|{}|{}".format(
-                self.trapezoidal_min.value(),
-                self.trapezoidal_kernel_min.value(),
-                self.trapezoidal_kernel_max.value(),
-                self.trapezoidal_max.value(),
+            string = (
+                "trapezoidal;"
+                f"{self.trapezoidal_min.value()}|{self.trapezoidal_kernel_min.value()}|"
+                f"{self.trapezoidal_kernel_max.value()}|{self.trapezoidal_max.value()}"
             )
+
+        return string
 
     def value_as_dict(self):
 

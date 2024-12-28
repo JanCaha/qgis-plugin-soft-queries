@@ -59,7 +59,7 @@ class FuzzyVariablesWidget(QDialog):
             dialog_error = QMessageBox()
             dialog_error.setIcon(QMessageBox.Critical)
             dialog_error.setText(
-                "Cannot add `{}` as the fuzzy variable with the name already exist!".format(fuzzy_variable_name)
+                f"Cannot add `{fuzzy_variable_name}` as the fuzzy variable with the name already exist!"
             )
             dialog_error.setInformativeText("Please select another name.")
             dialog_error.setWindowTitle("Error")
