@@ -1,3 +1,6 @@
+import shutil
+from pathlib import Path
+
 from FuzzyMath.class_factories import FuzzyNumber, FuzzyNumberFactory
 from qgis.core import QgsApplication
 from qgis.PyQt.QtWidgets import QDialog, QGridLayout, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QToolButton
@@ -33,11 +36,16 @@ class FuzzyVariablesWidget(QDialog):
 
         self.tool_button_add = QToolButton()
         self.tool_button_add.setEnabled(False)
+        self.tool_button_add.setToolTip("Add Fuzzy Variable")
         self.tool_button_remove = QToolButton()
+        self.tool_button_remove.setToolTip("Remove Fuzzy Variable")
+        self.tool_button_clean = QToolButton()
+        self.tool_button_clean.setToolTip("Clean All Fuzzy Variables")
 
         line_layout.addStretch(1)
         line_layout.addWidget(self.tool_button_add)
         line_layout.addWidget(self.tool_button_remove)
+        line_layout.addWidget(self.tool_button_clean)
         layout.addLayout(line_layout, 2, 1, 1, 1)
 
         self.tree_widget = FuzzyVariablesTreeWidget()
@@ -46,9 +54,11 @@ class FuzzyVariablesWidget(QDialog):
 
         self.tool_button_add.setIcon(QgsApplication.getThemeIcon("/symbologyAdd.svg"))
         self.tool_button_remove.setIcon(QgsApplication.getThemeIcon("/symbologyRemove.svg"))
+        self.tool_button_clean.setIcon(QgsApplication.getThemeIcon("/mActionDeleteSelected.svg"))
 
         self.tool_button_add.clicked.connect(self.add_fuzzy_variable)
         self.tool_button_remove.clicked.connect(self.remove_fuzzy_variable)
+        self.tool_button_clean.clicked.connect(self._empty_db_file)
         self.fuzzy_name.textChanged.connect(self.activate_addition)
         self.tree_widget.currentItemChanged.connect(self.activate_deletion)
 
@@ -57,12 +67,12 @@ class FuzzyVariablesWidget(QDialog):
 
         if self.tree_widget.fuzzy_variable_exist(fuzzy_variable_name):
             dialog_error = QMessageBox()
-            dialog_error.setIcon(QMessageBox.Critical)
+            dialog_error.setIcon(QMessageBox.Icon.Critical)
             dialog_error.setText(
                 f"Cannot add `{fuzzy_variable_name}` as the fuzzy variable with the name already exist!"
             )
             dialog_error.setInformativeText("Please select another name.")
-            dialog_error.setWindowTitle("Error")
+            dialog_error.setWindowTitle("Cannot Add Fuzzy Variable")
             dialog_error.exec()
 
             return
@@ -107,3 +117,20 @@ class FuzzyVariablesWidget(QDialog):
             self.tool_button_remove.setEnabled(False)
         else:
             self.tool_button_remove.setEnabled(True)
+
+    def _empty_db_file(self) -> None:
+
+        msg_box = QMessageBox(self.parent())
+        msg_box.setIcon(QMessageBox.Icon.Question)
+        msg_box.setWindowTitle("Empty Fuzzy Numbers Database")
+        msg_box.setText("Remove all fuzzy variables from the database?")
+        msg_box.setStandardButtons(QMessageBox.StandardButton.No | QMessageBox.StandardButton.Yes)
+        msg_box.setDefaultButton(QMessageBox.StandardButton.No)
+        res = msg_box.exec_()
+        if res == QMessageBox.StandardButton.Yes:
+            path_db = Path(__file__).parent.parent / "database" / "plugin.db"
+            path_empty_db = Path(__file__).parent.parent / "database" / "empty_backup.db"
+
+            shutil.copyfile(path_empty_db, path_db)
+
+            self.tree_widget.refresh()
